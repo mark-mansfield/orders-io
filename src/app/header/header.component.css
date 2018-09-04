@@ -1,0 +1,68 @@
+.header {
+  position: relative;
+  z-index: 4;
+}
+
+.header__branding {
+  font-size: 1.0rem;
+}
+
+.header__hamburger-menu {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.header__hamburger-menu > div {
+  width: 35px;
+  height: 3px;
+  background-color: dodgerblue;
+  margin: 6px 0;
+}
+
+.header__tool-bar-link {
+  display: none;
+}
+
+.header__tool-bar-button {
+  display: none;
+}
+
+@media (min-width: 40rem) and (min-height: 40rem) {
+  .header__hamburger-menu {
+    display: none;
+  }
+
+  .header__tool-bar-link  {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__tool-bar-button {
+    display: flex;
+
+  }
+
+  /* override mat button font size */
+  .mat-button {
+    margin-right: 10px;
+    font-size: 1rem;
+  }
+
+  .mat-button:hover {
+    color: white;
+  }
+  .fa-sign-out-alt:hover {
+    color: white;
+    cursor: pointer;
+  }
+
+  .header__branding {
+    font-size: 1.3rem;
+    flex: 2;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: dodgerblue;
+}

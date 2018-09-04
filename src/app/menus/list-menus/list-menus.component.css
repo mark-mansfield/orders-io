@@ -1,0 +1,65 @@
+.mat-card {
+  text-align: center;
+}
+
+.mat-spinner {
+  margin: auto;
+}
+
+.post-image {
+  width: 100%
+}
+
+.post-image img {
+  width: 100%;
+  box-shadow: 1px, 1px, 5px rgba(3, 3, 3, 0.7);
+}
+
+.create-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-menu > h1 {
+  flex: 2;
+  font-size: 1.2rem;
+}
+
+.create-menu > a {
+  color: dodgerblue;
+}
+
+.create-menu > a:hover {
+  color: white;
+}
+
+.fa-plus {
+  font-size: 1rem;
+}
+
+
+
+@media (min-width: 40rem) and (min-height: 40rem) {
+  .main__content {
+    position : relative;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    width: 30vw;
+  }
+
+  .create-menu > h1 {
+    font-size: 2rem;
+  }
+
+
+  .fa-plus {
+    font-size: 2rem;
+  }
+
+
+}

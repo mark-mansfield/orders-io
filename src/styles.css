@@ -1,0 +1,89 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
+  rgb(43, 39, 39) top;
+  background-attachment: fixed;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+a {
+  color: dodgerblue;
+  text-decoration: none;
+}
+
+a:hover {
+  color:white;
+}
+
+.overlay {
+  visibility: visible;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  width: inherit;
+  height: inherit;
+  background: rgba(0,0,0,0.8);
+}
+
+@media (min-width: 40rem) and (min-height: 40rem) {
+  body {
+    background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
+    rgb(43, 39, 39) top;
+    background-attachment: fixed;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    color: white;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .system__message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: dodgerblue;
+    position: fixed;
+    top: 64px;
+    left: 0px;
+    height: 64px;;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    box-sizing: content-box
+  }
+
+
+}
+
+.system__message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: dodgerblue;
+  position: fixed;
+  top: 56px;
+  left: 0px;
+  height: 56px;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.open {
+  display: block !important ;
+}
+
+
