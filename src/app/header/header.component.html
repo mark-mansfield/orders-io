@@ -17,6 +17,11 @@
       <span class="header__tool-bar-link">menus</span>
     </a>
   </div>
+  <div *ngIf="userIsAuthenticated" class="toolbar-item header__tool-bar-item">
+    <a routerLink="list-dishes" mat-button routerLinkActive="">
+      <span class="header__tool-bar-link">dishes</span>
+    </a>
+  </div>
   <div *ngIf="userIsAuthenticated" class="toolbar-item header__tool-bar-button">
     <a mat-button (click)="onLogout()"> <span class="header__tool-bar-link">logout</span></a>
   </div>
