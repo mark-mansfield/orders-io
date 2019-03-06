@@ -1,11 +1,11 @@
+//  take all incomming requests and add a header then foward new request onward
 import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { Injectable } from '@angular/core';
 
-// so we can inject a service into this one
-// this also gets listed in the provides array app.module
+// so we can inject a service into this service
 @Injectable()
-
+//  thsi runs for <any> outgoing requests
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {}

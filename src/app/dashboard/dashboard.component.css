@@ -1,0 +1,19 @@
+.flexContainer {
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.flex-item {
+  margin: 20px 0;
+  width: 300px;
+}
+@media (min-width: 40rem) {
+  .flexContainer {
+    flex-direction: row;
+  }
+}

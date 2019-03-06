@@ -1,17 +1,17 @@
 # Catering-Manager-Angular-6
 <h1>Welcome</h1>
-    <p>This project is an Angular 6 personal learning project centered around managing resturant catering. This example loads <br>data from a mongodb database collection and displays a list of items.</p>
+    <p>This project is an Angular 6 personal learning project centered around managing restaurant catering. This example loads <br>data from a mongodb database collection and displays a list of items.</p>
     <h2>Functionality</h2>
     <ul>
       <li>user authentication</li>
-      <li>JWT token Authorisation</li>
+      <li>JWT token Authorization</li>
       <li>Load data from mongo db</li>
-      <li>Select and upload images to server, saving imagepath as a property</li>
+      <li>Select and upload images to server, saving image path as a property</li>
       <li>Save data back to the mongo db</li>
       <li>Displays data using material theme components</li>
       <li>Some initial css media queries added</li>
     </ul>
-    <h2>Angular Dependancies</h2>
+    <h2>Angular Dependencies</h2>
     <ul>
       <li><a href="https://www.npmjs.com/package/jsonwebtoken">jsonwebtoken</a>  for creating access tokens.</li>
       <li><a href="https://material.angular.io/">Angular Material</a> Material Design components for Angular</li>

@@ -1,4 +1,4 @@
-// check if we have a token using jsonwebpackage
+// check if we have a token using json web package
 const jwt = require('jsonwebtoken');
 
 // export the function to execute on the incoming request

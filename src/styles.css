@@ -7,9 +7,9 @@
 }
 
 body {
-  background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
-  rgb(43, 39, 39) top;
-  background-attachment: fixed;
+  /* background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
+  rgb(43, 39, 39) top; */
+  /* background-attachment: fixed; */
   font-family: 'Montserrat', sans-serif;
   font-size: 0.8rem;
   color: white;
@@ -24,7 +24,7 @@ a {
 }
 
 a:hover {
-  color:white;
+  color: white;
 }
 
 .overlay {
@@ -35,14 +35,14 @@ a:hover {
   z-index: 1;
   width: inherit;
   height: inherit;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 @media (min-width: 40rem) and (min-height: 40rem) {
   body {
-    background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
-    rgb(43, 39, 39) top;
-    background-attachment: fixed;
+    /* background: url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
+      rgb(43, 39, 39) top;
+    background-attachment: fixed; */
     font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     color: white;
@@ -58,14 +58,12 @@ a:hover {
     position: fixed;
     top: 64px;
     left: 0px;
-    height: 64px;;
+    height: 64px;
     padding: 10px;
     width: 100%;
     text-align: center;
-    box-sizing: content-box
+    box-sizing: content-box;
   }
-
-
 }
 
 .system__message {
@@ -85,5 +83,3 @@ a:hover {
 .open {
   display: block !important ;
 }
-
-
