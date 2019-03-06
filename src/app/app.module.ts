@@ -20,6 +20,7 @@ import { MenusModule } from './menus/menus-module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './auth/login/login.component';
+import { DishesComponent } from './dishes/dishes.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { LoginComponent } from './auth/login/login.component';
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
-    DashboardComponent
+    DashboardComponent,
+    DishesComponent
   ],
   imports: [
     BrowserModule,
