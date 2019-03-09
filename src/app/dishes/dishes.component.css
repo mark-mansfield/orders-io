@@ -1,0 +1,52 @@
+.row-header {
+  height: 50px;
+}
+
+.flex-column-container-66 {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .select-flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .flex-row-container {
+    width: 100%;
+    display: flex;
+  }
+  .flex-column-container-33,
+  .flex-column-container-66 {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+  }
+
+  .flex-column-container-33 {
+    width: 33vw;
+  }
+  .flex-column-container-66 {
+    width: 66vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: center;
+    margin: auto 0;
+  }
+
+  .flex-column-container-66 > button {
+    padding-top: 15px;
+  }
+
+  mat-select {
+    margin: 20px auto;
+    text-align: center;
+    width: 50%;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+}

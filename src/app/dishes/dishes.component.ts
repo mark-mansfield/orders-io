@@ -6,10 +6,110 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dishes.component.css']
 })
 export class DishesComponent implements OnInit {
-
-  constructor() { }
+  dishes = [];
+  courses: any = [];
+  selectedItem = null;
+  disableEditTools: Boolean = true;
+  editMode: Boolean = false;
+  data = [
+    {
+      name: 'Slow Cooked Lamb Shoulder',
+      description: 'Hawaiij spices, pomegranate molasses, honey and lemonw coriander and almonds',
+      portion_sizes: [1, 2, 3],
+      course: 'main'
+    },
+    {
+      name: 'Grilled Ora king salmon',
+      description: 'chermoula marinade, cherry tomato and green bean salsa',
+      portion_sizes: [1, 2, 3],
+      course: 'main'
+    },
+    {
+      name: 'Ocean trout tarator',
+      description: 'w tahini yoghurt, coriander, sumac and chilli',
+      portion_sizes: [1, 2, 3],
+      course: 'main'
+    },
+    {
+      name: 'Slow Braised Free Range Chicken',
+      description: 'Jerusalem artichokes, bay, lemon, olives, eschallots , dates (Legs and thighs- 18 pieces)',
+      portion_sizes: [1, 2],
+      course: 'main'
+    },
+    {
+      name: 'chopped liver',
+      description: 'w caramelised onions egg &amp; herb mayo',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'hommus',
+      description: "Lox's famous chick pea hummus used at the restaurant",
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'confit tuna',
+      description: 'Olive oil, caper and parsley dip',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'Romanian eggplant',
+      description: 'roasted eggplant, capsicum, pomegranate, dill, lemon, shallot)',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'holmbrae chicken and vegetable ',
+      description: 'DF',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'soup'
+    }
+  ];
+  constructor() {}
 
   ngOnInit() {
+    this.dishes = this.data;
+    this.dishes.forEach((item, index) => {
+      if (this.courses[index] !== item.course) {
+        this.courses.push(item.course);
+      }
+    });
+    this.courses.unshift('all');
+    this.courses = new Set(this.courses);
   }
 
+  toggleEditMode() {
+    if (!this.editMode) {
+      console.log('toggeling edit mode', this.editMode);
+      this.editMode = false;
+    } else {
+      this.editMode = true;
+    }
+  }
+
+  onSelectCourse(course) {
+    console.log(course);
+    if (course === 'all') {
+      this.dishes = this.data;
+      return;
+    }
+    this.dishes = [...this.data].filter(function(item) {
+      return item.course === course;
+    });
+  }
+
+  toggleEditToolsDisabled() {
+    if (!this.disableEditTools) {
+      this.disableEditTools = true;
+    } else {
+      this.disableEditTools = false;
+    }
+  }
+
+  onItemSelect(item) {
+    this.selectedItem = item;
+    this.toggleEditToolsDisabled();
+  }
 }
