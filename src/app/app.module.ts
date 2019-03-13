@@ -16,9 +16,9 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { MenusModule } from './menus/menus-module';
+import { DashboardModule } from './dashboard/dashboard.module';
 // TODO:  rename this to login-signup
 import { WelcomeComponent } from './welcome/welcome.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DishesComponent } from './dishes/dishes.component';
 
@@ -32,7 +32,6 @@ import { DishesComponent } from './dishes/dishes.component';
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
-    DashboardComponent,
     DishesComponent
   ],
   imports: [
@@ -42,7 +41,8 @@ import { DishesComponent } from './dishes/dishes.component';
     BrowserAnimationsModule,
     FormsModule,
     AngularMaterialModule,
-    MenusModule
+    MenusModule,
+    DashboardModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
