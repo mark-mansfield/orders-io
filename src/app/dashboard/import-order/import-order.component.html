@@ -1,3 +1,29 @@
-<p>
-  import-order works!
-</p>
+<!-- reactive forms approach -->
+<form class="form-container">
+  <h1>Import a new Order</h1>
+  <br />
+
+  <p *ngIf="!showTick" style="text-align: center">Acceptable file types: <br /><strong> CSV files.</strong></p>
+  <br /><br />
+  <button mat-button type="button" color="accent" (click)="filePicker.click()">
+    <span class="material-icons" style="font-size: 6rem; background-color: none">computer</span>
+  </button>
+
+  <div *ngIf="showTick"><ng-container *ngTemplateOutlet="greenTick"></ng-container></div>
+  <span style="color:black">{{ message }}</span> <br /><br />
+
+  <input type="file" #filePicker (change)="onFilePicked($event)" style="display: none" />
+  <br />
+  {{ filePicked }}
+  <br />
+  <br />
+  <button
+    mat-raised-button
+    color="accent"
+    type="submit"
+    [ngClass]="{ hidden: this.disabledUpload }"
+    [disabled]="this.disabledUpload"
+  >
+    upload
+  </button>
+</form>
