@@ -1,52 +1,91 @@
-.row-header {
-  height: 50px;
+.flex-row-container {
+  width: 100vw;
+  display: flex;
 }
 
-.flex-column-container-66 {
+.row-header {
+  height: 64px;
+  background-color: rgba(0, 0, 0, 0.256);
+}
+
+.flex-container-33 {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+.flex-container-66 {
   display: none;
+  width: 66.5vw;
+}
+
+.flex-column-container-33,
+.flex-column-container-66 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+mat-select {
+  margin: 20px auto;
+  text-align: center;
+  width: 50vw;
+}
+
+mat-list-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.filter-select {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.compose {
+  height: 80px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.compose > button {
+  width: 100vw;
+}
+
+button {
+  font-size: 1rem;
 }
 
 @media (min-width: 40rem) {
-  .select-flex-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .flex-row-container {
-    width: 100%;
-    display: flex;
-  }
   .flex-column-container-33,
-  .flex-column-container-66 {
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
+  .flex-container-33 {
+    width: 15vw;
+  }
+  .flex-column-container-66,
+  .flex-container-66 {
+    width: 85vw;
   }
 
-  .flex-column-container-33 {
-    width: 33vw;
+  .filter-select {
+    width: 100%;
   }
-  .flex-column-container-66 {
-    width: 66vw;
+  .flex-container-33 {
+  }
+  .flex-container-66 {
     display: flex;
+    padding-left: 45px;
+  }
+
+  .edit-tools {
     justify-content: flex-start;
-    align-items: flex-start;
-    align-content: center;
-    margin: auto 0;
   }
 
-  .flex-column-container-66 > button {
-    padding-top: 15px;
+  .compose > button {
+    width: 100%;
   }
-
-  mat-select {
-    margin: 20px auto;
-    text-align: center;
-    width: 50%;
-  }
-
-  button {
-    font-size: 1rem;
+  .inner-margin {
+    margin: 54px;
   }
 }

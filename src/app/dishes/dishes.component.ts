@@ -82,11 +82,12 @@ export class DishesComponent implements OnInit {
 
   toggleEditMode() {
     if (!this.editMode) {
-      console.log('toggeling edit mode', this.editMode);
-      this.editMode = false;
-    } else {
       this.editMode = true;
+    } else {
+      this.editMode = false;
     }
+
+    console.log('toggeling edit mode', this.editMode);
   }
 
   onSelectCourse(course) {
@@ -100,16 +101,12 @@ export class DishesComponent implements OnInit {
     });
   }
 
-  toggleEditToolsDisabled() {
-    if (!this.disableEditTools) {
-      this.disableEditTools = true;
-    } else {
-      this.disableEditTools = false;
-    }
+  enableEditTools() {
+    this.disableEditTools = false;
   }
 
   onItemSelect(item) {
     this.selectedItem = item;
-    this.toggleEditToolsDisabled();
+    this.enableEditTools();
   }
 }

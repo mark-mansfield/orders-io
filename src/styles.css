@@ -11,7 +11,8 @@ body {
   rgb(43, 39, 39) top; */
   /* background-attachment: fixed; */
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: 400;
   color: white;
   width: 100vw;
   height: 100vh;
@@ -19,7 +20,7 @@ body {
 }
 
 a {
-  color: dodgerblue;
+  color: white;
   text-decoration: none;
 }
 
@@ -36,6 +37,10 @@ a:hover {
   width: inherit;
   height: inherit;
   background: rgba(0, 0, 0, 0.8);
+}
+
+mat-button {
+  font-weight: 400;
 }
 
 @media (min-width: 40rem) and (min-height: 40rem) {

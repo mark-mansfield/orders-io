@@ -1,52 +1,87 @@
 <div class="flex-row-container">
-  <div class="flex-column-container-33 row-header">
-    <div class="flex-item">
-      <mat-select placeholder="filter by course" (selectionChange)="onSelectCourse($event.value)">
-        <mat-option *ngFor="let course of courses" [value]="course">
-          {{ course }}
-        </mat-option>
-      </mat-select>
-    </div>
+  <div class="flex-container-33 row-header">
+    <mat-select placeholder="filter by course" (selectionChange)="onSelectCourse($event.value)">
+      <mat-option *ngFor="let course of courses" [value]="course">
+        {{ course }}
+      </mat-option>
+    </mat-select>
+    <!-- <button mat-button>
+      <i class="material-icons">
+        add
+      </i>
+    </button> -->
   </div>
-  <div class="flex-column-container-66 row-header">
-    <button mat-button (click)="toggleEditMode()" [disabled]="this.disableEditTools">edit</button>
+  <div class="flex-container-66 row-header edit-tools">
+    <button mat-button (click)="toggleEditMode()" [disabled]="this.disableEditTools" title="edit this item">
+      <i class="material-icons">
+        edit
+      </i>
+    </button>
+
+    <button mat-button [disabled]="this.disableEditTools" title="delete this item">
+      <i class="material-icons">
+        delete
+      </i>
+    </button>
+    <button mat-button [disabled]="this.disableEditTools" title="clone item">
+      <i class="material-icons">
+        file_copy
+      </i>
+    </button>
   </div>
 </div>
 <div class="flex-row-container">
   <div class="flex-column-container-33">
-    <div class="flex-item">
-      <mat-list role="list">
-        <mat-list-item role="listitem" *ngFor="let item of dishes">
-          <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>
-        </mat-list-item>
-      </mat-list>
+    <div class="flex-item compose">
+      <button mat-button>
+        <i class="material-icons">
+          add
+        </i>
+      </button>
+      <!-- <mat-select placeholder="filter by course" (selectionChange)="onSelectCourse($event.value)">
+        <mat-option *ngFor="let course of courses" [value]="course">
+          {{ course }}
+        </mat-option>
+      </mat-select> -->
     </div>
+
+    <mat-list role="list">
+      <mat-list-item role="listitem" *ngFor="let item of dishes">
+        <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>
+      </mat-list-item>
+    </mat-list>
   </div>
   <div class="flex-column-container-66">
-    <div *ngIf="selectedItem !== null" class="flex-item">
-      <mat-list role="list">
-        <mat-list-item>
-          <h1 *ngIf="selectedItem">{{ selectedItem.name }}</h1>
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          <h2>Description</h2>
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ selectedItem.description }}
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          <h2>Portion Sizes</h2>
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ selectedItem.portion_sizes }}
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          <h2>Course</h2>
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ selectedItem.course }}
-        </mat-list-item>
-      </mat-list>
+    <div class="inner-margin">
+      <div *ngIf="selectedItem !== null" class="flex-item">
+        <mat-list role="list" *ngIf="this.editMode === false">
+          <mat-list-item>
+            <h1 *ngIf="selectedItem">{{ selectedItem.name }}</h1>
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            <h2>Description</h2>
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            {{ selectedItem.description }}
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            <h2>Portion Sizes</h2>
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            {{ selectedItem.portion_sizes }}
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            <h2>Course</h2>
+          </mat-list-item>
+          <mat-list-item role="listitem">
+            {{ selectedItem.course }}
+          </mat-list-item>
+        </mat-list>
+        <div *ngIf="this.editMode === true">
+          <h2>Edit Form</h2>
+          <button mat-button (click)="toggleEditMode()">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
