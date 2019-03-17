@@ -103,4 +103,4 @@ Takes all the orders and combines them into a single object, convert this to csv
 
 #### View order
 
-display individual order for review / edit
+display individual order for review / edit.
