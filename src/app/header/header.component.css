@@ -4,7 +4,7 @@
 }
 
 .header__branding {
-  font-size: 1.0rem;
+  font-size: 1rem;
 }
 
 .header__hamburger-menu {
@@ -27,19 +27,22 @@
   display: none;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
 @media (min-width: 40rem) and (min-height: 40rem) {
   .header__hamburger-menu {
     display: none;
   }
 
-  .header__tool-bar-link  {
+  .header__tool-bar-link {
     display: flex;
     align-items: center;
   }
 
   .header__tool-bar-button {
     display: flex;
-
   }
 
   /* override mat button font size */
@@ -60,9 +63,4 @@
     font-size: 1.3rem;
     flex: 2;
   }
-}
-
-a {
-  text-decoration: none;
-  color: dodgerblue;
 }

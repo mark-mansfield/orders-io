@@ -11,6 +11,9 @@ const mongoose = require('mongoose');
 const menuRoutes = require('./routes/menus');
 // auth routes
 const userRoutes = require('./routes/users');
+// order routes
+const orderRoutes = require('./routes/orders');
+
 // P5h03V1bG86sbJwb
 mongoose
   .connect('mongodb+srv://cateringManagerAdmin:P5h03V1bG86sbJwb@cluster0-dnzru.mongodb.net/catering-manager-angular')
@@ -28,7 +31,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // use path middle wear from express
-// forwards all requests sent to '/images' to be for  warded to 'backend/images'
+// forwards all requests sent to '/images' to be forwarded to 'backend/images'
 app.use('/images', express.static(path.join('backend/images')));
 
 // create a middlewear to allow CORS
@@ -41,6 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/orders', orderRoutes);
 app.use('/api/menus', menuRoutes);
 app.use('/api/user', userRoutes);
 

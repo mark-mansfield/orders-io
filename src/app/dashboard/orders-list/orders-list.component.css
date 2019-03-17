@@ -1,0 +1,51 @@
+h1 {
+  color: black;
+}
+
+div {
+  color: black !important;
+}
+.flex-2Col-left {
+  width: 50%;
+}
+.flex-2Col-right {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+}
+.flex-4col-left {
+  width: 25%;
+  padding-right: 10px;
+}
+
+.flex-4col-middle-left {
+  width: 25%;
+}
+.flex-4col-middle-right {
+  width: 25%;
+}
+
+.flex-4col-right {
+  display: flex;
+  justify-content: flex-end;
+  padding-left: 10px;
+  width: 25%;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-height: 100%;
+}
+
+.inner_margin {
+  margin: 54px;
+}
+
+.row-style {
+  padding: 10px;
+  border-bottom: 1px solid rgb(209, 210, 211);
+}

@@ -1,17 +1,24 @@
 .flexContainer {
   width: 100vw;
-
+  background-color: #e8f6f9;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.import-component {
+  min-width: 20%;
+  background-color: #2b2929;
+  display: flex;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-.flex-item {
-  margin: 20px 0;
-  width: 300px;
+.list-component {
+  width: 80%;
 }
+
 @media (min-width: 40rem) {
   .flexContainer {
     flex-direction: row;
