@@ -86,9 +86,11 @@ Customer has placed an order via an external system.
 Admin user uploads the csv file containing order data in the system.
 The admin can then edit order info and then use the Summaries features to generate different reports for the kitchen.
 
+<hr>
+
 # Views
 
-1. Order List
+# Order List
 
 ### Description
 
@@ -105,7 +107,9 @@ Takes all the orders and combines them into a single object, convert this to csv
 
 display individual order for review / edit.
 
-2. import order
+<hr>
+
+# import order
 
 ## Description
 
@@ -118,3 +122,5 @@ display individual order for review / edit.
 ### User interactions
 
 Use html file selector to locate file to upload.
+
+<hr>
