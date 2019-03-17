@@ -85,3 +85,36 @@ A replication server will be set to be used as a fall back.
 Customer has placed an order via an external system.
 Admin user uploads the csv file containing order data in the system.
 The admin can then edit order info and then use the Summaries features to generate different reports for the kitchen.
+
+# Views
+
+1. Order List
+
+### Description
+
+1. Send http get request containing the order object to getOrders api endpoint and return the resulting array of objects
+2. Display a list of orders showing the order number, customer name , pickup day fields.
+
+### User interactions
+
+#### Create run sheet
+
+Takes all the orders and combines them into a single object, convert this to csv file , download file.
+
+#### View order
+
+display individual order for review / edit.
+
+2. import order
+
+## Description
+
+1. Select csv file from local filesystem check mime type
+2. Then http post to backend importOrder api end point
+   ( converts to json and returns the result )
+3. Then send http post to createOrder api endpoint
+   ( saves order to mongo db 'orders' collection )
+
+### User interactions
+
+Use html file selector to locate file to upload.
