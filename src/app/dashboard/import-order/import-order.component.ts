@@ -53,27 +53,27 @@ export class ImportOrderComponent implements OnInit {
   }
 
   extractFileName(str) {
-    let fileString = str.split('.')[0];
-    let arr = fileString.split('-');
+    const fileString = str.split('.')[0];
+    const arr = fileString.split('-');
     arr.pop();
     return arr.join('-');
   }
   // upload selected file if form is valid
   onSubmit() {
     this.isLoading = true;
-    setTimeout(() => {
-      if (this.form.invalid) {
-        this.message = 'invalid file selected';
-      } else {
-        this.fileData = this.form.value.file;
-        const fileName = this.extractFileName(this.form.value.file.name);
-        this.importService.uploadFile(this.fileData, fileName);
-        this.form.reset();
-        this.fileData = null;
-        this.file = null;
-        this.disabledUpload = true;
-        this.message = '';
-      }
-    }, 5000);
+    // setTimeout(() => {
+    if (this.form.invalid) {
+      this.message = 'invalid file selected';
+    } else {
+      this.fileData = this.form.value.file;
+      const fileName = this.extractFileName(this.form.value.file.name);
+      this.importService.uploadFile(this.fileData, fileName);
+      this.form.reset();
+      this.fileData = null;
+      this.file = null;
+      this.disabledUpload = true;
+      this.message = '';
+    }
+    // }, 5000);
   }
 }

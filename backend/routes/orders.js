@@ -14,7 +14,14 @@ router.post('/import', checkAuth, extractCsvFile, OrderController.importCustomer
 // create order
 router.post('/create', checkAuth, extractCsvFile, OrderController.createOrder);
 
+// update an order
+router.put('/update', checkAuth, OrderController.updateSingleOrder);
+
 // get orders
 router.get('/list', checkAuth, OrderController.getOrders);
+
+// delete order
+router.delete('/:id', checkAuth, OrderController.deleteOrder);
+
 // export the router
 module.exports = router;

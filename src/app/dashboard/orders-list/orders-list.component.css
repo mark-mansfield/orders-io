@@ -1,18 +1,17 @@
-h1 {
-  color: black;
-}
-
-div {
+.main__content {
   color: black !important;
 }
+
 .flex-2Col-left {
   width: 50%;
 }
+
 .flex-2Col-right {
   display: flex;
   justify-content: flex-end;
   width: 50%;
 }
+
 .flex-4col-left {
   width: 25%;
   padding-right: 10px;
@@ -21,6 +20,7 @@ div {
 .flex-4col-middle-left {
   width: 25%;
 }
+
 .flex-4col-middle-right {
   width: 25%;
 }
@@ -29,6 +29,16 @@ div {
   display: flex;
   justify-content: flex-end;
   padding-left: 10px;
+  width: 25%;
+}
+
+.flex-modal-2Col-left {
+  margin: 10px 0;
+  width: 75%;
+}
+
+.flex-modal-2Col-right {
+  margin: 10px 0;
   width: 25%;
 }
 
@@ -41,11 +51,45 @@ div {
   max-height: 100%;
 }
 
+.dialog-inner-margin {
+  margin: 0 54px;
+}
+
+.dialog-input {
+  padding: 5px;
+  text-align: start;
+  border: 1px solid rgb(202, 202, 202);
+}
+
+.dialog-button {
+  margin-right: 5px;
+}
+
 .inner_margin {
-  margin: 54px;
+  margin: 10px;
 }
 
 .row-style {
   padding: 10px;
   border-bottom: 1px solid rgb(209, 210, 211);
+}
+
+.vspacer {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  color: black;
+}
+
+::ng-deep snack-bar-container.dark-snackbar {
+  background: #424242;
+  color: white;
+}
+
+@media (min-width: 40rem) {
+  .inner_margin {
+    margin: 54px;
+  }
 }

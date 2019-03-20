@@ -3,6 +3,15 @@ import { Subscription } from 'rxjs';
 import { ImportService } from '../import.service';
 import { OrdersService } from '../orders.service';
 import { Order } from '../models/order.model';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatSnackBar,
+  MatSnackBarConfig,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition
+} from '@angular/material';
+import { DialogsComponent } from '../../dialogs/dialogs.component';
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
@@ -12,60 +21,95 @@ export class OrdersListComponent implements OnInit {
   importSub: Subscription;
   orderCreatedSub: Subscription;
   ordersUpdatedSub: Subscription;
-
-  transformedObject: { type: 'object' };
-  orderItems: any[];
+  ordersLoaded: Subscription;
+  ordersDeleted: Subscription;
   orders = [];
-  order: Order[];
-  constructor(public importService: ImportService, public orderService: OrdersService) {}
+  order = {
+    menuName: '',
+    customerDetails: {},
+    orderedItems: {},
+    __v: 0
+  };
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  extraClasses = ['dark-snackbar'];
+  constructor(
+    public importService: ImportService,
+    public orderService: OrdersService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
+
+  openSnackBar(message) {
+    let config = new MatSnackBarConfig();
+    config.verticalPosition = this.verticalPosition;
+    config.horizontalPosition = this.horizontalPosition;
+    config.duration = 3000;
+    config.panelClass = this.extraClasses;
+    this.snackBar.open(message, '', config);
+  }
 
   ngOnInit() {
     // load orders from db
-    this.orderService.getOrders();
-    // listen for orders Updated changes
-    this.ordersUpdatedSub = this.orderService.getOrdersUpdatedListener().subscribe(returnedData => {
+    this.orderService.getOrders({ mode: 'list' });
+    this.ordersLoaded = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {
+      console.log('loading orders');
       this.orders = returnedData;
     });
 
-    // listen for import changes
-    this.importSub = this.importService.getOrderImportListener().subscribe(jsonArray => {
-      this.orderItems = [];
-      this.importService.createOrder(this.transformOrder(jsonArray));
+    // listen for deleted orders
+    this.ordersDeleted = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
+      this.openSnackBar('order deleted');
+      this.orders = returnedData;
     });
-    // listen for orders Created changes
-    this.orderCreatedSub = this.importService.getOrderCreatedListener().subscribe(returnData => {
+
+    // listen for orders Updates
+    this.ordersUpdatedSub = this.orderService.getOrdersUpdatedListener().subscribe(returnedData => {
+      console.log('loading orders after update');
+      this.openSnackBar('order updated');
+      this.orders = returnedData;
+    });
+
+    // listen for order imports
+    this.importSub = this.importService.getOrderImportListener().subscribe(arr => {
+      this.orderService.createOrder(this.transformOrder(arr[0], arr[1]));
+    });
+
+    // listen for created orders
+    this.orderCreatedSub = this.orderService.getOrderCreatedListener().subscribe(returnData => {
+      this.openSnackBar('order created');
+      console.log(returnData);
       this.orders.unshift(returnData);
     });
   }
 
-  ngOnDestroy() {
+  OnDestroy() {
     this.ordersUpdatedSub.unsubscribe();
     this.importSub.unsubscribe();
     this.orderCreatedSub.unsubscribe();
   }
 
-  transformOrder(jsonArray) {
-    console.log(jsonArray);
+  transformOrder(order, menuName) {
     // data comes in as json Array
-    const jsonObj = JSON.parse(JSON.stringify(jsonArray[0]));
+    const jsonObj = JSON.parse(JSON.stringify(order));
     const customerInfo = {};
     const items = {};
-    const order = {
-      menuName: jsonArray[1],
-      customerDetails: [],
-      orderedItems: []
-    };
 
     Object.entries(jsonObj).forEach(([key, value]) => {
       // perform some transforms on key names and omit the total
       if (key === 'Order #') {
         key = 'orderNum';
       }
+      if (this.orderService.hasWhiteSpace(key)) {
+        key = key.split(' ').join('_');
+      }
       if (value === '') {
         value = '0';
       }
       // omit the total
       if (key === '$') {
+        key = 'Cost';
       }
 
       if (
@@ -74,22 +118,38 @@ export class OrdersListComponent implements OnInit {
         key !== 'contactNumber' &&
         key !== 'pickUpDay' &&
         key !== 'pickUpTime' &&
-        key !== '$'
+        key !== 'Cost'
       ) {
         items[key] = value;
       } else {
         customerInfo[key] = value;
       }
     });
-    order.customerDetails.push(customerInfo);
-    order.orderedItems.push(items);
-    return order;
+    this.order.menuName = menuName;
+    this.order.customerDetails = customerInfo;
+    this.order.orderedItems = items;
+    console.log(this.order);
+    return this.order;
   }
 
-  // createOrder(order) {
-  //   this.importService.createOrder(order);
-  // }
-  viewOrder(selectedOrder) {
-    console.log(selectedOrder);
+  // open dialog
+  viewOrder(idx) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height = '95%';
+    dialogConfig.width = '95%';
+    dialogConfig.data = this.orders[idx];
+
+    const dialogRef = this.dialog.open(DialogsComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogReturnData => {
+      if (dialogReturnData !== null) {
+        this.orderService.updateSingleOrder(dialogReturnData);
+      }
+    });
+  }
+
+  deleteOrder(_id) {
+    this.orderService.deleteOrder(_id);
   }
 }

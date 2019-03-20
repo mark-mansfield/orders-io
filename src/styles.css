@@ -11,7 +11,7 @@ body {
   rgb(43, 39, 39) top; */
   /* background-attachment: fixed; */
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 400;
   color: white;
   width: 100vw;
@@ -25,7 +25,7 @@ a {
 }
 
 a:hover {
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .overlay {
@@ -41,6 +41,11 @@ a:hover {
 
 mat-button {
   font-weight: 400;
+}
+
+.mat-dialog-container {
+  background: azure;
+  color: #0a0a0a;
 }
 
 @media (min-width: 40rem) and (min-height: 40rem) {
@@ -87,4 +92,7 @@ mat-button {
 
 .open {
   display: block !important ;
+}
+.mat-snack-bar-container.mat-snack-bar-center {
+  margin-bottom: 20px !important;
 }

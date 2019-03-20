@@ -9,6 +9,8 @@ export interface Order {
   };
   orderedItems: any[];
   notes: string;
+  _id: string;
+  __v: number;
 }
 export interface Import {
   data: string;
