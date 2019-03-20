@@ -1,3 +1,101 @@
-<p>
-  dialogs works!
-</p>
+<div class="flex-row-container" style="justify-content: flex-end;">
+  <button mat-mini-fab [mat-dialog-close]="null">close</button>
+</div>
+
+<div class="flex-row-container" style="justify-content: space-between; ">
+  <div class="dialog-inner-margin">
+    <h1>{{ newOrder.menuName }}</h1>
+  </div>
+</div>
+
+<div class="flex-column-container">
+  <div class="dialog-inner-margin">
+    <div class="flex-row-container vspacer" *ngIf="key !== '$'">
+      <div class="flex-modal-2Col-left">
+        <h2>Order Details</h2>
+        {{ newOrder._id }}
+      </div>
+      <div class="flex-modal-2Col-right">
+        <button *ngIf="!editMode" mat-raised-button color="accent" (click)="toggleEditMode()">edit</button>
+        <button
+          class="dialog-button"
+          *ngIf="editMode"
+          mat-raised-button
+          color="accent"
+          (click)="saveOrder(this.newOrder)"
+        >
+          save
+        </button>
+        <button class="dialog-button" *ngIf="editMode" mat-raised-button color="accent" (click)="toggleEditMode()">
+          cancel
+        </button>
+      </div>
+    </div>
+    <mat-dialog-content>
+      <div *ngFor="let key of customerDetailsKeyRefs; let i = index">
+        <div class="flex-row-container row-style">
+          <div class="flex-modal-2Col-left" *ngIf="key === 'order num'">order number:</div>
+          <div class="flex-modal-2Col-left" *ngIf="key !== 'order num'">{{ key }}</div>
+          <div class="flex-modal-2Col-right">
+            <!-- we cannot edit order num -->
+            <div *ngIf="!editMode || (editMode && key == 'order num')">{{ customerDetailsKeyValues[i] }}</div>
+            <div *ngIf="key !== 'order num' && editMode">
+              <input
+                class="dialog-input"
+                type="text"
+                (change)="udpdateItem('customerDetails', key, $event)"
+                value="{{ customerDetailsKeyValues[i] }}"
+              />
+              <textarea *ngIf="key === 'notes'" name="" id="" cols="30" rows="10"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-row-container vspacer" style="margin-top:30px; margin-bottom:20px;" *ngIf="key !== '$'">
+        <h2>Ordered Items</h2>
+      </div>
+
+      <div class="flex-row-container row-style" *ngFor="let key of orderedItemsKeyRefs; let x = index">
+        <div class="flex-modal-2Col-left">{{ key }}</div>
+        <div class="flex-modal-2Col-right">
+          <input
+            class="dialog-input"
+            *ngIf="editMode && key !== 'notes'"
+            (change)="udpdateItem('orderedItems', key, $event)"
+            type="text"
+            value="{{ orderedItemsKeyValues[x] }}"
+          />
+          <textarea
+            name=""
+            *ngIf="editMode && key === 'notes'"
+            id=""
+            cols="30"
+            rows="10"
+            value="{{ orderedItemsKeyValues[x] }}"
+          ></textarea>
+          <span *ngIf="!editMode">{{ orderedItemsKeyValues[x] }}</span>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="flex-row-container vspacer " style="justify-content: flex-end">
+        <div class="flex-modal-2Col-left"></div>
+        <div class="flex-modal-2Col-right">
+          <button
+            class="dialog-button"
+            *ngIf="editMode"
+            mat-raised-button
+            color="accent"
+            (click)="saveOrder(this.newOrder)"
+          >
+            save
+          </button>
+          <button class="dialog-button" *ngIf="editMode" mat-raised-button color="accent" (click)="toggleEditMode()">
+            cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

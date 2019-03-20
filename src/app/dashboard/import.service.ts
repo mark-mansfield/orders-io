@@ -11,17 +11,13 @@ const BACKEND_URL = environment.apiUrl + 'orders/';
 })
 export class ImportService {
   public orderImport = new Subject<Import[]>();
-  public orderCreated = new Subject<Order[]>();
+
   order: any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   getOrderImportListener() {
     return this.orderImport.asObservable();
-  }
-
-  getOrderCreatedListener() {
-    return this.orderCreated.asObservable();
   }
 
   uploadFile(file: File, fileNameStr) {
@@ -31,13 +27,6 @@ export class ImportService {
     formData.append('file', file);
     this.http.post<{ message: string; data: any }>(BACKEND_URL + 'import', formData).subscribe(returnedData => {
       this.orderImport.next([...returnedData.data, fileNameStr]);
-    });
-  }
-
-  createOrder(order) {
-    this.http.post<{ message: string; order: any }>(BACKEND_URL + 'create', order).subscribe(returnedData => {
-      console.log(returnedData.message);
-      this.orderCreated.next({ ...order });
     });
   }
 }

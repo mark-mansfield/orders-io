@@ -1,4 +1,4 @@
-<div class="flex-column-container">
+<div class="flex-column-container main__content">
   <div class="inner_margin">
     <div class="flex-row-container">
       <div class="flex-2Col-left"><h1>Current orders</h1></div>
@@ -17,10 +17,13 @@
       </div>
 
       <div class="flex-row-container row-style" *ngFor="let order of orders; let i = index">
-        <div class="flex-4col-left">{{ order.customerDetails[0].orderNum }} :</div>
-        <div class="flex-4col-middle-left">{{ order.customerDetails[0].contactName }}</div>
-        <div class="flex-4col-middle-right">{{ order.customerDetails[0].pickUpDay }}</div>
-        <div class="flex-4col-right"><button mat-button (click)="viewOrder(order)">view</button></div>
+        <div class="flex-4col-left">{{ order.customerDetails.orderNum }} :</div>
+        <div class="flex-4col-middle-left">{{ order.customerDetails.contactName }}</div>
+        <div class="flex-4col-middle-right">{{ order.customerDetails.pickUpDay }}</div>
+        <div class="flex-4col-right">
+          <button mat-button (click)="deleteOrder(order._id)">delete</button>
+          <button mat-button (click)="viewOrder(i)">view</button>
+        </div>
       </div>
     </div>
   </div>
