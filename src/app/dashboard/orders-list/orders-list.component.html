@@ -21,14 +21,13 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Preview Orders</ng-template>
+
           <div *ngIf="orders.length > 0">
             <div class="flex-row-container row-style">
-              <div class="flex-row-container">
-                <div class="flex-4col-left">Order number</div>
-                <div class="flex-4col-middle-left">Customer name</div>
-                <div class="flex-4col-middle-right">Pick up day</div>
-                <div class="flex-4col-right"></div>
-              </div>
+              <div class="flex-4col-left">Order number</div>
+              <div class="flex-4col-middle-left">Customer name</div>
+              <div class="flex-4col-middle-right">Pick up day</div>
+              <div class="flex-4col-right"></div>
             </div>
 
             <div class="flex-row-container row-style" *ngFor="let order of orders; let i = index">
@@ -61,7 +60,19 @@
       </mat-horizontal-stepper>
     </div>
     <div class="inner-margin">
-      <!-- <app-orders-filter *ngIf="showFilters" [filterDates]="filterDates"></app-orders-filter> -->
+      <div class="flex-row-container  row-style">
+        <div class="flex-4col-left">Search by name <input type="text" value="" /></div>
+        <div class="flex-4col-middle-left">
+          Search By Pickup Day
+          <mat-form-field>
+            <mat-select (onselect)="updateFilterSelected(event)">
+              <mat-option *ngFor="let filter of filterDates" value="{{ filter }}">{{ filter }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-4col-middle-right"></div>
+        <div class="flex-4col-right"></div>
+      </div>
       <div *ngIf="orders.length > 0 && !this.createRunSheet">
         <div class="flex-row-container row-style">
           <div class="flex-row-container">

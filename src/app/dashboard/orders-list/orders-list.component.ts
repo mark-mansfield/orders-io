@@ -180,6 +180,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   updateFilterSelected(filter) {
+    console.log(filter);
     this.filterIsSelected = true;
     this.filter = filter;
     this.orderService.filterOrdersByPickupDay(filter);
