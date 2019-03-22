@@ -1,0 +1,12 @@
+.flex-column {
+  display: flex;
+  flex-flow: column;
+  margin: 10px 0;
+}
+.flex-row {
+  height: 20%;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: baseline;
+}

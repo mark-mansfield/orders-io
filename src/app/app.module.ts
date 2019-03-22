@@ -22,6 +22,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './auth/login/login.component';
 import { DishesComponent } from './dishes/dishes.component';
 import { DialogsComponent } from './dialogs/dialogs.component';
+import { OrdersFilterComponent } from './dashboard/orders-filter/orders-filter.component';
+import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { DialogsComponent } from './dialogs/dialogs.component';
     MatSidenavContainer,
     MatSidenavContent,
     DishesComponent,
-    DialogsComponent
+    DialogsComponent,
+    OrdersFilterComponent,
+    FiltersDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +55,6 @@ import { DialogsComponent } from './dialogs/dialogs.component';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent, DialogsComponent]
+  entryComponents: [ErrorComponent, DialogsComponent, FiltersDialogComponent]
 })
 export class AppModule {}

@@ -14,6 +14,8 @@ export class OrdersService {
   public ordersLoaded = new Subject<Order[]>();
   public orderDeleted = new Subject<Order[]>();
   public orderCreated = new Subject<Order[]>();
+
+  orders = [];
   constructor(private http: HttpClient) {}
 
   getOrderCreatedListener() {
@@ -27,6 +29,7 @@ export class OrdersService {
   getOrderDeletedListener() {
     return this.orderDeleted.asObservable();
   }
+
   getOrdersLoadedListener() {
     return this.ordersLoaded.asObservable();
   }
@@ -50,7 +53,8 @@ export class OrdersService {
         this.ordersUpdated.next([...returnedData.orders]);
       }
       if (mode.mode === 'list') {
-        this.ordersLoaded.next([...returnedData.orders]);
+        this.orders = returnedData.orders;
+        this.ordersLoaded.next([...this.orders]);
       }
       if (mode.mode === 'delete') {
         this.orderDeleted.next([...returnedData.orders]);
@@ -139,5 +143,14 @@ export class OrdersService {
       }
     }
     return string;
+  }
+
+  // @param: dialogReturnedData is of type string and represents a pickupDay
+  // @return: returns an array of orders according to the pickupDay
+  filterOrdersByPickupDay(dialogReturnData) {
+    const filteredList = this.orders.filter(item => {
+      return item.customerDetails.pickUpDay === dialogReturnData;
+    });
+    this.ordersLoaded.next([...filteredList]);
   }
 }

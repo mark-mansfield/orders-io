@@ -12,6 +12,8 @@ import {
   MatSnackBarVerticalPosition
 } from '@angular/material';
 import { DialogsComponent } from '../../dialogs/dialogs.component';
+import { FiltersDialogComponent } from '../../dialogs/filters-dialog/filters-dialog.component';
+
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
@@ -31,6 +33,8 @@ export class OrdersListComponent implements OnInit {
     __v: 0
   };
 
+  showFilters = false;
+  filterDates = ['Tuesday 18th Sep', 'Wednesday 19th Sep'];
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   extraClasses = ['dark-snackbar'];
@@ -54,7 +58,6 @@ export class OrdersListComponent implements OnInit {
     // load orders from db
     this.orderService.getOrders({ mode: 'list' });
     this.ordersLoaded = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {
-      console.log('loading orders');
       this.orders = returnedData;
     });
 
@@ -132,8 +135,27 @@ export class OrdersListComponent implements OnInit {
     return this.order;
   }
 
+  showFiltersDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height = '25%';
+    dialogConfig.width = '20%';
+    dialogConfig.data = this.filterDates;
+
+    const dialogRef = this.dialog.open(FiltersDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogReturnData => {
+      if (dialogReturnData !== null) {
+        this.orderService.filterOrdersByPickupDay(dialogReturnData);
+        // this.orders = this.orders.filter(item => {
+        //   return item.customerDetails.pickUpDay === dialogReturnData;
+        // });
+        // console.log(` date selected : ${dialogReturnData}`);
+      }
+    });
+  }
   // open dialog
-  viewOrder(idx) {
+  showOrdersDialog(idx) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.height = '95%';

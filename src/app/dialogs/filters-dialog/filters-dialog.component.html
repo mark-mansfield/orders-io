@@ -1,0 +1,15 @@
+<div class="flex-row">
+  <h3>Select a date</h3>
+  <button mat-mini-fab [mat-dialog-close]="null">close</button>
+</div>
+
+Select the date to create a run sheet for.
+
+<div class="flex-container" style="height: 54%">
+  <div *ngFor="let filter of filters" class="flex-column">
+    <mat-radio-button value="{{ filter }}" (click)="updateFilterSelected(filter)">{{ filter }}</mat-radio-button>
+  </div>
+</div>
+<div class="flex-row">
+  <button mat-raised-button *ngIf="filterSelected" (click)="setFilterAndClose(filter)">next</button>
+</div>

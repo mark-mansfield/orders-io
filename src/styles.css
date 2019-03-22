@@ -96,3 +96,6 @@ mat-button {
 .mat-snack-bar-container.mat-snack-bar-center {
   margin-bottom: 20px !important;
 }
+.mat-radio-outer-circle {
+  border-color: black !important ;
+}
