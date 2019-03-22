@@ -27,7 +27,7 @@
 
 .flex-4col-right {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
   padding-left: 10px;
   width: 25%;
 }
@@ -51,6 +51,20 @@
   max-height: 100%;
 }
 
+.flex-full-width {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-full-width-col-container {
+  display: flex;
+  flex-flow: column;
+  margin: 50px 0;
+  justify-content: center;
+  align-items: center;
+}
+
 .dialog-inner-margin {
   margin: 0 54px;
 }
@@ -65,7 +79,7 @@
   margin-right: 5px;
 }
 
-.inner_margin {
+.inner-margin {
   margin: 10px;
 }
 
@@ -88,8 +102,11 @@ h1 {
   color: white;
 }
 
+.stepper-actions {
+  margin-top: 20px;
+}
 @media (min-width: 40rem) {
-  .inner_margin {
+  .inner-margin {
     margin: 54px;
   }
 }

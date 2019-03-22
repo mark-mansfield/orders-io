@@ -145,11 +145,11 @@ export class OrdersService {
     return string;
   }
 
-  // @param: dialogReturnedData is of type string and represents a pickupDay
+  // @param: pickupday is of type string and represents a pickupDay
   // @return: returns an array of orders according to the pickupDay
-  filterOrdersByPickupDay(dialogReturnData) {
+  filterOrdersByPickupDay(pickupDay) {
     const filteredList = this.orders.filter(item => {
-      return item.customerDetails.pickUpDay === dialogReturnData;
+      return item.customerDetails.pickUpDay === pickupDay;
     });
     this.ordersLoaded.next([...filteredList]);
   }

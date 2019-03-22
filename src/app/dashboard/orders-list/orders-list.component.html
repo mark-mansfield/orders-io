@@ -1,14 +1,68 @@
 <div class="flex-column-container main__content">
-  <div class="inner_margin">
+  <div class="inner-margin">
     <div class="flex-row-container">
       <div class="flex-2Col-left"><h1>Current orders</h1></div>
       <div class="flex-2Col-right">
-        <button *ngIf="orders.length > 0" mat-raised-button (click)="showFiltersDialog()">create run sheet</button>
+        <button *ngIf="orders.length > 0" mat-raised-button (click)="launchStepper()">create run sheet</button>
       </div>
     </div>
-    <div class="inner_margin">
+    <div class="flex-row-container" *ngIf="this.createRunSheet">
+      <mat-horizontal-stepper linear #stepper>
+        <mat-step>
+          <ng-template matStepLabel>Select a pickup day</ng-template>
+          <div *ngFor="let filter of filterDates" class="inner-margin">
+            <mat-radio-button value="{{ filter }}" (click)="updateFilterSelected(filter)">{{
+              filter
+            }}</mat-radio-button>
+          </div>
+          <div class="flex-row-container stepper-actions" *ngIf="filterIsSelected">
+            <div class="flex-full-width"><button mat-raised-button matStepperNext>Next</button></div>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Preview Orders</ng-template>
+          <div *ngIf="orders.length > 0">
+            <div class="flex-row-container row-style">
+              <div class="flex-row-container">
+                <div class="flex-4col-left">Order number</div>
+                <div class="flex-4col-middle-left">Customer name</div>
+                <div class="flex-4col-middle-right">Pick up day</div>
+                <div class="flex-4col-right"></div>
+              </div>
+            </div>
+
+            <div class="flex-row-container row-style" *ngFor="let order of orders; let i = index">
+              <div class="flex-4col-left">{{ order.customerDetails.orderNum }} :</div>
+              <div class="flex-4col-middle-left">{{ order.customerDetails.contactName }}</div>
+              <div class="flex-4col-middle-right">{{ order.customerDetails.pickUpDay }}</div>
+              <div class="flex-4col-right">
+                <button mat-button (click)="deleteOrder(order._id)">delete</button>
+                <button mat-button (click)="showOrdersDialog(i)">view</button>
+              </div>
+            </div>
+          </div>
+          <div class="flex-row-container stepper-actions" *ngIf="filterIsSelected">
+            <div class="flex-2Col-left"><button mat-raised-button matStepperPrevious>Back</button></div>
+            <div class="flex-2Col-right"><button mat-raised-button matStepperNext>Next</button></div>
+          </div>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          <div class="flex-full-width-col-container ">
+            <h1>Click to build the run sheet</h1>
+            <button mat-raised-button (click)="buildRunSheetClicked()">Build</button>
+          </div>
+          <div class="flex-row-container stepper-actions" *ngIf="filterIsSelected">
+            <div class="flex-2Col-left"><button mat-raised-button matStepperPrevious>Back</button></div>
+            <div class="flex-2Col-right"><button mat-raised-button (click)="stepper.reset()">Reset</button></div>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+    <div class="inner-margin">
       <!-- <app-orders-filter *ngIf="showFilters" [filterDates]="filterDates"></app-orders-filter> -->
-      <div *ngIf="orders.length > 0">
+      <div *ngIf="orders.length > 0 && !this.createRunSheet">
         <div class="flex-row-container row-style">
           <div class="flex-row-container">
             <div class="flex-4col-left">Order number</div>
@@ -24,9 +78,15 @@
           <div class="flex-4col-middle-right">{{ order.customerDetails.pickUpDay }}</div>
           <div class="flex-4col-right">
             <button mat-button (click)="deleteOrder(order._id)">delete</button>
-            <button mat-button (click)="viewOrder(i)">view</button>
+            <button mat-button (click)="showOrdersDialog(i)">view</button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="flex-row-container" *ngIf="this.createRunSheet">
+      <div class="flex-full-width">
+        <button *ngIf="orders.length > 0" mat-raised-button (click)="resetFilterSelected()">cancel</button>
       </div>
     </div>
   </div>

@@ -33,8 +33,11 @@ export class OrdersListComponent implements OnInit {
     __v: 0
   };
 
-  showFilters = false;
+  createRunSheet = false;
+  filterIsSelected = false;
   filterDates = ['Tuesday 18th Sep', 'Wednesday 19th Sep'];
+  filter = null;
+
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   extraClasses = ['dark-snackbar'];
@@ -147,13 +150,14 @@ export class OrdersListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogReturnData => {
       if (dialogReturnData !== null) {
         this.orderService.filterOrdersByPickupDay(dialogReturnData);
-        // this.orders = this.orders.filter(item => {
-        //   return item.customerDetails.pickUpDay === dialogReturnData;
-        // });
-        // console.log(` date selected : ${dialogReturnData}`);
       }
     });
   }
+
+  launchStepper() {
+    this.createRunSheet = true;
+  }
+
   // open dialog
   showOrdersDialog(idx) {
     const dialogConfig = new MatDialogConfig();
@@ -173,5 +177,22 @@ export class OrdersListComponent implements OnInit {
 
   deleteOrder(_id) {
     this.orderService.deleteOrder(_id);
+  }
+
+  updateFilterSelected(filter) {
+    this.filterIsSelected = true;
+    this.filter = filter;
+    this.orderService.filterOrdersByPickupDay(filter);
+  }
+
+  resetFilterSelected() {
+    this.filter = null;
+    this.filterIsSelected = false;
+    this.createRunSheet = false;
+    this.orderService.getOrders({ mode: 'list' });
+  }
+
+  buildRunSheetClicked() {
+    console.log(this.orders);
   }
 }
