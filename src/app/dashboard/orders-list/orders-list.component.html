@@ -6,27 +6,34 @@
         <button *ngIf="orders.length > 0" mat-raised-button (click)="launchStepper()">create run sheet</button>
       </div>
     </div>
+    <div
+      class="full-width-row-container"
+      style="display:flex; justify-content: center;align-items: center; margin-top: 75px"
+    >
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+    </div>
     <div class="flex-row-container" *ngIf="this.createRunSheet">
       <mat-horizontal-stepper linear #stepper>
         <mat-step>
           <ng-template matStepLabel>Select a pickup day</ng-template>
           <div *ngFor="let filter of filterDates" class="inner-margin">
-            <mat-radio-button value="{{ filter }}" (click)="updateFilterSelected(filter)">{{
-              filter
-            }}</mat-radio-button>
+            <mat-radio-button value="{{ filter }}" (click)="updateFilterSelected(filter)">
+              {{ filter }}
+            </mat-radio-button>
           </div>
           <div class="flex-row-container stepper-actions" *ngIf="filterIsSelected">
-            <div class="flex-full-width"><button mat-raised-button matStepperNext>Next</button></div>
+            <div class="flex-row-container-align-right"><button mat-raised-button matStepperNext>Next</button></div>
           </div>
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Preview Orders</ng-template>
 
           <div *ngIf="orders.length > 0">
-            <div class="flex-row-container row-style">
+            <div class="flex-row-container row-style" style="padding-bottom:20px;">
               <div class="flex-4col-left">Order number</div>
               <div class="flex-4col-middle-left">Customer name</div>
               <div class="flex-4col-middle-right">Pick up day</div>
+              <div class="flex-4col-middle-right">Pick up time</div>
               <div class="flex-4col-right"></div>
             </div>
 
@@ -34,6 +41,7 @@
               <div class="flex-4col-left">{{ order.customerDetails.orderNum }} :</div>
               <div class="flex-4col-middle-left">{{ order.customerDetails.contactName }}</div>
               <div class="flex-4col-middle-right">{{ order.customerDetails.pickUpDay }}</div>
+              <div class="flex-4col-middle-right">{{ order.customerDetails.pickUpTime }}</div>
               <div class="flex-4col-right">
                 <button mat-button (click)="deleteOrder(order._id)">delete</button>
                 <button mat-button (click)="showOrdersDialog(i)">view</button>
@@ -47,10 +55,19 @@
         </mat-step>
 
         <mat-step>
-          <ng-template matStepLabel>Done</ng-template>
-          <div class="flex-full-width-col-container ">
-            <h1>Click to build the run sheet</h1>
-            <button mat-raised-button (click)="buildRunSheetClicked()">Build</button>
+          <ng-template matStepLabel>Build Runsheet</ng-template>
+          <div class="flex-full-width-col-container " style="align-items: center">
+            <mat-spinner *ngIf="buildingRunsheet"></mat-spinner>
+            <div *ngIf="buildingRunsheet"><h1>preparing runsheet...</h1></div>
+
+            <div *ngIf="!fileName && !buildingRunsheet"><h1>Click to build the run sheet</h1></div>
+            <div *ngIf="!fileName && !buildingRunsheet">
+              <button mat-raised-button (click)="buildRunSheetClicked(this.orders)">Build</button>
+            </div>
+            <div *ngIf="fileName"><h1>Your runsheet is ready for download</h1></div>
+            <div *ngIf="fileName" class="inner-margin">
+              <a [href]="fileUrl" *ngIf="fileName" class="button-style" download="{{ fileName }}">DownloadFile</a>
+            </div>
           </div>
           <div class="flex-row-container stepper-actions" *ngIf="filterIsSelected">
             <div class="flex-2Col-left"><button mat-raised-button matStepperPrevious>Back</button></div>
@@ -59,19 +76,44 @@
         </mat-step>
       </mat-horizontal-stepper>
     </div>
-    <div class="inner-margin">
-      <div class="flex-row-container  row-style">
-        <div class="flex-4col-left">Search by name <input type="text" value="" /></div>
-        <div class="flex-4col-middle-left">
-          Search By Pickup Day
-          <mat-form-field>
-            <mat-select (onselect)="updateFilterSelected(event)">
-              <mat-option *ngFor="let filter of filterDates" value="{{ filter }}">{{ filter }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+    <div class="flex-row-container" *ngIf="this.createRunSheet">
+      <div class="flex-row-container-align-right" style="margin-top: 32px;">
+        <button *ngIf="orders.length > 0" mat-raised-button (click)="resetFilterSelected()">cancel</button>
+      </div>
+    </div>
+    <div class="inner-margin" *ngIf="!this.createRunSheet">
+      <div class="flex-row-container " *ngIf="!isLoading">
+        <div class="flex-row-container-align-left" id="search-bar">
+          <div style="width: 40%"><h2>Search by name</h2></div>
+          <div style="width: 60%; ">
+            <div class="search-box" style=" display:flex; height:50px">
+              <div class="search-input" style="height: 100% ;width: 80%">
+                <input type="text" value="" style="padding-left: 10px; width:100%; height: 100%; font-size: 1rem" />
+              </div>
+              <div class="search-button" style=" width: 50px; height:50px">
+                <button type="submit" style="height: 100%; width:100%; background-color: #c2185b">
+                  <i class="fa fa-search " style="font-size: 1rem; color: white"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="flex-4col-middle-right"></div>
-        <div class="flex-4col-right"></div>
+        <div class="flex-row-container-align-left" id="select-pickup-day">
+          <div style="width: 55%"><h2>Search By Pickup Day</h2></div>
+          <div>
+            <mat-form-field appearance="fill" color="Accent">
+              <mat-label style="color: black">Select a pickup day</mat-label>
+              <mat-select panelClass="accent-colors">
+                <mat-option
+                  *ngFor="let filter of filterDates"
+                  value="{{ filter }}"
+                  (click)="updateFilterSelected(filter)"
+                  >{{ filter }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
       <div *ngIf="orders.length > 0 && !this.createRunSheet">
         <div class="flex-row-container row-style">
@@ -92,12 +134,6 @@
             <button mat-button (click)="showOrdersDialog(i)">view</button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="flex-row-container" *ngIf="this.createRunSheet">
-      <div class="flex-full-width">
-        <button *ngIf="orders.length > 0" mat-raised-button (click)="resetFilterSelected()">cancel</button>
       </div>
     </div>
   </div>

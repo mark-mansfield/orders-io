@@ -5,6 +5,7 @@ import { Order } from './models/order.model';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { filter } from 'rxjs/operators';
 const BACKEND_URL = environment.apiUrl + 'orders/';
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,13 @@ export class OrdersService {
   public ordersLoaded = new Subject<Order[]>();
   public orderDeleted = new Subject<Order[]>();
   public orderCreated = new Subject<Order[]>();
-
+  public ordersFiltered = new Subject<Order[]>();
   orders = [];
   constructor(private http: HttpClient) {}
+
+  getOrdersFilteredListener() {
+    return this.ordersFiltered.asObservable();
+  }
 
   getOrderCreatedListener() {
     return this.orderCreated.asObservable();
@@ -145,12 +150,107 @@ export class OrdersService {
     return string;
   }
 
+  // orderByPickUpTimes()
+  // @param: orderList []
+  // @param: pickUptimes []
+
+  // clean values / convert to number: remove ':' and 'pm' parts '4:15' = 415
+  cleanTimeStr(str) {
+    const arr = str.split('');
+    let string = '';
+    arr.forEach(item => {
+      if (item !== ':' && item !== 'p' && item !== 'm') {
+        string += item;
+      }
+    });
+    return parseInt(string);
+  }
+
+  createTimeStr(str) {
+    let arr = str.split('');
+    arr.splice(1, 0, ':');
+    arr.push('p');
+    arr.push('m');
+
+    return arr.join('');
+  }
+
+  // iterate  over ther orders array picktimes(n) times with a different filter for each iteration
+  // push each iteration to a storage array
+  // @return: returns a storage array  ordered ascending by pickupTime
+  orderByPickUpTimes(orderList: any, pickUpTimes: any) {
+    // dismantle values, '4:15pm'  = '415' ,  ['3:00pm','3:15pm','4:15pm','5:00pm'] = [300,315,415,500]
+    // re-order low to high [415,300,500,315] = [300,315,415,500]
+    // recreate values as strings '415' = '4:15pm'  [300,315,415,500] = ['3:00pm','3:15pm','4:15pm','5:00pm']
+
+    const arr = [];
+    const times = [];
+    let filteredListByTime = [];
+    let filteredList = [];
+    pickUpTimes.forEach(item => {
+      arr.push(this.cleanTimeStr(item));
+    });
+
+    const sortedArr = arr.sort((a, b) => {
+      return a - b;
+    });
+
+    sortedArr.forEach(item => {
+      times.push(this.createTimeStr(item.toString()));
+    });
+
+    times.forEach(element => {
+      filteredListByTime = orderList.filter(item => {
+        return item.customerDetails.pickUpTime === element;
+      });
+      filteredList = filteredList.concat(filteredListByTime);
+    });
+    return filteredList;
+  }
+
   // @param: pickupday is of type string and represents a pickupDay
   // @return: returns an array of orders according to the pickupDay
-  filterOrdersByPickupDay(pickupDay) {
+  // filterOrdersByPickUpDay(pickupDay) {
+  //   const filteredList = this.orders.filter(item => {
+  //     return item.customerDetails.pickUpDay === pickupDay;
+  //   });
+  //   this.ordersFiltered.next([...filteredList]);
+  // }
+
+  // @param: pickupday is of type string and represents a pickupDay
+  // @return: returns an array of orders sorted by pickup time ascending accoring to the pickupDay
+  filterOrdersByPickUpDayAndTime(pickupDay, pickUpTimes) {
     const filteredList = this.orders.filter(item => {
       return item.customerDetails.pickUpDay === pickupDay;
     });
-    this.ordersLoaded.next([...filteredList]);
+
+    // we don't need filter by time if there is only one element in the list
+    if (filteredList.length > 1) {
+      const filteredByDayAndTime = this.orderByPickUpTimes(filteredList, pickUpTimes);
+
+      this.ordersFiltered.next([...filteredByDayAndTime]);
+    } else {
+      this.ordersFiltered.next([...filteredList]);
+    }
+  }
+
+  // @param: obj represents an order or collection of orders
+  // @return: returns a csv string of all orders
+  createCsvFromJson(obj) {
+    console.log(obj.length);
+
+    let colNames = Object.keys(obj[0].customerDetails);
+    colNames = colNames.concat(Object.keys(obj[0].orderedItems));
+    colNames.push('\r\n');
+    let csvData = colNames.join(',');
+    Object.entries(obj).forEach((item, index) => {
+      let rowData = Object.values(obj[index].customerDetails);
+      rowData = rowData.concat(Object.values(obj[index].orderedItems));
+      rowData.push('\r\n');
+      csvData = csvData.concat(rowData.join(','));
+    });
+
+    console.log(csvData);
+    return csvData;
   }
 }

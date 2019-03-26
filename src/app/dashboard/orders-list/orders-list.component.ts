@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { ImportService } from '../import.service';
 import { OrdersService } from '../orders.service';
 import { Order } from '../models/order.model';
+import { DomSanitizer } from '@angular/platform-browser';
+
 import {
   MatDialog,
   MatDialogConfig,
@@ -20,22 +22,28 @@ import { FiltersDialogComponent } from '../../dialogs/filters-dialog/filters-dia
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit {
-  importSub: Subscription;
+  orderImportSub: Subscription;
   orderCreatedSub: Subscription;
   ordersUpdatedSub: Subscription;
-  ordersLoaded: Subscription;
-  ordersDeleted: Subscription;
+  ordersLoadedSub: Subscription;
+  ordersDeletedSub: Subscription;
+  ordersFilteredSub: Subscription;
+  fileUrl;
+  fileName;
   orders = [];
+  ordersFiltered = [];
   order = {
     menuName: '',
     customerDetails: {},
     orderedItems: {},
     __v: 0
   };
-
+  isLoading = true;
+  buildingRunsheet = false;
   createRunSheet = false;
   filterIsSelected = false;
   filterDates = ['Tuesday 18th Sep', 'Wednesday 19th Sep'];
+  filterTimes = ['4:00pm', '3:30pm', '4:15pm', '5:00pm'];
   filter = null;
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
@@ -45,7 +53,8 @@ export class OrdersListComponent implements OnInit {
     public importService: ImportService,
     public orderService: OrdersService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private sanitizer: DomSanitizer
   ) {}
 
   openSnackBar(message) {
@@ -59,13 +68,16 @@ export class OrdersListComponent implements OnInit {
 
   ngOnInit() {
     // load orders from db
+
     this.orderService.getOrders({ mode: 'list' });
-    this.ordersLoaded = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {
+
+    this.ordersLoadedSub = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {
+      this.isLoading = false;
       this.orders = returnedData;
     });
 
     // listen for deleted orders
-    this.ordersDeleted = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
+    this.ordersDeletedSub = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
       this.openSnackBar('order deleted');
       this.orders = returnedData;
     });
@@ -78,22 +90,29 @@ export class OrdersListComponent implements OnInit {
     });
 
     // listen for order imports
-    this.importSub = this.importService.getOrderImportListener().subscribe(arr => {
+    this.orderImportSub = this.importService.getOrderImportListener().subscribe(arr => {
       this.orderService.createOrder(this.transformOrder(arr[0], arr[1]));
     });
 
     // listen for created orders
     this.orderCreatedSub = this.orderService.getOrderCreatedListener().subscribe(returnData => {
       this.openSnackBar('order created');
-      console.log(returnData);
       this.orders.unshift(returnData);
+    });
+
+    // listen for filtered orders
+    this.ordersFilteredSub = this.orderService.getOrdersFilteredListener().subscribe(filteredData => {
+      console.log(filteredData);
+      this.orders = filteredData;
     });
   }
 
   OnDestroy() {
     this.ordersUpdatedSub.unsubscribe();
-    this.importSub.unsubscribe();
+    this.orderImportSub.unsubscribe();
     this.orderCreatedSub.unsubscribe();
+    this.ordersDeletedSub.unsubscribe();
+    this.ordersFilteredSub.unsubscribe();
   }
 
   transformOrder(order, menuName) {
@@ -138,21 +157,21 @@ export class OrdersListComponent implements OnInit {
     return this.order;
   }
 
-  showFiltersDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.height = '25%';
-    dialogConfig.width = '20%';
-    dialogConfig.data = this.filterDates;
+  // showFiltersDialog() {
+  //   const dialogConfig = new MatDialogConfig();
+  //   dialogConfig.disableClose = true;
+  //   dialogConfig.height = '25%';
+  //   dialogConfig.width = '20%';
+  //   dialogConfig.data = this.filterDates;
 
-    const dialogRef = this.dialog.open(FiltersDialogComponent, dialogConfig);
+  //   const dialogRef = this.dialog.open(FiltersDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(dialogReturnData => {
-      if (dialogReturnData !== null) {
-        this.orderService.filterOrdersByPickupDay(dialogReturnData);
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(dialogReturnData => {
+  //     if (dialogReturnData !== null) {
+  //       this.orderService.filterOrdersByPickUpDayAndTime(dialogReturnData);
+  //     }
+  //   });
+  // }
 
   launchStepper() {
     this.createRunSheet = true;
@@ -180,10 +199,17 @@ export class OrdersListComponent implements OnInit {
   }
 
   updateFilterSelected(filter) {
-    console.log(filter);
     this.filterIsSelected = true;
     this.filter = filter;
-    this.orderService.filterOrdersByPickupDay(filter);
+    this.orderService.filterOrdersByPickUpDayAndTime(filter, this.filterTimes);
+    // if (mode === 'runsheet') {
+    //   this.orderService.filterOrdersByPickUpDayAndTime(filter, this.filterTimes);
+    // }
+    // if (mode === 'list') {
+    //   this.orderService.filterOrdersByPickUpDay(filter);
+    // } else {
+    //   this.orderService.filterOrdersByPickUpDay(filter);
+    // }
   }
 
   resetFilterSelected() {
@@ -193,7 +219,13 @@ export class OrdersListComponent implements OnInit {
     this.orderService.getOrders({ mode: 'list' });
   }
 
-  buildRunSheetClicked() {
-    console.log(this.orders);
+  buildRunSheetClicked(orders) {
+    this.buildingRunsheet = true;
+    setTimeout(() => {
+      this.fileName = 'runsheet.csv';
+      const blob = new Blob([this.orderService.createCsvFromJson(orders)], { type: 'application/octet-stream' });
+      this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      this.buildingRunsheet = false;
+    }, 5000);
   }
 }

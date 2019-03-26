@@ -52,6 +52,9 @@ mat-button {
   color: #0a0a0a;
 }
 
+.mat-dialog-content {
+  max-height: 70vh !important;
+}
 @media (min-width: 40rem) and (min-height: 40rem) {
   body {
     /* background: url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
@@ -111,7 +114,27 @@ mat-button {
   color: white;
 }
 
-.mat-horizontal-content-container > .mat-horizontal-stepper-content > div > h1 {
+.mat-horizontal-content-container > .mat-horizontal-stepper-content > div > div > h1 {
+  justify-content: center;
   margin: 20px;
   color: white !important;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: white;
+}
+.mat-form-field-wrapper {
+  padding-bottom: 1.34375em;
+}
+.mat-form-field-underline {
+  bottom: 1.34375em;
+}
+
+.mat-select-content,
+.mat-select-panel-done-animating {
+  background: #c2185b;
+}
+
+.mat-select-value {
+  color: black;
 }

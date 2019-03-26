@@ -11,11 +11,10 @@
 <div class="flex-column-container">
   <div class="dialog-inner-margin">
     <div class="flex-row-container vspacer" *ngIf="key !== '$'">
-      <div class="flex-modal-2Col-left">
+      <div class="flex-2Col-left">
         <h2>Order Details</h2>
-        {{ newOrder._id }}
       </div>
-      <div class="flex-modal-2Col-right">
+      <div class="flex-2Col-right">
         <button *ngIf="!editMode" mat-raised-button color="accent" (click)="toggleEditMode()">edit</button>
         <button
           class="dialog-button"
@@ -34,9 +33,9 @@
     <mat-dialog-content>
       <div *ngFor="let key of customerDetailsKeyRefs; let i = index">
         <div class="flex-row-container row-style">
-          <div class="flex-modal-2Col-left" *ngIf="key === 'order num'">order number:</div>
-          <div class="flex-modal-2Col-left" *ngIf="key !== 'order num'">{{ key }}</div>
-          <div class="flex-modal-2Col-right">
+          <div class="flex-2Col-left" *ngIf="key === 'order num'">order number:</div>
+          <div class="flex-2Col-left" *ngIf="key !== 'order num'">{{ key }}</div>
+          <div class="flex-2Col-right">
             <!-- we cannot edit order num -->
             <div *ngIf="!editMode || (editMode && key == 'order num')">{{ customerDetailsKeyValues[i] }}</div>
             <div *ngIf="key !== 'order num' && editMode">
@@ -57,8 +56,8 @@
       </div>
 
       <div class="flex-row-container row-style" *ngFor="let key of orderedItemsKeyRefs; let x = index">
-        <div class="flex-modal-2Col-left">{{ key }}</div>
-        <div class="flex-modal-2Col-right">
+        <div class="flex-2Col-left">{{ key }}</div>
+        <div class="flex-2Col-right">
           <input
             class="dialog-input"
             *ngIf="editMode && key !== 'notes'"
@@ -80,8 +79,8 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <div class="flex-row-container vspacer " style="justify-content: flex-end">
-        <div class="flex-modal-2Col-left"></div>
-        <div class="flex-modal-2Col-right">
+        <div class="flex-2Col-left"></div>
+        <div class="flex-2Col-right">
           <button
             class="dialog-button"
             *ngIf="editMode"

@@ -65,7 +65,7 @@ export class DialogsComponent implements OnInit {
         break;
       default:
         break;
-    }
+
   }
 
   saveOrder(order) {
