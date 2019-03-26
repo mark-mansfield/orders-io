@@ -54,7 +54,6 @@ export class DialogsComponent implements OnInit {
         if (objKey.includes(' ')) {
           transformedObjKey = this.ordersService.camelCaseValue(objKey);
         }
-
         this.newOrder.customerDetails[transformedObjKey] = event.target.value;
         this.orderEdited = true;
         break;
@@ -65,7 +64,7 @@ export class DialogsComponent implements OnInit {
         break;
       default:
         break;
-
+    }
   }
 
   saveOrder(order) {

@@ -57,20 +57,26 @@ Angular / node / express / mongo db
 
 ## Order Summary Layout
 
-The layout for screen and print will be a single vertical column layout listing.
+The layout for screen will be a single vertical column layout listing.
 
-1. Customer data in an easy to read format of ( data label / data value ) one data item per line
-2. Ordered products will have an a layout of( item label / qty / price) one product per line
-3. Special Notes will be displayed as readable text with a 50 char limit per line in paragraph form.
+1. Customer data in an easy to read format of ( order number / Customer name / Pickup Day / [action button] / [action button] ) one data item per line
+2. Action buttons launch a modal dialog containing and order detail summary
+
+## Order detail Summary / modal
+
+The layout for the screen will be a single vertical column with an inner 2 column layout
+
+1. The modal will have 2 states, summary mode and edit mode.
+2. Summary mode: Edit button will launch edit mode. Order data will display is configured to list one label / value pair per line
+3. Edit mode: 'Cancel' switches state to summary mode; 'Save' and 'Cancel' buttons are displayed if any input value is changed.
+4. Save: sends data back to parent component
+5. 'Close' or 'Cancel' send null back to the parent component
 
 ## Daily Orders Summary Layout
 
 The layout for screen and print will be a table based layout with header row labels.
 Each row appearing in the table will represent a single customer order.
-The label configuration will contain all customer fields and all product labels taken from the collection of products being sold i.e. the "Menu"
-
-Orientation will need to be set to <b>landscape</b>
-label lengths will need to be set to a <b>maximum set of characters</b>to avoid breaking the layout.
+The label configuration will contain a subset of customer fields and all product labels taken from the collection of products being sold i.e. the "Menu"
 
 ## Architecture
 
