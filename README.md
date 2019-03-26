@@ -59,7 +59,7 @@ Angular / node / express / mongo db
 
 The layout for screen will be a single vertical column layout listing.
 
-1. Customer data in an easy to read format of ( order number / Customer name / Pickup Day / [action button] / [action button] ) one data item per line
+1. Customer data in an easy to read format of ( order number / Customer name / Pickup Day / [action button delete ] / [action button view] ) one data item per line
 2. Action buttons launch a modal dialog containing and order detail summary
 
 ## Order detail Summary / modal
@@ -69,14 +69,18 @@ The layout for the screen will be a single vertical column with an inner 2 colum
 1. The modal will have 2 states, summary mode and edit mode.
 2. Summary mode: Edit button will launch edit mode. Order data will display is configured to list one label / value pair per line
 3. Edit mode: 'Cancel' switches state to summary mode; 'Save' and 'Cancel' buttons are displayed if any input value is changed.
-4. Save: sends data back to parent component
-5. 'Close' or 'Cancel' send null back to the parent component
+4. @toggleEditMode: Method toggles the modal states edit/summary
+5. @saveOrder: Method sends data back to parent component
+6. @Close: method send null back to the parent component
 
-## Daily Orders Summary Layout
+## Create run sheet layout
 
-The layout for screen and print will be a table based layout with header row labels.
-Each row appearing in the table will represent a single customer order.
-The label configuration will contain a subset of customer fields and all product labels taken from the collection of products being sold i.e. the "Menu"
+The layout for creating a run sheet uses the mat-stepper component
+
+1. Mat stepper config: 3 steps 'select pickup day' , 'review orders' , and 'build run sheet'
+2. Step 1: Select pickup day: displays a list of options as radio buttons corresponding with the pick up days available for the order.
+3. Step 2: Review orders: displays a list of all orders that contain the selected pickup day, sorted by pickup time earliest to latest. Action buttons launch a the order detail / summary modal dialog
+4. Step 3: Build run sheet: takes all the order data and build it into a csv file for download.
 
 ## Architecture
 
