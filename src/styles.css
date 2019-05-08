@@ -124,7 +124,7 @@ mat-button {
   background-color: white;
 }
 .mat-form-field-wrapper {
-  padding-bottom: 1.34375em;
+  padding-bottom: 0px;
 }
 .mat-form-field-underline {
   bottom: 1.34375em;

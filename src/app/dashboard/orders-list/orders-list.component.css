@@ -37,6 +37,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 .flex-row-container-align-right {

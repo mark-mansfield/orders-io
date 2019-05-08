@@ -28,6 +28,8 @@ export class OrdersListComponent implements OnInit {
   ordersLoadedSub: Subscription;
   ordersDeletedSub: Subscription;
   ordersFilteredSub: Subscription;
+  errorsSub: Subscription;
+
   fileUrl;
   fileName;
   orders = [];
@@ -58,7 +60,7 @@ export class OrdersListComponent implements OnInit {
   ) {}
 
   openSnackBar(message) {
-    let config = new MatSnackBarConfig();
+    const config = new MatSnackBarConfig();
     config.verticalPosition = this.verticalPosition;
     config.horizontalPosition = this.horizontalPosition;
     config.duration = 3000;
@@ -80,6 +82,11 @@ export class OrdersListComponent implements OnInit {
     this.ordersDeletedSub = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
       this.openSnackBar('order deleted');
       this.orders = returnedData;
+    });
+
+    // listen for errors
+    this.errorsSub = this.orderService.getErrorsListener().subscribe(errorMsg => {
+      this.openSnackBar(errorMsg);
     });
 
     // listen for orders Updates
@@ -113,6 +120,7 @@ export class OrdersListComponent implements OnInit {
     this.orderCreatedSub.unsubscribe();
     this.ordersDeletedSub.unsubscribe();
     this.ordersFilteredSub.unsubscribe();
+    this.errorsSub.unsubscribe();
   }
 
   transformOrder(order, menuName) {
@@ -156,22 +164,6 @@ export class OrdersListComponent implements OnInit {
     console.log(this.order);
     return this.order;
   }
-
-  // showFiltersDialog() {
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = true;
-  //   dialogConfig.height = '25%';
-  //   dialogConfig.width = '20%';
-  //   dialogConfig.data = this.filterDates;
-
-  //   const dialogRef = this.dialog.open(FiltersDialogComponent, dialogConfig);
-
-  //   dialogRef.afterClosed().subscribe(dialogReturnData => {
-  //     if (dialogReturnData !== null) {
-  //       this.orderService.filterOrdersByPickUpDayAndTime(dialogReturnData);
-  //     }
-  //   });
-  // }
 
   launchStepper() {
     this.createRunSheet = true;
@@ -219,10 +211,13 @@ export class OrdersListComponent implements OnInit {
     this.orderService.getOrders({ mode: 'list' });
   }
 
+  filterByName(name) {
+    this.orderService.filterByName(name);
+  }
   buildRunSheetClicked(orders) {
     this.buildingRunsheet = true;
     setTimeout(() => {
-      this.fileName = 'runsheet.csv';
+      this.fileName = 'runsheet-' + orders[0].customerDetails.pickUpDay + '.csv';
       const blob = new Blob([this.orderService.createCsvFromJson(orders)], { type: 'application/octet-stream' });
       this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
       this.buildingRunsheet = false;

@@ -16,6 +16,8 @@ export class OrdersService {
   public orderDeleted = new Subject<Order[]>();
   public orderCreated = new Subject<Order[]>();
   public ordersFiltered = new Subject<Order[]>();
+  public errorsRecieved = new Subject<String>();
+
   orders = [];
   constructor(private http: HttpClient) {}
 
@@ -37,6 +39,10 @@ export class OrdersService {
 
   getOrdersLoadedListener() {
     return this.ordersLoaded.asObservable();
+  }
+
+  getErrorsListener() {
+    return this.errorsRecieved.asObservable();
   }
 
   updateSingleOrder(order) {
@@ -208,6 +214,17 @@ export class OrdersService {
     return filteredList;
   }
 
+  filterByName(name) {
+    const filteredList = this.orders.filter(item => {
+      return item.customerDetails.contactName.includes(name);
+    });
+    console.log(filteredList.length);
+    if (filteredList.length > 0) {
+      this.ordersFiltered.next([...filteredList]);
+    } else {
+      this.errorsRecieved.next('search term not found');
+    }
+  }
   // @param: pickupday is of type string and represents a pickupDay
   // @return: returns an array of orders according to the pickupDay
   // filterOrdersByPickUpDay(pickupDay) {
@@ -227,7 +244,6 @@ export class OrdersService {
     // we don't need filter by time if there is only one element in the list
     if (filteredList.length > 1) {
       const filteredByDayAndTime = this.orderByPickUpTimes(filteredList, pickUpTimes);
-
       this.ordersFiltered.next([...filteredByDayAndTime]);
     } else {
       this.ordersFiltered.next([...filteredList]);
