@@ -5,10 +5,13 @@
   display: flex;
   justify-content: flex-start;
 }
-
-.import-component {
+.sidebar {
   min-width: 20%;
   background-color: #2b2929;
+}
+
+.sidebar,
+.sidebar-item {
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -23,4 +26,9 @@
   .flexContainer {
     flex-direction: row;
   }
+}
+
+.sidebar h2,
+.sidebar-item {
+  margin: 3rem 0;
 }
