@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-order-create',
@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./order-create.component.css']
 })
 export class OrderCreateComponent implements OnInit {
+  constructor() {}
+  @Output() navigationBack = new EventEmitter<boolean>();
 
-  constructor() { }
-
-  ngOnInit() {
+  navigateBack() {
+    this.navigationBack.emit(true);
   }
-
+  ngOnInit() {}
 }

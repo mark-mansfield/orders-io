@@ -6,10 +6,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  viewOrders = true;
+  viewOrderCreate = false;
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
+  _createOrder() {
+    this.viewOrderCreate = true;
   }
 
+  _viewOrders() {
+    this.viewOrders = true;
+  }
+
+  _toggleViews() {
+    this.viewOrders = !this.viewOrders;
+    this.viewOrderCreate = !this.viewOrderCreate;
+  }
+
+  _navgationBackDetected($event) {
+    this._toggleViews();
+  }
+  ngOnInit() {}
 }

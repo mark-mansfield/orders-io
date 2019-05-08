@@ -138,3 +138,134 @@ mat-button {
 .mat-select-value {
   color: black;
 }
+
+.main__content {
+  color: black !important;
+}
+
+.flex-2Col-left {
+  width: 50%;
+}
+
+.flex-2Col-right {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+}
+
+.flex-4col-left {
+  width: 25%;
+  padding-right: 10px;
+}
+
+.flex-4col-middle-left {
+  width: 25%;
+}
+
+.flex-4col-middle-right {
+  width: 25%;
+}
+
+.flex-4col-right {
+  display: flex;
+  justify-content: space-around;
+  padding-left: 10px;
+  width: 25%;
+}
+
+.flex-row-container-align-left {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.flex-row-container-align-right {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+≈.full-width-row-container {
+  display: flex;
+  flex-flow: row;
+  margin: 50px 0;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-height: 100%;
+}
+
+.flex-full-width-col-container {
+  display: flex;
+  flex-flow: column;
+  margin: 50px 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-style {
+  background-color: #c2185b !important;
+  padding: 10px 20px 10px 20px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.dialog-inner-margin {
+  margin: 0 54px;
+}
+
+.dialog-input {
+  padding: 5px;
+  text-align: start;
+  border: 1px solid rgb(202, 202, 202);
+}
+
+.dialog-button {
+  margin-right: 5px;
+}
+
+.inner-margin {
+  margin: 10px;
+}
+
+.row-style {
+  padding: 10px;
+  border-bottom: 1px solid rgba(130, 130, 130, 0.276);
+}
+
+.vspacer {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  color: black;
+}
+
+::ng-deep snack-bar-container.dark-snackbar {
+  background: #424242;
+  color: white;
+}
+
+.stepper-actions {
+  margin-top: 20px;
+}
+
+.mat-select-panel {
+  color: black;
+}
+
+@media (min-width: 40rem) {
+  .inner-margin {
+    margin: 54px;
+  }
+}

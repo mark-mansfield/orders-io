@@ -2,13 +2,17 @@
   <div class="sidebar">
     <div class="sidebar-item">
       <h2>Create a new Order</h2>
-      <button mat-raised-button color="accent" type="submit">
+      <button mat-raised-button color="accent" type="submit" (click)="_toggleViews()">
         create
       </button>
     </div>
     <app-import-order></app-import-order>
   </div>
-  <div class="list-component">
+  <div class="list-component" *ngIf="this.viewOrders">
     <app-orders-list></app-orders-list>
+  </div>
+
+  <div class="order-create-component" *ngIf="this.viewOrderCreate">
+    <app-order-create (navigationBack)="_navgationBackDetected($event)"></app-order-create>
   </div>
 </div>
