@@ -24,7 +24,6 @@ import { DishesComponent } from './dishes/dishes.component';
 import { DialogsComponent } from './dialogs/dialogs.component';
 import { OrdersFilterComponent } from './dashboard/orders-filter/orders-filter.component';
 import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.component';
-import { OrderCreateComponent } from './dashbaord/order-create/order-create.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,7 @@ import { OrderCreateComponent } from './dashbaord/order-create/order-create.comp
     DishesComponent,
     DialogsComponent,
     OrdersFilterComponent,
-    FiltersDialogComponent,
-    OrderCreateComponent
+    FiltersDialogComponent
   ],
   imports: [
     BrowserModule,
