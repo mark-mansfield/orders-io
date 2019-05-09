@@ -17,10 +17,11 @@ import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { MenusModule } from './menus/menus-module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { DishesModule } from './dishes/dishes.module';
 // TODO:  rename this to login-signup
 import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './auth/login/login.component';
-import { DishesComponent } from './dishes/dishes.component';
+
 import { DialogsComponent } from './dialogs/dialogs.component';
 import { OrdersFilterComponent } from './dashboard/orders-filter/orders-filter.component';
 import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.component';
@@ -35,7 +36,6 @@ import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
-    DishesComponent,
     DialogsComponent,
     OrdersFilterComponent,
     FiltersDialogComponent
@@ -48,7 +48,8 @@ import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.
     FormsModule,
     AngularMaterialModule,
     MenusModule,
-    DashboardModule
+    DashboardModule,
+    DishesModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
