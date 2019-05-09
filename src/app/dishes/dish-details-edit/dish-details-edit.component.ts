@@ -7,7 +7,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DishDetailsEditComponent implements OnInit {
   @Input() data: any;
-  @Input() editMode: any;
   constructor() {}
 
   ngOnInit() {}

@@ -1,5 +1,5 @@
 <h2>Dish Details</h2>
-<mat-list role="list" *ngIf="editMode === false">
+<mat-list role="list">
   <mat-list-item>
     <h1 *ngIf="data">{{ data.name }}</h1>
   </mat-list-item>
@@ -22,7 +22,3 @@
     {{ data.course }}
   </mat-list-item>
 </mat-list>
-<!-- <div *ngIf="editMode === true">
-  <h2>Edit Form</h2>
-  <button mat-button (click)="toggleEditMode()">Cancel</button>
-</div> -->
