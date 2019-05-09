@@ -1,0 +1,6 @@
+<h2>Dishes</h2>
+<mat-list role="list">
+  <mat-list-item role="listitem" *ngFor="let item of data">
+    <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>
+  </mat-list-item>
+</mat-list>
