@@ -44,17 +44,18 @@
         </mat-option>
       </mat-select> -->
     </div>
-
-    <mat-list role="list">
+    <app-dishes-list [data]="dishes" (selectItem)="onItemSelect($event)"></app-dishes-list>
+    <!-- <mat-list role="list">
       <mat-list-item role="listitem" *ngFor="let item of dishes">
         <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>
       </mat-list-item>
-    </mat-list>
+    </mat-list> -->
   </div>
   <div class="flex-column-container-66">
     <div class="inner-margin">
       <div *ngIf="selectedItem !== null" class="flex-item">
-        <mat-list role="list" *ngIf="this.editMode === false">
+        <app-dish-details-edit></app-dish-details-edit>
+        <!-- <mat-list role="list" *ngIf="this.editMode === false">
           <mat-list-item>
             <h1 *ngIf="selectedItem">{{ selectedItem.name }}</h1>
           </mat-list-item>
@@ -80,7 +81,7 @@
         <div *ngIf="this.editMode === true">
           <h2>Edit Form</h2>
           <button mat-button (click)="toggleEditMode()">Cancel</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

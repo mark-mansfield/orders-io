@@ -14,7 +14,7 @@ export class DishesComponent implements OnInit {
   data = [
     {
       name: 'Slow Cooked Lamb Shoulder',
-      description: 'Hawaiij spices, pomegranate molasses, honey and lemonw coriander and almonds',
+      description: 'Hawaiij spices, pomegranate molasses, honey and lemon w coriander and almonds',
       portion_sizes: [1, 2, 3],
       course: 'main'
     },
@@ -105,7 +105,7 @@ export class DishesComponent implements OnInit {
     this.disableEditTools = false;
   }
 
-  onItemSelect(item) {
+  onItemSelect(item: string) {
     this.selectedItem = item;
     this.enableEditTools();
   }
