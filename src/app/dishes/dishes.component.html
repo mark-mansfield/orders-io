@@ -54,7 +54,7 @@
   <div class="flex-column-container-66">
     <div class="inner-margin">
       <div *ngIf="selectedItem !== null" class="flex-item">
-        <app-dish-details-edit></app-dish-details-edit>
+        <app-dish-details-edit [data]="selectedItem" [editMode]="editMode"></app-dish-details-edit>
         <!-- <mat-list role="list" *ngIf="this.editMode === false">
           <mat-list-item>
             <h1 *ngIf="selectedItem">{{ selectedItem.name }}</h1>
