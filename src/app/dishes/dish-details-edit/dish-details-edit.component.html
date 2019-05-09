@@ -1,28 +1,28 @@
 <h2>Dish Details</h2>
-<mat-list role="list" *ngIf="this.editMode === false">
+<mat-list role="list" *ngIf="editMode === false">
   <mat-list-item>
-    <h1 *ngIf="selectedItem">{{ selectedItem.name }}</h1>
+    <h1 *ngIf="data">{{ data.name }}</h1>
   </mat-list-item>
   <mat-list-item role="listitem">
     <h2>Description</h2>
   </mat-list-item>
   <mat-list-item role="listitem">
-    {{ selectedItem.description }}
+    {{ data.description }}
   </mat-list-item>
   <mat-list-item role="listitem">
     <h2>Portion Sizes</h2>
   </mat-list-item>
   <mat-list-item role="listitem">
-    {{ selectedItem.portion_sizes }}
+    {{ data.portion_sizes }}
   </mat-list-item>
   <mat-list-item role="listitem">
     <h2>Course</h2>
   </mat-list-item>
   <mat-list-item role="listitem">
-    {{ selectedItem.course }}
+    {{ data.course }}
   </mat-list-item>
 </mat-list>
-<div *ngIf="this.editMode === true">
+<!-- <div *ngIf="editMode === true">
   <h2>Edit Form</h2>
   <button mat-button (click)="toggleEditMode()">Cancel</button>
-</div>
+</div> -->
