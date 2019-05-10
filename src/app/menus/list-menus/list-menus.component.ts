@@ -1,19 +1,16 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import {  DataService } from '../menu.service';
+import { DataService } from '../../services/menu.service';
 import { Subscription } from 'rxjs';
-import { Menu } from '../menu.model';
-import { AuthService } from '../../auth/auth.service';
-
-
+import { Menu } from '../../models/menu.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-list-menus',
   templateUrl: './list-menus.component.html',
   styleUrls: ['./list-menus.component.css']
 })
-export class ListMenusComponent implements OnInit , OnDestroy {
-
+export class ListMenusComponent implements OnInit, OnDestroy {
   menus: Menu[] = [];
   isLoading = false;
   userIsAuthenticated = false;
@@ -21,21 +18,18 @@ export class ListMenusComponent implements OnInit , OnDestroy {
   private menusSub: Subscription;
   private authStatusSub: Subscription;
 
-  constructor(private data: DataService , private authService: AuthService,  public route: ActivatedRoute) { }
-
-
+  constructor(private data: DataService, private authService: AuthService, public route: ActivatedRoute) {}
 
   ngOnInit() {
     this.data.getMenus();
     this.isLoading = true;
     this.userId = this.authService.getUserId();
-    this.menusSub = this.data.getMenuUpdateListener().subscribe(( menus: Menu[] ) => {
-        this.isLoading = false;
-        this.menus = menus;
+    this.menusSub = this.data.getMenuUpdateListener().subscribe((menus: Menu[]) => {
+      this.isLoading = false;
+      this.menus = menus;
     });
     this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authStatusSub = this.authService.getAuthStatusListener()
-    .subscribe(isAuthenticated => {
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
       this.authService.getUserId();
     });
@@ -50,5 +44,4 @@ export class ListMenusComponent implements OnInit , OnDestroy {
   ngOnDestroy() {
     this.menusSub.unsubscribe();
   }
-
 }

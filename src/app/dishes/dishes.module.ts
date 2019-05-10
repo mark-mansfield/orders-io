@@ -7,6 +7,7 @@ import { DishDetailsEditComponent } from './dish-details-edit/dish-details-edit.
 
 @NgModule({
   imports: [CommonModule, AngularMaterialModule],
-  declarations: [DishesListComponent, DishDetailsEditComponent, DishesComponent]
+  declarations: [DishesListComponent, DishDetailsEditComponent, DishesComponent],
+  exports: [DishesListComponent, DishesComponent, DishDetailsEditComponent]
 })
 export class DishesModule {}

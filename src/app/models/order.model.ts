@@ -12,6 +12,3 @@ export interface Order {
   _id: string;
   __v: number;
 }
-export interface Import {
-  data: string;
-}

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ImportService } from '../import.service';
+import { ImportService } from '../../services/import.service';
 import { Subscription } from 'rxjs';
 import { mimeType } from './mime-type.validator';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-import-order',
   templateUrl: './import-order.component.html',

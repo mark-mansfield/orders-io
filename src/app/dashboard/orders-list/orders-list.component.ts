@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ImportService } from '../import.service';
-import { OrdersService } from '../orders.service';
-import { Order } from '../models/order.model';
+import { ImportService } from '../../services/import.service';
+import { OrdersService } from '../../services/orders.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {

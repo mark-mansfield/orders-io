@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Order } from '../dashboard/models/order.model';
-import { OrdersService } from '../dashboard/orders.service';
+import { Order } from '../models/order.model';
+import { OrdersService } from '../services/orders.service';
 @Component({
   selector: 'app-dialogs',
   templateUrl: './dialogs.component.html',
