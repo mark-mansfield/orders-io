@@ -13,6 +13,8 @@ const menuRoutes = require('./routes/menus');
 const userRoutes = require('./routes/users');
 // order routes
 const orderRoutes = require('./routes/orders');
+// dish routes
+const dishRoutes = require('./routes/dishes');
 
 // P5h03V1bG86sbJwb
 mongoose
@@ -47,6 +49,7 @@ app.use((req, res, next) => {
 app.use('/api/orders', orderRoutes);
 app.use('/api/menus', menuRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/dishes', dishRoutes);
 
 // export the app
 module.exports = app;

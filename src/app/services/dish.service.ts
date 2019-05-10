@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-const BACKEND_URL = environment.apiUrl + 'menus/';
+const BACKEND_URL = environment.apiUrl + 'dishes/';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
@@ -74,7 +74,7 @@ export class DataService {
       console.log(returnedData.message);
       this.dishes.push(dish);
       this.dishesUpdated.next([...this.dishes]); // inform UI
-      this.router.navigate(['/list-menus']);
+      // this.router.navigate(['/list-menus']);
     });
   }
 
@@ -90,30 +90,30 @@ export class DataService {
 
     // const menu: Menu = { id: id, title: title, description: description, imagePath: imagePath };
     this.http.put(BACKEND_URL + id, data).subscribe(response => {
-      const updatedMenus = [...this.menus];
-      const oldMenuIndex = updatedMenus.findIndex(p => p.id === id);
-      const menu: Menu = {
+      const updatedDishes = [...this.dishes];
+      const oldDishndex = updatedDishes.findIndex(p => p.id === id);
+      const dish: Dish = {
         id: id,
-        title: title,
+        name: name,
         description: description,
-        imagePath: '',
-        creator: creator
+        portion_sizes: portion_sizes,
+        course: course
       };
-      updatedMenus[oldMenuIndex] = menu;
-      this.menus = updatedMenus;
-      this.menusUpdated.next([...this.menus]);
-      this.router.navigate(['/list-menus']);
+      updatedDishes[oldDishndex] = dish;
+      this.dishes = updatedDishes;
+      this.dishesUpdated.next([...this.dishes]);
+      // this.router.navigate(['/list-menus']);
     });
   }
 
-  deleteMenu(id: String) {
+  deleteDish(id: String) {
     this.http.delete(BACKEND_URL + id).subscribe(result => {
       // filter returns all entries where the  condition === true and removes entries where the condition === false
-      const updateMenus = this.menus.filter(menu => menu.id !== id);
+      const updateDishes = this.dishes.filter(menu => menu.id !== id);
       // update menus array with filtered result
-      this.menus = updateMenus;
+      this.dishes = updateDishes;
       // inform UI
-      this.menusUpdated.next([...this.menus]);
+      this.dishesUpdated.next([...this.dishes]);
       console.log(result);
     });
   }
