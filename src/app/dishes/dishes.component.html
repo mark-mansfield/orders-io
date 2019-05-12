@@ -33,55 +33,31 @@
 <div class="flex-row-container">
   <div class="flex-column-container-33">
     <div class="flex-item compose">
-      <button mat-button>
+      <button mat-button (click)="onAddDishClicked()">
         <i class="material-icons">
           add
         </i>
       </button>
-      <!-- <mat-select placeholder="filter by course" (selectionChange)="onSelectCourse($event.value)">
-        <mat-option *ngFor="let course of courses" [value]="course">
-          {{ course }}
-        </mat-option>
-      </mat-select> -->
     </div>
     <app-dishes-list [data]="dishes" (selectItem)="onItemSelect($event)"></app-dishes-list>
-    <!-- <mat-list role="list">
-      <mat-list-item role="listitem" *ngFor="let item of dishes">
-        <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>
-      </mat-list-item>
-    </mat-list> -->
   </div>
-  <div class="flex-column-container-66">
+  <div id="dish-edit" class="flex-column-container-66" *ngIf="selectedItem !== null">
     <div class="inner-margin">
       <div *ngIf="selectedItem !== null" class="flex-item">
-        <app-dish-details-edit [data]="selectedItem"></app-dish-details-edit>
-        <!-- <mat-list role="list" *ngIf="this.editMode === false">
-          <mat-list-item>
-            <h1 *ngIf="selectedItem">{{ selectedItem.name }}</h1>
-          </mat-list-item>
-          <mat-list-item role="listitem">
-            <h2>Description</h2>
-          </mat-list-item>
-          <mat-list-item role="listitem">
-            {{ selectedItem.description }}
-          </mat-list-item>
-          <mat-list-item role="listitem">
-            <h2>Portion Sizes</h2>
-          </mat-list-item>
-          <mat-list-item role="listitem">
-            {{ selectedItem.portion_sizes }}
-          </mat-list-item>
-          <mat-list-item role="listitem">
-            <h2>Course</h2>
-          </mat-list-item>
-          <mat-list-item role="listitem">
-            {{ selectedItem.course }}
-          </mat-list-item>
-        </mat-list>
-        <div *ngIf="this.editMode === true">
-          <h2>Edit Form</h2>
-          <button mat-button (click)="toggleEditMode()">Cancel</button>
-        </div> -->
+        <app-dish-details-edit
+          [data]="selectedItem"
+          [editMode]="editMode"
+          (cancelEdit)="toggleEditMode($event)"
+          (update)="saveDish($event)"
+        ></app-dish-details-edit>
+      </div>
+    </div>
+  </div>
+
+  <div id="dish-create" class="flex-column-container-66" *ngIf="mode === create">
+    <div class="inner-margin">
+      <div *ngIf="createMode" class="flex-item">
+        <app-dish-create></app-dish-create>
       </div>
     </div>
   </div>

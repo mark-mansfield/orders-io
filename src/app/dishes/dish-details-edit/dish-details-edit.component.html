@@ -1,24 +1,55 @@
-<h2>Dish Details</h2>
-<mat-list role="list">
-  <mat-list-item>
-    <h1 *ngIf="data">{{ data.name }}</h1>
-  </mat-list-item>
-  <mat-list-item role="listitem">
-    <h2>Description</h2>
-  </mat-list-item>
-  <mat-list-item role="listitem">
-    {{ data.description }}
-  </mat-list-item>
-  <mat-list-item role="listitem">
-    <h2>Portion Sizes</h2>
-  </mat-list-item>
-  <mat-list-item role="listitem">
-    {{ data.portion_sizes }}
-  </mat-list-item>
-  <mat-list-item role="listitem">
-    <h2>Course</h2>
-  </mat-list-item>
-  <mat-list-item role="listitem">
-    {{ data.course }}
-  </mat-list-item>
-</mat-list>
+<div *ngIf="!editMode">
+  <h2>Dish Details</h2>
+  <mat-list role="list">
+    <mat-list-item>
+      <h1 *ngIf="itemData">{{ itemData.name }}</h1>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <h2>Description</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      {{ itemData.description }}
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <h2>Portion Sizes</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      {{ itemData.portion_sizes }}
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <h2>Course</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      {{ itemData.course }}
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<div *ngIf="editMode">
+  <h2>Dish Details - editing</h2>
+  <mat-list role="list">
+    <mat-list-item>
+      <h1 *ngIf="itemData">{{ itemData.name }}</h1>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <h2>Description</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      {{ itemData.description }}
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <h2>Portion Sizes</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      {{ itemData.portion_sizes }}
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <h2>Course</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      {{ itemData.course }}
+    </mat-list-item>
+  </mat-list>
+  <button mat-raised-button accent (click)="save(itemData)">save</button>
+  <button mat-raised-button accent (click)="cancel()">cancel</button>
+</div>
