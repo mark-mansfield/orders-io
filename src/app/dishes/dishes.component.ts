@@ -11,6 +11,7 @@ export class DishesComponent implements OnInit {
   selectedItem = null;
   disableEditTools: Boolean = true;
   editMode: Boolean = false;
+  createMode: Boolean = false;
   data = [
     {
       name: 'Slow Cooked Lamb Shoulder',
@@ -86,12 +87,12 @@ export class DishesComponent implements OnInit {
     } else {
       this.editMode = false;
     }
-
+    this.createMode = false;
     console.log('toggeling edit mode', this.editMode);
+    console.log('create mode : false', this.editMode);
   }
 
   onSelectCourse(course) {
-    console.log(course);
     if (course === 'all') {
       this.dishes = this.data;
       return;
@@ -103,10 +104,23 @@ export class DishesComponent implements OnInit {
 
   enableEditTools() {
     this.disableEditTools = false;
+    this.createMode = false;
   }
 
-  onItemSelect(item: string) {
-    this.selectedItem = item;
+  onItemSelect($event) {
+    console.log(typeof $event);
+    this.selectedItem = $event;
+
     this.enableEditTools();
+  }
+
+  onAddDishClicked() {
+    this.editMode = false;
+    this.createMode = true;
+  }
+
+  saveDish(dish: Object) {
+    console.log('saving dish');
+    this.toggleEditMode();
   }
 }
