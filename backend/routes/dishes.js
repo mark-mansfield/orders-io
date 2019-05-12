@@ -9,17 +9,17 @@ const checkAuth = require('../middlewear/check-auth');
 // save new dish
 router.post('', checkAuth, DishController.createDish);
 
-// update dish
-router.put('/:id', checkAuth, DishController.updateMenu);
+// // update dish
+// router.put('/:id', checkAuth, DishController.updateDish);
 
-// get dishes
-router.get('', checkAuth, DishController.getMenus);
+// // get dishes
+// router.get('', checkAuth, DishController.getDishes);
 
-// get dish
-router.get('/:id', DishController.getMenu);
+// // get dish
+// router.get('/:id', DishController.getDish);
 
-// delete  dish
-router.delete('/:id', checkAuth, DishController.deleteMenu);
+// // delete  dish
+// router.delete('/:id', checkAuth, DishController.deleteDish);
 
-// export the router
+// // export the router
 module.exports = router;
