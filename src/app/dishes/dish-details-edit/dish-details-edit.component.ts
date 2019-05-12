@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-dish-details-edit',
@@ -6,8 +6,34 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./dish-details-edit.component.css']
 })
 export class DishDetailsEditComponent implements OnInit {
-  @Input() data: any;
+  itemData = null;
+
+  @Input() set data(data: any) {
+    this.itemData = data;
+  }
+
+  get data(): any {
+    return this.itemData;
+  }
+
+  @Input() editMode: Boolean;
+  @Output() cancelEdit = new EventEmitter<boolean>();
+  @Output() update = new EventEmitter<Object>();
+
   constructor() {}
 
-  ngOnInit() {}
+  cancel() {
+    console.log('cancel clicked');
+    this.cancelEdit.emit(true);
+  }
+
+  save(obj) {
+    console.log('save clicked');
+    this.update.emit(obj);
+  }
+
+  ngOnInit() {
+    this.itemData = { ...this.data };
+    console.log(this.itemData);
+  }
 }
