@@ -1,4 +1,5 @@
-<h2>Dishes</h2>
+<div class="inner-margin"><h2>Dishes</h2></div>
+
 <mat-list role="list">
   <mat-list-item role="list-item" *ngFor="let item of data">
     <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>

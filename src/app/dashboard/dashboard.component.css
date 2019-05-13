@@ -1,26 +1,25 @@
-.sidebar {
+/* .sidebar {
   display: none;
-}
+} */
 @media (min-width: 40rem) {
-  .sidebar {
+  /* .sidebar {
     min-width: 20%;
     background-color: #2b2929;
     color: white;
   }
-
-  .sidebar,
+*/
+  /* .sidebar,
   .sidebar-item {
-    display: flex;
-    flex-flow: column;
     justify-content: center;
     align-items: center;
-  }
+    text-align: center;
+  } */
 
-  .list-component,
+  /* .list-component,
   .order-create-component {
     width: 80%;
-  }
-  .flexContainer {
+  } */
+  /* .flexContainer {
     width: 100vw;
     background-color: #e8f6f9;
     height: 100vh;
@@ -30,7 +29,7 @@
 
   .flexContainer {
     flex-direction: row;
-  }
+  } */
 }
 
 .sidebar h2,

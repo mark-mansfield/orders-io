@@ -115,6 +115,7 @@ export class DishesComponent implements OnInit {
   }
 
   onAddDishClicked() {
+    this.selectedItem = null;
     this.editMode = false;
     this.createMode = true;
   }

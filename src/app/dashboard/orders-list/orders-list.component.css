@@ -110,19 +110,6 @@ h1 {
   color: black;
 }
 
-::ng-deep snack-bar-container.dark-snackbar {
-  background: #424242;
-  color: white;
-}
-
-.stepper-actions {
-  margin-top: 20px;
-}
-
-.mat-select-panel {
-  color: black;
-}
-
 @media (min-width: 40rem) {
   .inner-margin {
     margin: 54px;

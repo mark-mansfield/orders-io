@@ -1,4 +1,4 @@
-.flex-row-container {
+/* .flex-row-container {
   width: 100vw;
   display: flex;
 }
@@ -9,10 +9,9 @@
 }
 
 .flex-container-33 {
-  display: flex;
-  justify-content: center;
-  width: 100vw;
+  display: none;
 }
+
 .flex-container-66 {
   display: none;
   width: 66.5vw;
@@ -24,6 +23,9 @@
   flex-direction: column;
   justify-content: flex-start;
 }
+.toolbar {
+  background-color: rgb(38, 38, 38);
+} */
 
 mat-select {
   margin: 20px auto;
@@ -59,10 +61,24 @@ button {
 }
 
 @media (min-width: 40rem) {
+  /* .flex-container {
+    width: 100vw;
+    background-color: #e8f6f9;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .flex-container-33 {
+    display: flex;
+    justify-content: center;
+  }
+
   .flex-column-container-33,
   .flex-container-33 {
-    width: 15vw;
+    width: 17vw;
   }
+
   .flex-column-container-66,
   .flex-container-66 {
     width: 85vw;
@@ -71,12 +87,33 @@ button {
   .filter-select {
     width: 100%;
   }
-  .flex-container-33 {
-  }
+
   .flex-container-66 {
     display: flex;
     padding-left: 45px;
   }
+*/
+  /* .sidebar {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 20%;
+    height: 90vh;
+    background-color: #2b2929;
+    color: white;
+  }
+
+  .view {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-width: 80%;
+    min-height: 90vh;
+    background-color: #e8f6f9;
+    color: white;
+  } */
 
   .edit-tools {
     justify-content: flex-start;
@@ -85,6 +122,7 @@ button {
   .compose > button {
     width: 100%;
   }
+
   .inner-margin {
     margin: 54px;
   }

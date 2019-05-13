@@ -7,6 +7,7 @@ import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@
 })
 export class DishDetailsEditComponent implements OnInit {
   itemData = null;
+  @Input() courses: any;
 
   @Input() set data(data: any) {
     this.itemData = data;

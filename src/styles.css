@@ -1,4 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+/* material css overrides */
+
+@import url('./assets/custom-styles/material-custom.css');
+@import url('./assets/custom-styles/layout.css');
+@import url('./assets/custom-styles/normalize.css');
+@import url('./assets/custom-styles/forms.css');
+/* Global Styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,212 +12,36 @@
   box-sizing: border-box;
 }
 
+:root {
+  --fc-light: white;
+  --fc-dark: black;
+  --inner-margin: 54px;
+  --row-header-background: rgba(0, 238, 255, 0.14);
+}
+
 body {
   /* background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
   rgb(43, 39, 39) top; */
   /* background-attachment: fixed; */
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
+  background-color: #e8f6f9;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-size: 1rem;
   font-weight: 400;
-  color: white;
+  color: var(--fc-dark);
   width: 100vw;
   height: 100vh;
   margin: 0;
 }
 
 a {
-  color: white;
+  color: inherit;
   text-decoration: none;
 }
 
-a:hover {
-  color: rgb(255, 255, 255);
-}
-
-.overlay {
-  visibility: visible;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  z-index: 1;
-  width: inherit;
-  height: inherit;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-mat-button {
-  font-weight: 400;
-}
-
-.mat-raised-button {
-  background-color: #c2185b !important;
-}
-
-.mat-dialog-container {
-  background: azure;
-  color: #0a0a0a;
-}
-
-.mat-dialog-content {
-  max-height: 70vh !important;
-}
-@media (min-width: 40rem) and (min-height: 40rem) {
-  body {
-    /* background: url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
-      rgb(43, 39, 39) top;
-    background-attachment: fixed; */
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-    color: white;
-    width: 100vw;
-    height: 100vh;
-  }
-
-  .system__message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: dodgerblue;
-    position: fixed;
-    top: 64px;
-    left: 0px;
-    height: 64px;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    box-sizing: content-box;
-  }
-}
-
-.system__message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: dodgerblue;
-  position: fixed;
-  top: 56px;
-  left: 0px;
-  height: 56px;
-  padding: 10px;
-  width: 100%;
-  text-align: center;
-}
-
-.open {
+/* .open {
   display: block !important ;
-}
-.mat-snack-bar-container.mat-snack-bar-center {
-  margin-bottom: 20px !important;
-}
-/* .mat-radio-outer-circle {
-  border-color: black !important ;
 } */
-
-.mat-stepper-horizontal,
-.mat-stepper-vertical {
-  margin-top: 32px;
-  width: 100%;
-  color: white;
-}
-
-.mat-horizontal-content-container > .mat-horizontal-stepper-content > div > div > h1 {
-  justify-content: center;
-  margin: 20px;
-  color: white !important;
-}
-
-.mat-form-field-appearance-fill .mat-form-field-flex {
-  background-color: white;
-}
-.mat-form-field-wrapper {
-  padding-bottom: 0px;
-}
-.mat-form-field-underline {
-  bottom: 1.34375em;
-}
-
-.mat-select-content,
-.mat-select-panel-done-animating {
-  background: #c2185b;
-}
-
-.mat-select-value {
-  color: black;
-}
-
-.main__content {
-  color: black !important;
-}
-
-.flex-2Col-left {
-  width: 50%;
-}
-
-.flex-2Col-right {
-  display: flex;
-  justify-content: flex-end;
-  width: 50%;
-}
-
-.flex-4col-left {
-  width: 25%;
-  padding-right: 10px;
-}
-
-.flex-4col-middle-left {
-  width: 25%;
-}
-
-.flex-4col-middle-right {
-  width: 25%;
-}
-
-.flex-4col-right {
-  display: flex;
-  justify-content: space-around;
-  padding-left: 10px;
-  width: 25%;
-}
-
-.flex-row-container-align-left {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.flex-row-container-align-right {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
-
-≈.full-width-row-container {
-  display: flex;
-  flex-flow: row;
-  margin: 50px 0;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-row-container {
-  display: flex;
-  flex-flow: row;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  max-height: 100%;
-}
-
-.flex-full-width-col-container {
-  display: flex;
-  flex-flow: column;
-  margin: 50px 0;
-  justify-content: center;
-  align-items: center;
-}
 
 .button-style {
   background-color: #c2185b !important;
@@ -219,53 +49,11 @@ mat-button {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.dialog-inner-margin {
-  margin: 0 54px;
-}
-
-.dialog-input {
-  padding: 5px;
-  text-align: start;
-  border: 1px solid rgb(202, 202, 202);
-}
-
-.dialog-button {
-  margin-right: 5px;
-}
-
-.inner-margin {
-  margin: 10px;
-}
-
-.row-style {
-  padding: 10px;
-  border-bottom: 1px solid rgba(130, 130, 130, 0.276);
-}
-
-.vspacer {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-h1 {
-  color: black;
-}
-
-::ng-deep snack-bar-container.dark-snackbar {
-  background: #424242;
-  color: white;
-}
-
-.stepper-actions {
-  margin-top: 20px;
-}
-
-.mat-select-panel {
-  color: black;
-}
-
-@media (min-width: 40rem) {
-  .inner-margin {
-    margin: 54px;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--fc-dark);
 }

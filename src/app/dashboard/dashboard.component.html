@@ -1,4 +1,4 @@
-<div class="flexContainer">
+<div class="flex-row-container">
   <div class="sidebar">
     <div class="sidebar-item">
       <h2>Create a new Order</h2>
@@ -8,11 +8,11 @@
     </div>
     <app-import-order></app-import-order>
   </div>
-  <div class="list-component" *ngIf="this.viewOrders">
-    <app-orders-list></app-orders-list>
+  <div class="view" *ngIf="this.viewOrders">
+    <app-orders-list style="width: 100%;"></app-orders-list>
   </div>
 
-  <div class="order-create-component" *ngIf="this.viewOrderCreate">
+  <div class="view" *ngIf="this.viewOrderCreate">
     <app-order-create (navigationBack)="_navgationBackDetected($event)"></app-order-create>
   </div>
 </div>

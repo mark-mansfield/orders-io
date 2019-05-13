@@ -1,0 +1,13 @@
+.form-element {
+  width: 500px;
+}
+
+input {
+  width: 100%;
+}
+
+textarea {
+  padding: 20px;
+  width: 100%;
+  height: auto;
+}

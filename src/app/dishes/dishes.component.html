@@ -1,60 +1,57 @@
-<div class="flex-row-container">
-  <div class="flex-container-33 row-header">
+<div class="flex-row-container row-header" id="toolbar">
+  <div class="flex-container-33  left-col" id="leftCol">
     <mat-select placeholder="filter by course" (selectionChange)="onSelectCourse($event.value)">
       <mat-option *ngFor="let course of courses" [value]="course">
         {{ course }}
       </mat-option>
     </mat-select>
-    <!-- <button mat-button>
-      <i class="material-icons">
-        add
-      </i>
-    </button> -->
-  </div>
-  <div class="flex-container-66 row-header edit-tools">
-    <button mat-button (click)="toggleEditMode()" [disabled]="this.disableEditTools" title="edit this item">
-      <i class="material-icons">
-        edit
-      </i>
-    </button>
-
-    <button mat-button [disabled]="this.disableEditTools" title="delete this item">
-      <i class="material-icons">
-        delete
-      </i>
-    </button>
-    <button mat-button [disabled]="this.disableEditTools" title="clone item">
-      <i class="material-icons">
-        file_copy
-      </i>
-    </button>
   </div>
 </div>
-<div class="flex-row-container">
-  <div class="flex-column-container-33">
+<div class="flex-row-container" id="content">
+  <div class="sidebar" id="sidebar">
     <div class="flex-item compose">
       <button mat-button (click)="onAddDishClicked()">
-        <i class="material-icons">
+        <i class="material-icons md-36 icon-color-light">
           add
         </i>
       </button>
     </div>
     <app-dishes-list [data]="dishes" (selectItem)="onItemSelect($event)"></app-dishes-list>
   </div>
-  <div id="dish-edit" class="flex-column-container-66" *ngIf="selectedItem !== null">
-    <div class="inner-margin">
-      <div *ngIf="selectedItem !== null" class="flex-item">
-        <app-dish-details-edit
-          [data]="selectedItem"
-          [editMode]="editMode"
-          (cancelEdit)="toggleEditMode($event)"
-          (update)="saveDish($event)"
-        ></app-dish-details-edit>
+  <div class="view inner-margin">
+    <div id="view" *ngIf="selectedItem !== null">
+      <div class="flex-container-66 edit-tools" id="rightCol">
+        <button mat-mini-fab (click)="toggleEditMode()" [disabled]="this.disableEditTools" title="edit this item">
+          <i class="material-icons icon-color">
+            edit
+          </i>
+        </button>
+
+        <button mat-mini-fab [disabled]="this.disableEditTools" title="delete this item">
+          <i class="material-icons icon-color">
+            delete
+          </i>
+        </button>
+        <button mat-mini-fab [disabled]="this.disableEditTools" title="clone item">
+          <i class="material-icons icon-color">
+            file_copy
+          </i>
+        </button>
+      </div>
+      <div class="inner-margin" style="width: 100%">
+        <div *ngIf="selectedItem !== null" class="flex-item">
+          <app-dish-details-edit
+            [data]="selectedItem"
+            [editMode]="editMode"
+            (cancelEdit)="toggleEditMode($event)"
+            (update)="saveDish($event)"
+            [courses]="courses"
+          ></app-dish-details-edit>
+        </div>
       </div>
     </div>
   </div>
-
-  <div id="dish-create" class="flex-column-container-66" *ngIf="mode === create">
+  <div id="dish-create" class="flex-column-container-66" *ngIf="createMode">
     <div class="inner-margin">
       <div *ngIf="createMode" class="flex-item">
         <app-dish-create></app-dish-create>
