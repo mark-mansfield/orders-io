@@ -9,6 +9,14 @@ export interface Order {
     pickUpTime: string;
   };
   orderedItems: any[];
+  eventDetails: {
+    deliveryTimeSelected: string;
+    pickUpTimeSelected: string;
+    deliveryAddress: string;
+    pickUpDateSelected: string;
+    stylePackage: string;
+    eventStartTime: string;
+  };
   notes: string;
   _id: string;
   __v: number;
