@@ -66,10 +66,17 @@
   color: white !important;
 }
 
+/* placeholder */
 .mat-select-placeholder,
 .mat-form-field-label {
   color: var(--placeholder-color) !important;
   margin-left: 10px;
+}
+
+/* mat-form-field */
+
+.mat-form-field {
+  color: inherit !important;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-flex {

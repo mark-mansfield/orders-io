@@ -1,9 +1,13 @@
 .main__welcome-message {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
-.main__welcome-message > *{
+.main__welcome-message > * {
   margin: 10px;
 }
 
@@ -23,7 +27,7 @@ li {
   width: 100%;
 }
 
-div[class=auth-button] {
+div[class='auth-button'] {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,17 +38,16 @@ div[class=auth-button] {
   font-size: 0.8rem;
   color: white;
   background: dodgerblue;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
-div[class=auth-button]:hover {
+div[class='auth-button']:hover {
   color: black;
   background: rgb(65, 160, 255);
 }
 
 @media (min-width: 40rem) and (min-height: 40rem) {
-
-  div[class=auth-button] {
+  div[class='auth-button'] {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,6 +58,6 @@ div[class=auth-button]:hover {
     font-size: 1.5rem;
     color: white;
     background: dodgerblue;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
   }
 }

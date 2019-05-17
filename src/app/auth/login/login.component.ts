@@ -6,7 +6,7 @@ import { Subscription } from '../../../../node_modules/rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.module.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
   isLoading = false;

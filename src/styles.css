@@ -29,7 +29,9 @@ body {
   /* background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
   rgb(43, 39, 39) top; */
   /* background-attachment: fixed; */
-  background-color: #e8f6f9;
+  /* background-color: #e8f6f9; */
+  background: rgb(232, 246, 249);
+  background: linear-gradient(171deg, rgba(232, 246, 249, 1) 0%, rgba(0, 178, 249, 0.7133228291316527) 100%);
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-size: 1rem;
