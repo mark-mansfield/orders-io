@@ -228,6 +228,14 @@ export class OrderCreateComponent implements OnInit {
         pickUpDay: 'not-set',
         pickUpTime: 'not-set'
       },
+      eventDetails: {
+        deliveryTimeSelected: this.deliveryTimeSelected,
+        pickUpTimeSelected: this.pickUpTimeSelected,
+        deliveryAddress: this.deliveryAddress,
+        pickUpDateSelected: this.pickUpDateSelected,
+        stylePackage: this.stylePackage,
+        eventStartTime: this.eventStartTime
+      },
       orderedItems: this.itemsOnMenu,
       notes: this.form.value.notes,
       _id: null,

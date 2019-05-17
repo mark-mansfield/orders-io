@@ -50,6 +50,8 @@ exports.updateSingleOrder = (req, res, next) => {
     menuName: req.body.menuName,
     customerDetails: req.body.customerDetails,
     orderedItems: req.body.orderedItems,
+    eventDetails: req.body.eventDetails,
+    notes: req.body.notes,
     _id: req.body._id
   });
   console.log(`new  order = ${newOrder}`);
