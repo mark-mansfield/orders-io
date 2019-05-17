@@ -22,18 +22,18 @@
     <div id="view" *ngIf="selectedItem !== null">
       <div class="flex-container-66 edit-tools" id="rightCol">
         <button mat-mini-fab (click)="toggleEditMode()" [disabled]="this.disableEditTools" title="edit this item">
-          <i class="material-icons icon-color">
+          <i class="material-icons icon-color-light">
             edit
           </i>
         </button>
 
         <button mat-mini-fab [disabled]="this.disableEditTools" title="delete this item">
-          <i class="material-icons icon-color">
+          <i class="material-icons icon-color-light">
             delete
           </i>
         </button>
         <button mat-mini-fab [disabled]="this.disableEditTools" title="clone item">
-          <i class="material-icons icon-color">
+          <i class="material-icons icon-color-light">
             file_copy
           </i>
         </button>

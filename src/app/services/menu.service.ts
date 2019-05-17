@@ -25,6 +25,7 @@ export class DataService {
             return {
               title: menu.title,
               description: menu.description,
+              items: menu.items,
               id: menu._id,
               imagePath: menu.imagePath,
               creator: menu.creator
@@ -48,14 +49,16 @@ export class DataService {
       title: string;
       description: string;
       imagePath: string;
+      items: any;
       creator: string;
     }>(BACKEND_URL + id);
   }
 
-  addMenu(title: string, description: string, image: File) {
+  addMenu(title: string, description: string, items: any, image: File) {
     const menuData = new FormData();
     menuData.append('title', title);
     menuData.append('description', description);
+    menuData.append('items', items);
     menuData.append('image', image, title);
     // add to server then update local if successful
     this.http.post<{ message: string; menu: Menu }>(BACKEND_URL, menuData).subscribe(returnedData => {
@@ -63,6 +66,7 @@ export class DataService {
         id: returnedData.menu.id,
         title: title,
         description: description,
+        items: items,
         imagePath: returnedData.menu.imagePath,
         creator: null
       };
@@ -73,13 +77,14 @@ export class DataService {
     });
   }
 
-  updateMenu(id: string, title: string, description: string, image: File | string, creator: string) {
+  updateMenu(id: string, title: string, description: string, items: any, image: File | string, creator: string) {
     let menuData: Menu | FormData;
     if (typeof image === 'object') {
       menuData = new FormData();
       menuData.append('id', id);
       menuData.append('title', title);
       menuData.append('description', description);
+      menuData.append('items', items);
       menuData.append('image', image, title);
       menuData.append('creator', creator);
     } else {
@@ -87,6 +92,17 @@ export class DataService {
         id: id,
         title: title,
         description: description,
+        items: {
+          entree: ['chopped liver', 'confit tuna', 'hommus', 'romanian eggplant'],
+          main: [
+            'Slow Cooked Lamb Shoulder',
+            'Grilled Ora king salmon',
+            'Ocean trout tarator',
+            'Slow Braised Free Range Chicken'
+          ],
+          soup: 'Holmbrae chicken and vegetable soup',
+          desert: []
+        },
         imagePath: image,
         creator: null
       };
@@ -100,6 +116,17 @@ export class DataService {
         id: id,
         title: title,
         description: description,
+        items: {
+          entree: ['chopped liver', 'confit tuna', 'hommus', 'romanian eggplant'],
+          main: [
+            'Slow Cooked Lamb Shoulder',
+            'Grilled Ora king salmon',
+            'Ocean trout tarator',
+            'Slow Braised Free Range Chicken'
+          ],
+          soup: 'Holmbrae chicken and vegetable soup',
+          desert: []
+        },
         imagePath: '',
         creator: creator
       };

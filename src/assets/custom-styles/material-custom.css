@@ -17,6 +17,8 @@
 .mat-mini-fab {
   margin: 0 16px !important;
 }
+
+.mat-mini-fab.mat-accent,
 .mat-raised-button {
   background-color: #c2185b !important;
 }
@@ -30,7 +32,9 @@
   color: white;
 }
 
-.icon-color {
+.icon-color,
+.mat-icon-button,
+.mat-input-element {
   color: black;
 }
 
@@ -62,24 +66,67 @@
   color: white !important;
 }
 
+.mat-select-placeholder,
+.mat-form-field-label {
+  color: var(--placeholder-color) !important;
+  margin-left: 10px;
+}
+
 .mat-form-field-appearance-fill .mat-form-field-flex {
   background-color: white;
 }
-.mat-form-field-wrapper {
-  padding-bottom: 0px;
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(255, 255, 255, 0.7);
 }
+
+.mat-form-field-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0px !important;
+  width: 300px;
+  background-color: white;
+}
+
+.mat-form-field-infix {
+  height: 80px;
+  border-top: 20px solid transparent;
+}
+
+.mat-form-field-infix > input {
+  height: auto;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  top: 37% !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: transparent !important;
+  bottom: 0 !important;
+}
+
+.mat-form-field-flex {
+  align-items: center !important;
+}
+
 .mat-form-field-underline {
   bottom: 1.34375em;
 }
 
-/* matt select styles  */
-
-.mat-select-placeholder {
-  color: inherit !important;
+.mat-input-element {
+  padding-left: 10px !important;
 }
+
+/* matt select styles  */
 
 .mat-select-trigger {
   height: 100%;
+}
+
+.mat-select-arrow-wrapper {
+  padding-right: 10px;
 }
 
 .mat-select-arrow {
@@ -96,22 +143,27 @@
 
 .mat-select-value {
   color: black;
-  padding-top: 5px;
-}
-
-::ng-deep snack-bar-container.dark-snackbar {
-  background: #424242;
-  color: white;
-}
-
-.stepper-actions {
-  margin-top: 20px;
+  padding-left: 10px;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .mat-select-panel {
   color: black;
 }
 
+/* snack bar */
+::ng-deep snack-bar-container.dark-snackbar {
+  background: #424242;
+  color: white;
+}
+
+/* stepper */
+.stepper-actions {
+  margin-top: 20px;
+}
+
+/* dialog */
 .dialog-inner-margin {
   margin: 0 54px;
 }

@@ -16,6 +16,7 @@ export class MenuCreateComponent implements OnInit, OnDestroy {
   enteredDescription = '';
   form: FormGroup;
   menu: Menu;
+  menuItems: 'need to set this up';
   isLoading = false;
   imagePreview: ArrayBuffer;
   private mode = 'create';
@@ -50,6 +51,7 @@ export class MenuCreateComponent implements OnInit, OnDestroy {
             id: menuData._id,
             title: menuData.title,
             description: menuData.description,
+            items: [],
             imagePath: menuData.imagePath,
             creator: menuData.creator
           };
@@ -84,11 +86,12 @@ export class MenuCreateComponent implements OnInit, OnDestroy {
     // start spinner
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.dataService.addMenu(this.form.value.title, this.form.value.desc, this.form.value.image);
+      this.dataService.addMenu(this.form.value.title, this.menuItems, this.form.value.desc, this.form.value.image);
     } else {
       this.dataService.updateMenu(
         this.menuId,
         this.form.value.title,
+        this.menuItems,
         this.form.value.desc,
         this.form.value.image,
         this.menu.creator

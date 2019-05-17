@@ -2,8 +2,9 @@ export interface Order {
   menuName: string;
   customerDetails: {
     contactName: string;
-    orderNum: string;
-    contactNum: string;
+    email: string;
+    orderNum: number;
+    contactNum: number;
     pickUpDay: string;
     pickUpTime: string;
   };

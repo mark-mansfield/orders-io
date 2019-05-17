@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject, ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Order } from '../models/order.model';
-import { OrdersService } from '../services/orders.service';
+import { OrderService } from '../services/order.service';
 @Component({
   selector: 'app-dialogs',
   templateUrl: './dialogs.component.html',
@@ -9,7 +9,7 @@ import { OrdersService } from '../services/orders.service';
 })
 export class DialogsComponent implements OnInit {
   constructor(
-    public ordersService: OrdersService,
+    public ordersService: OrderService,
     public dialogRef: MatDialogRef<DialogsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}

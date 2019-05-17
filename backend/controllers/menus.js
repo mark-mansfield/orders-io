@@ -21,6 +21,7 @@ exports.createmenu = (req, res, next) => {
           menu: {
             id: createdMenu._id, // remap id mongo adds _id property
             title: createdMenu.title,
+            items: createdMenu.items,
             description: createdMenu.description,
             imagePath: createdMenu.imagePath,
             creator: createdMenu.userId
@@ -46,6 +47,7 @@ exports.updateMenu = (req, res, next) => {
   const menu = new Menu({
     _id: req.body.id,
     title: req.body.title,
+    items: req.body.items,
     description: req.body.description,
     imagePath: imagePath,
     creator: req.userData.userId

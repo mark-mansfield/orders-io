@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ImportService } from '../../services/import.service';
-import { OrdersService } from '../../services/orders.service';
+import { OrderService } from '../../services/order.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {
@@ -52,7 +52,7 @@ export class OrdersListComponent implements OnInit {
   extraClasses = ['dark-snackbar'];
   constructor(
     public importService: ImportService,
-    public orderService: OrdersService,
+    public orderService: OrderService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private sanitizer: DomSanitizer
@@ -193,14 +193,6 @@ export class OrdersListComponent implements OnInit {
     this.filterIsSelected = true;
     this.filter = filter;
     this.orderService.filterOrdersByPickUpDayAndTime(filter, this.filterTimes);
-    // if (mode === 'runsheet') {
-    //   this.orderService.filterOrdersByPickUpDayAndTime(filter, this.filterTimes);
-    // }
-    // if (mode === 'list') {
-    //   this.orderService.filterOrdersByPickUpDay(filter);
-    // } else {
-    //   this.orderService.filterOrdersByPickUpDay(filter);
-    // }
   }
 
   resetFilterSelected() {
@@ -213,6 +205,7 @@ export class OrdersListComponent implements OnInit {
   filterByName(name) {
     this.orderService.filterByName(name);
   }
+
   buildRunSheetClicked(orders) {
     this.buildingRunsheet = true;
     setTimeout(() => {

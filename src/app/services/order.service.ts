@@ -8,7 +8,7 @@ const BACKEND_URL = environment.apiUrl + 'orders/';
 @Injectable({
   providedIn: 'root'
 })
-export class OrdersService {
+export class OrderService {
   public ordersUpdated = new Subject<Order[]>();
   public ordersLoaded = new Subject<Order[]>();
   public orderDeleted = new Subject<Order[]>();
@@ -84,10 +84,10 @@ export class OrdersService {
 
   createOrder(order) {
     console.log(order);
-    this.http.post<{ message: string; order: any }>(BACKEND_URL + 'create', order).subscribe(returnedData => {
-      console.log(returnedData.order);
-      this.orderCreated.next({ ...returnedData.order });
-    });
+    // this.http.post<{ message: string; order: any }>(BACKEND_URL + 'create', order).subscribe(returnedData => {
+    //   console.log(returnedData.order);
+    //   this.orderCreated.next({ ...returnedData.order });
+    // });
   }
 
   hasWhiteSpace(str) {

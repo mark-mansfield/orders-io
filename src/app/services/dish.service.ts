@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 const BACKEND_URL = environment.apiUrl + 'dishes/';
 
 @Injectable({ providedIn: 'root' })
-export class DataService {
+export class DishService {
   private dishes: Dish[] = [];
   private dishesUpdated = new Subject<Dish[]>();
 
