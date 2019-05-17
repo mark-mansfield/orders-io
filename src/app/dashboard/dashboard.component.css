@@ -1,6 +1,13 @@
 /* .sidebar {
   display: none;
 } */
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: flex;
+}
 @media (min-width: 40rem) {
   /* .sidebar {
     min-width: 20%;

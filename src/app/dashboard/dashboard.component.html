@@ -8,11 +8,11 @@
     </div>
     <app-import-order></app-import-order>
   </div>
-  <div class="view" *ngIf="this.viewOrders">
+  <div class="view" [ngClass]="{ visible: this.viewOrders, hidden: !this.viewOrders }">
     <app-orders-list style="width: 100%;"></app-orders-list>
   </div>
 
-  <div class="view" *ngIf="this.viewOrderCreate">
+  <div class="view" [ngClass]="{ visible: this.viewOrderCreate, hidden: !this.viewOrderCreate }">
     <app-order-create (navigationBack)="_navgationBackDetected($event)" style="width: 100%;"></app-order-create>
   </div>
 </div>

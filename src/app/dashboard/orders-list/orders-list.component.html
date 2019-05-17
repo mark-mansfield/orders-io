@@ -9,7 +9,11 @@
     <div class="full-width-row-container" style="display:flex; justify-content: center;align-items: center; ">
       <mat-spinner *ngIf="isLoading"></mat-spinner>
     </div>
-    <div class="flex-row-container" *ngIf="this.createRunSheet">
+    <div
+      class="flex-row-container"
+      *ngIf="this.createRunSheet"
+      [ngClass]="{ visible: this.createRunSheet, hidden: !this.createRunSheet }"
+    >
       <mat-horizontal-stepper linear #stepper>
         <mat-step>
           <ng-template matStepLabel>Select a pickup day</ng-template>

@@ -199,7 +199,7 @@ export class OrdersListComponent implements OnInit {
     this.filter = null;
     this.filterIsSelected = false;
     this.createRunSheet = false;
-    this.orderService.getOrders({ mode: 'list' });
+    // this.orderService.getOrders({ mode: 'list' });
   }
 
   filterByName(name) {
