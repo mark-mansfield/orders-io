@@ -4,12 +4,19 @@ import { Order } from '../../models/order.model';
 
 import { OrderService } from '../../services/order.service';
 import { DishService } from '../../services/dish.service';
+import { throwMatDialogContentAlreadyAttachedError } from '@angular/material';
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
   styleUrls: ['./order-create.component.css']
 })
 export class OrderCreateComponent implements OnInit {
+  // prevent any date in the past
+  today = new Date();
+  year = this.today.getFullYear();
+  day = this.today.getDate();
+  month = this.today.getMonth();
+  minDate = new Date(this.year, this.month, this.day);
   order: Order;
   itemsOnMenu: any = [];
   notes: string;
@@ -45,6 +52,7 @@ export class OrderCreateComponent implements OnInit {
   ];
   stylingOptions = ['none', '$', '$$$', '$$$$$'];
 
+  eventType = null;
   deliveryTimeSelected = null;
   pickUpTimeSelected = null;
   deliveryAddress = null;
@@ -165,7 +173,21 @@ export class OrderCreateComponent implements OnInit {
     console.log(this.itemsOnMenu[index]);
   }
 
+  setEventType(type) {
+    this.deliveryAddress = null;
+    this.deliveryTimeSelected = null;
+    this.eventStartTime = null;
+    this.eventType = type;
+    this.pickUpDateSelected = null;
+    this.pickUpTimeSelected = null;
+    this.stylePackage = null;
+  }
+
   onSelectEventType(item) {
+    this.setEventType(item);
+
+    this.eventType = item;
+
     if (item === 'pick up') {
       this.pickUp = true;
       this.delivery = false;
@@ -203,9 +225,15 @@ export class OrderCreateComponent implements OnInit {
     this.eventStartTime = time;
     console.log(`event start time ${time}`);
   }
+
   onSelectStylingOption(option) {
-    // this.stylePackage = option;
+    this.stylePackage = option;
     console.log(`stying package selected ${option}`);
+  }
+
+  // calendar events
+  setPickUpDate(value) {
+    console.log(`pick up date slected : ${value}`);
   }
 
   onSaveOrder() {
@@ -229,6 +257,7 @@ export class OrderCreateComponent implements OnInit {
         pickUpTime: 'not-set'
       },
       eventDetails: {
+        eventType: this.eventType,
         deliveryTimeSelected: this.deliveryTimeSelected,
         pickUpTimeSelected: this.pickUpTimeSelected,
         deliveryAddress: this.deliveryAddress,

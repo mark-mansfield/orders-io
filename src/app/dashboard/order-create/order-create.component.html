@@ -66,9 +66,9 @@
             </div>
           </div>
         </div>
-        <!-- delivery options -->
+        <!-- Event options -->
         <div class="flex-column-container-50">
-          <!-- select delivery method -->
+          <!-- select event type -->
           <div class="form-element">
             <div style="width: 300px; height: 76px; margin: 10px 0 ">
               <label for="eventOptions"><h2>Event Options</h2></label>
@@ -90,37 +90,49 @@
           <!-- show delivery options -->
 
           <!-- delivery address -->
-          <div *ngIf="delivery" class="form-element">
-            <label for="address"><h2>Delivery Address</h2></label>
-            <small>client delivery address</small>
-            <textarea
-              formControlName="address"
-              name="address"
-              value=""
-              style="width: 100%; height: 200px ; padding: 10px"
-              placeholder="deliver to..."
-              pattern="[a-zA-Z0-9 ./-]*"
-              (ngModelChange)="onUpdateDeliveryAddress($event)"
-            ></textarea>
-            <mat-error *ngIf="submitted && f.address.errors" class="invalid-feedback"
-              >only numbers and letters are allowed
-            </mat-error>
+          <div *ngIf="delivery">
+            <div class="form-element">
+              <label for="pickup_date"><h2>Event Date</h2></label>
+              <small>select a date to deliver on</small>
+              <mat-form-field class="">
+                <input matInput [min]="minDate" [matDatepicker]="deliveryDatePicker" placeholder="Choose a date" />
+                <mat-datepicker-toggle matSuffix [for]="deliveryDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #deliveryDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="form-element">
+              <label for="address"><h2>Delivery Address</h2></label>
+              <small>client delivery address</small>
+              <textarea
+                formControlName="address"
+                name="address"
+                value=""
+                style="width: 100%; height: 200px ; padding: 10px"
+                placeholder="deliver to..."
+                pattern="[a-zA-Z0-9 ./-]*"
+                (ngModelChange)="onUpdateDeliveryAddress($event)"
+              ></textarea>
+              <mat-error *ngIf="submitted && f.address.errors" class="invalid-feedback"
+                >only numbers and letters are allowed
+              </mat-error>
+            </div>
+            <!-- delivery times select -->
+            <div class="form-element">
+              <label for="menu"><h2>Delivery Time</h2></label>
+              <small>To arrive at address</small>
+              <mat-select
+                placeholder="delivery time..."
+                name="deliveryTimeOptions"
+                (selectionChange)="onSelectDeliveryTime($event.value)"
+                style="background-color: white; height:50px; "
+              >
+                <mat-option *ngFor="let time of deliveryTimeOptions" [value]="time">
+                  {{ time }}
+                </mat-option>
+              </mat-select>
+            </div>
           </div>
-          <!-- delivery times select -->
-          <div *ngIf="delivery" class="form-element">
-            <label for="menu"><h2>Delivery Time</h2></label>
-            <small>To arrive at address</small>
-            <mat-select
-              placeholder="delivery time..."
-              name="deliveryTimeOptions"
-              (selectionChange)="onSelectDeliveryTime($event.value)"
-              style="background-color: white; height:50px; "
-            >
-              <mat-option *ngFor="let time of deliveryTimeOptions" [value]="time">
-                {{ time }}
-              </mat-option>
-            </mat-select>
-          </div>
+
           <!-- pickup Event option -->
           <div *ngIf="pickUp" class="form-element">
             <div *ngIf="limitedPickUpDates">
@@ -128,13 +140,19 @@
             </div>
 
             <!-- calendar -->
-            <div *ngIf="!limitedPickUpDates">
-              <label for="pickup_date"><h2>Pick Up Date</h2></label>
+            <div *ngIf="!limitedPickUpDates" class="form-element">
+              <label for="pickup_date"><h2>Event Date</h2></label>
               <small>picking up from us</small>
               <mat-form-field class="">
-                <input matInput [matDatepicker]="picker" placeholder="Choose a date" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #picker></mat-datepicker>
+                <input
+                  matInput
+                  [min]="minDate"
+                  [matDatepicker]="pickup_datePicker"
+                  name="pick_up_date"
+                  placeholder="Choose a date"
+                />
+                <mat-datepicker-toggle matSuffix [for]="pickup_datePicker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #pickup_datePicker></mat-datepicker>
               </mat-form-field>
             </div>
 
@@ -162,9 +180,9 @@
               <label for="pickup_date"><h2>Event Date</h2></label>
 
               <mat-form-field class="">
-                <input matInput [matDatepicker]="picker1" placeholder="Choose a date" />
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #picker1></mat-datepicker>
+                <input matInput [min]="minDate" [matDatepicker]="staffedEventDatePicker" placeholder="Choose a date" />
+                <mat-datepicker-toggle matSuffix [for]="staffedEventDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #staffedEventDatePicker></mat-datepicker>
               </mat-form-field>
             </div>
             <!-- address -->
@@ -217,6 +235,7 @@
         </div>
       </div>
       <br />
+
       <hr class="line_break" />
       <br />
       <!-- dishes on menu -->

@@ -10,6 +10,7 @@ export interface Order {
   };
   orderedItems: any[];
   eventDetails: {
+    eventType: string;
     deliveryTimeSelected: string;
     pickUpTimeSelected: string;
     deliveryAddress: string;
