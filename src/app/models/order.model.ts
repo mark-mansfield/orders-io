@@ -3,7 +3,7 @@ export interface Order {
   customerDetails: {
     contactName: string;
     email: string;
-    orderNum: number;
+    orderNum: string;
     contactNum: number;
     pickUpDay: string;
     pickUpTime: string;
@@ -11,14 +11,14 @@ export interface Order {
   orderedItems: any[];
   eventDetails: {
     eventType: string;
+    eventDate: string;
     deliveryTimeSelected: string;
     pickUpTimeSelected: string;
     deliveryAddress: string;
-    pickUpDateSelected: string;
     stylePackage: string;
     eventStartTime: string;
   };
   notes: string;
-  _id: string;
+  id: string;
   __v: number;
 }

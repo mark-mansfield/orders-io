@@ -13,6 +13,10 @@
   </div>
 
   <div class="view" [ngClass]="{ visible: this.viewOrderCreate, hidden: !this.viewOrderCreate }">
-    <app-order-create (navigationBack)="_navgationBackDetected($event)" style="width: 100%;"></app-order-create>
+    <app-order-create
+      [uniqueId]="uniqueId"
+      (navigationBack)="_navgationBackDetected($event)"
+      style="width: 100%;"
+    ></app-order-create>
   </div>
 </div>

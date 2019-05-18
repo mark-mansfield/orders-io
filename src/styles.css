@@ -4,6 +4,7 @@
 @import url('./assets/custom-styles/layout.css');
 @import url('./assets/custom-styles/normalize.css');
 @import url('./assets/custom-styles/forms.css');
+@import url('./assets/custom-styles/messages.css');
 /* Global Styles */
 * {
   margin: 0;

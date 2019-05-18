@@ -1,10 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Order } from '../../models/order.model';
 
 import { OrderService } from '../../services/order.service';
 import { DishService } from '../../services/dish.service';
-import { throwMatDialogContentAlreadyAttachedError } from '@angular/material';
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
@@ -17,14 +16,15 @@ export class OrderCreateComponent implements OnInit {
   day = this.today.getDate();
   month = this.today.getMonth();
   minDate = new Date(this.year, this.month, this.day);
+  // set event date like this
+  // eventDateTmp = new Date(this.year, this.month, this.day + 2); [value]="eventDateTmp"
   order: Order;
-  itemsOnMenu: any = [];
   notes: string;
-  orderNumber = Math.floor(1000 + Math.random() * 9000);
+  menuName: string;
   form: FormGroup;
-  submitted = false;
-  isLoading = false;
+
   dishes: any = [];
+  itemsOnMenu: any = [];
 
   menus = ['rosh hashanah', 'menu 2', 'menu 3'];
   eventOptions = ['pick up', 'delivery service', 'staffed event'];
@@ -51,20 +51,6 @@ export class OrderCreateComponent implements OnInit {
     '6.00pm'
   ];
   stylingOptions = ['none', '$', '$$$', '$$$$$'];
-
-  eventType = null;
-  deliveryTimeSelected = null;
-  pickUpTimeSelected = null;
-  deliveryAddress = null;
-  pickUpDateSelected = null;
-  stylePackage = null;
-  eventStartTime = null;
-
-  pickUp: boolean;
-  delivery: boolean;
-  staffed: boolean;
-  limitedPickUpDates: boolean;
-  styling: boolean;
   menu = {
     _id: '5b8aa5ff78bf462cbfab5903',
     title: 'rosh hashanah',
@@ -130,9 +116,35 @@ export class OrderCreateComponent implements OnInit {
     creator: '5b89d99441204620fb7fa0d4',
     __v: 0
   };
+
+  eventType = null;
+  deliveryTimeSelected = null;
+  pickUpTimeSelected = null;
+  deliveryAddress = null;
+  pickUpDateSelected = null;
+  stylePackage = null;
+  eventDate = null;
+  eventStartTime = null;
+
+  submitted: boolean;
+  isLoading: boolean;
+  pickUp: boolean;
+  delivery: boolean;
+  staffed: boolean;
+  limitedPickUpDates: boolean;
+  styling: boolean;
+  private _uniqueId = '';
   constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) {}
 
   @Output() navigationBack = new EventEmitter<boolean>();
+  @Input('uniqueId')
+  set uniqueId(uniqueId: string) {
+    this._uniqueId = uniqueId;
+  }
+
+  get uniqueId(): string {
+    return this._uniqueId;
+  }
 
   navigateBack() {
     this.navigationBack.emit(true);
@@ -143,6 +155,8 @@ export class OrderCreateComponent implements OnInit {
     this.delivery = false;
     this.staffed = false;
     this.styling = false;
+    this.submitted = false;
+    this.isLoading = false;
 
     this.limitedPickUpDates = this.menu.limitedPickUpDates;
     this.form = this.formBuilder.group({
@@ -150,7 +164,8 @@ export class OrderCreateComponent implements OnInit {
       phone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       notes: ['', [Validators.pattern('[a-zA-Z0-9 .]*')]],
-      address: ['', [Validators.pattern('[a-zA-Z0-9 ./-]*')]]
+      address: ['', [Validators.pattern('[a-zA-Z0-9 ./-]*')]],
+      eventType: ['', Validators.required]
     });
 
     this.dishes = this.menu.items;
@@ -170,7 +185,7 @@ export class OrderCreateComponent implements OnInit {
 
   updateItemQty(index, item) {
     this.itemsOnMenu[index].qty = item;
-    console.log(this.itemsOnMenu[index]);
+    // console.log(this.itemsOnMenu[index]);
   }
 
   setEventType(type) {
@@ -178,6 +193,7 @@ export class OrderCreateComponent implements OnInit {
     this.deliveryTimeSelected = null;
     this.eventStartTime = null;
     this.eventType = type;
+    this.eventDate = null;
     this.pickUpDateSelected = null;
     this.pickUpTimeSelected = null;
     this.stylePackage = null;
@@ -202,38 +218,42 @@ export class OrderCreateComponent implements OnInit {
       this.pickUp = false;
     }
 
-    console.log(`Event type is a ${item} event`);
+    // console.log(`Event type is a ${item} event`);
   }
 
   onUpdateDeliveryAddress(item) {
     console.log(item);
     this.deliveryAddress = item;
-    console.log(`Delivery Address ${this.deliveryAddress}`);
+    // console.log(`Delivery Address ${this.deliveryAddress}`);
+  }
+
+  onSelectMenu(value) {
+    this.menuName = value;
   }
 
   onSelectDeliveryTime(time) {
     this.deliveryTimeSelected = time;
-    console.log(`Delivery time se;ected ${this.deliveryTimeSelected}`);
+    // console.log(`Delivery time se;ected ${this.deliveryTimeSelected}`);
   }
 
   onSelectPickUpTime(time) {
     this.pickUpTimeSelected = time;
-    console.log(`pick up time : ${this.pickUpTimeSelected}`);
+    // console.log(`pick up time : ${this.pickUpTimeSelected}`);
   }
 
   onSelectEventStartTime(time) {
     this.eventStartTime = time;
-    console.log(`event start time ${time}`);
+    // console.log(`event start time ${time}`);
   }
 
   onSelectStylingOption(option) {
     this.stylePackage = option;
-    console.log(`stying package selected ${option}`);
+    // console.log(`stying package selected ${option}`);
   }
 
   // calendar events
-  setPickUpDate(value) {
-    console.log(`pick up date slected : ${value}`);
+  setEventDate(value) {
+    this.eventDate = value;
   }
 
   onSaveOrder() {
@@ -247,29 +267,30 @@ export class OrderCreateComponent implements OnInit {
     // start spinner
     this.isLoading = true;
     this.order = {
-      menuName: 'test-menu',
+      menuName: this.menuName,
       customerDetails: {
         contactName: this.form.value.contactName,
         email: this.form.value.email,
-        orderNum: this.orderNumber,
+        orderNum: this.uniqueId,
         contactNum: this.form.value.phone,
         pickUpDay: 'not-set',
         pickUpTime: 'not-set'
       },
       eventDetails: {
         eventType: this.eventType,
+        eventDate: this.eventDate,
         deliveryTimeSelected: this.deliveryTimeSelected,
         pickUpTimeSelected: this.pickUpTimeSelected,
         deliveryAddress: this.deliveryAddress,
-        pickUpDateSelected: this.pickUpDateSelected,
         stylePackage: this.stylePackage,
         eventStartTime: this.eventStartTime
       },
       orderedItems: this.itemsOnMenu,
       notes: this.form.value.notes,
-      _id: null,
+      id: null,
       __v: null
     };
-    console.log(this.order); // this.form.reset();
+    this.orderService.createOrder(this.order);
+    // console.log(this.order); // this.form.reset();
   }
 }

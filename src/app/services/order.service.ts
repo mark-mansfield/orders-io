@@ -84,10 +84,10 @@ export class OrderService {
 
   createOrder(order) {
     console.log(order);
-    // this.http.post<{ message: string; order: any }>(BACKEND_URL + 'create', order).subscribe(returnedData => {
-    //   console.log(returnedData.order);
-    //   this.orderCreated.next({ ...returnedData.order });
-    // });
+    this.http.post<{ message: string; order: any }>(BACKEND_URL + 'create', order).subscribe(returnedData => {
+      console.log(returnedData.order);
+      this.orderCreated.next({ ...returnedData.order });
+    });
   }
 
   hasWhiteSpace(str) {

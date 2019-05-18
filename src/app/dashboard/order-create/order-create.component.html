@@ -20,7 +20,7 @@
 
     <div class="form-element">
       <h2>Order Number</h2>
-      {{ this.orderNumber }}
+      {{ this.uniqueId }}
     </div>
     <form class="inner-margin" [formGroup]="form" (ngSubmit)="onSaveOrder()">
       <div class="full-width-row-container align-items-start">
@@ -62,7 +62,10 @@
             <label for="notes"><h2>Phone</h2></label>
             <small>please double check your number</small>
             <div class="" style="width: 100%">
-              <input type="text" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <input type="text" formControlName="phone" />
+            </div>
+            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.phone.errors.required">A contact number is required</mat-error>
             </div>
           </div>
         </div>
@@ -76,6 +79,7 @@
 
               <mat-select
                 placeholder="event options..."
+                formControlName="eventType"
                 name="eventOptions"
                 (selectionChange)="onSelectEventType($event.value)"
                 style="background-color: white; height:50px; "
@@ -84,6 +88,10 @@
                   {{ option }}
                 </mat-option>
               </mat-select>
+
+              <div *ngIf="submitted && f.eventType.errors" class="invalid-feedback">
+                <mat-error *ngIf="f.eventType.errors.required">An Event type is required</mat-error>
+              </div>
             </div>
           </div>
           <!-- conditional displays -->
@@ -95,7 +103,13 @@
               <label for="pickup_date"><h2>Event Date</h2></label>
               <small>select a date to deliver on</small>
               <mat-form-field class="">
-                <input matInput [min]="minDate" [matDatepicker]="deliveryDatePicker" placeholder="Choose a date" />
+                <input
+                  matInput
+                  [min]="minDate"
+                  [matDatepicker]="deliveryDatePicker"
+                  (dateChange)="setEventDate($event.value)"
+                  placeholder="Choose a date"
+                />
                 <mat-datepicker-toggle matSuffix [for]="deliveryDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker touchUi #deliveryDatePicker></mat-datepicker>
               </mat-form-field>
@@ -149,6 +163,7 @@
                   [min]="minDate"
                   [matDatepicker]="pickup_datePicker"
                   name="pick_up_date"
+                  (dateChange)="setEventDate($event.value)"
                   placeholder="Choose a date"
                 />
                 <mat-datepicker-toggle matSuffix [for]="pickup_datePicker"></mat-datepicker-toggle>
@@ -180,7 +195,13 @@
               <label for="pickup_date"><h2>Event Date</h2></label>
 
               <mat-form-field class="">
-                <input matInput [min]="minDate" [matDatepicker]="staffedEventDatePicker" placeholder="Choose a date" />
+                <input
+                  matInput
+                  [min]="minDate"
+                  [matDatepicker]="staffedEventDatePicker"
+                  (dateChange)="setEventDate($event.value)"
+                  placeholder="Choose a date"
+                />
                 <mat-datepicker-toggle matSuffix [for]="staffedEventDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker touchUi #staffedEventDatePicker></mat-datepicker>
               </mat-form-field>

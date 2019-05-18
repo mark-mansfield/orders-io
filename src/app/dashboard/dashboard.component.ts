@@ -8,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
   viewOrders = true;
   viewOrderCreate = false;
+  uniqueId: string;
+
   constructor() {}
 
-  _createOrder() {
-    this.viewOrderCreate = true;
+  _createOrderNumber() {
+    this.uniqueId = Math.floor(1000 + Math.random() * 9000).toString();
+
+    console.log(this.uniqueId);
   }
 
   _viewOrders() {
@@ -21,6 +25,9 @@ export class DashboardComponent implements OnInit {
   _toggleViews() {
     this.viewOrders = !this.viewOrders;
     this.viewOrderCreate = !this.viewOrderCreate;
+    if (this.viewOrderCreate) {
+      this._createOrderNumber();
+    }
   }
 
   _navgationBackDetected($event) {
