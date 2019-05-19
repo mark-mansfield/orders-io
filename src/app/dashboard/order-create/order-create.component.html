@@ -40,6 +40,7 @@
           </div>
           <div class="form-element">
             <label for="contactName"><h2>Name</h2></label>
+
             <input
               type="text"
               formControlName="contactName"
@@ -74,11 +75,11 @@
           <!-- select event type -->
           <div class="form-element">
             <div style="width: 300px; height: 76px; margin: 10px 0 ">
-              <label for="eventOptions"><h2>Event Options</h2></label>
-              <small>client pick / delivery service / staffed event</small>
+              <label for="eventOptions"><h2>Event Type</h2></label>
+              <small>client pickup / delivery service / staffed event</small>
 
               <mat-select
-                placeholder="event options..."
+                placeholder="event type..."
                 formControlName="eventType"
                 name="eventOptions"
                 (selectionChange)="onSelectEventType($event.value)"
@@ -94,28 +95,51 @@
               </div>
             </div>
           </div>
-          <!-- conditional displays -->
-          <!-- show delivery options -->
+          <br /><br />
+          <!-- number of guests -->
 
-          <!-- delivery address -->
-          <div *ngIf="delivery">
-            <div class="form-element">
-              <label for="pickup_date"><h2>Event Date</h2></label>
-              <small>select a date to deliver on</small>
-              <mat-form-field class="">
-                <input
-                  matInput
-                  [min]="minDate"
-                  [matDatepicker]="deliveryDatePicker"
-                  (dateChange)="setEventDate($event.value)"
-                  placeholder="Choose a date"
-                />
-                <mat-datepicker-toggle matSuffix [for]="deliveryDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #deliveryDatePicker></mat-datepicker>
-              </mat-form-field>
+          <div class="form-element">
+            <label for="number Of Guests"><h2>Number of Guests</h2></label>
+
+            <mat-form-field class="">
+              <input
+                matInput
+                name="numberOfGuests"
+                formControlName="numberOfGuests"
+                [min]="minDate"
+                placeholder="how many guests?"
+              />
+            </mat-form-field>
+            <div *ngIf="submitted && f.numberOfGuests.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.numberOfGuests.errors.required">Please add the number of guests</mat-error>
             </div>
+          </div>
+
+          <div class="form-element">
+            <label for="pickup_date"><h2>Event Date</h2></label>
+            <mat-form-field class="">
+              <input
+                formControlName="eventDate"
+                matInput
+                [min]="minDate"
+                [matDatepicker]="eventDatePicker"
+                (dateChange)="setEventDate($event.value)"
+                placeholder="Choose a date"
+              />
+              <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #eventDatePicker></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.eventDate.errors.required">Date required</mat-error>
+            </div>
+          </div>
+
+          <!-- start conditional displays -->
+
+          <!-- Delivery address -->
+          <div *ngIf="!pickUp && eventType !== null">
             <div class="form-element">
-              <label for="address"><h2>Delivery Address</h2></label>
+              <label for="address"><h2>Event Address</h2></label>
               <small>client delivery address</small>
               <textarea
                 formControlName="address"
@@ -130,9 +154,10 @@
                 >only numbers and letters are allowed
               </mat-error>
             </div>
+
             <!-- delivery times select -->
             <div class="form-element">
-              <label for="menu"><h2>Delivery Time</h2></label>
+              <label for="menu"><h2>Event Time</h2></label>
               <small>To arrive at address</small>
               <mat-select
                 placeholder="delivery time..."
@@ -149,32 +174,10 @@
 
           <!-- pickup Event option -->
           <div *ngIf="pickUp" class="form-element">
-            <div *ngIf="limitedPickUpDates">
-              [show pickup UI]
-            </div>
-
-            <!-- calendar -->
-            <div *ngIf="!limitedPickUpDates" class="form-element">
-              <label for="pickup_date"><h2>Event Date</h2></label>
-              <small>picking up from us</small>
-              <mat-form-field class="">
-                <input
-                  matInput
-                  [min]="minDate"
-                  [matDatepicker]="pickup_datePicker"
-                  name="pick_up_date"
-                  (dateChange)="setEventDate($event.value)"
-                  placeholder="Choose a date"
-                />
-                <mat-datepicker-toggle matSuffix [for]="pickup_datePicker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #pickup_datePicker></mat-datepicker>
-              </mat-form-field>
-            </div>
-
             <!-- pick up times select -->
             <div *ngIf="pickUp" class="form-element">
               <label for="pickUpTime"><h2>Pick Up Time</h2></label>
-              <small>client to pick up from venue</small>
+              <small>client to pick up from H.Q.</small>
               <mat-select
                 placeholder="pick up time..."
                 name="pickupTimeOptions"
@@ -190,39 +193,7 @@
 
           <!-- staffed event option -->
           <div *ngIf="staffed">
-            <!-- calendar -->
-            <div class="form-element">
-              <label for="pickup_date"><h2>Event Date</h2></label>
-
-              <mat-form-field class="">
-                <input
-                  matInput
-                  [min]="minDate"
-                  [matDatepicker]="staffedEventDatePicker"
-                  (dateChange)="setEventDate($event.value)"
-                  placeholder="Choose a date"
-                />
-                <mat-datepicker-toggle matSuffix [for]="staffedEventDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #staffedEventDatePicker></mat-datepicker>
-              </mat-form-field>
-            </div>
-            <!-- address -->
-            <div class="form-element">
-              <label for="address"><h2>Event Address</h2></label>
-              <small>client event address</small>
-              <textarea
-                formControlName="address"
-                name="address"
-                value=""
-                style="width: 100%; height: 200px ; padding: 10px"
-                placeholder="deliver to..."
-                pattern="[a-zA-Z0-9 ./-]*"
-                (ngModelChange)="onUpdateDeliveryAddress($event)"
-              ></textarea>
-              <mat-error *ngIf="submitted && f.address.errors" class="invalid-feedback"
-                >only numbers and letters are allowed
-              </mat-error>
-            </div>
+            <!-- styling packages select -->
             <div class="form-element">
               <label for="address"><h2>Event Styling</h2></label>
               <mat-select

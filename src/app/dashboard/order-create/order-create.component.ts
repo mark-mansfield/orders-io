@@ -147,6 +147,7 @@ export class OrderCreateComponent implements OnInit {
   }
 
   navigateBack() {
+    this.form.reset();
     this.navigationBack.emit(true);
   }
 
@@ -165,7 +166,9 @@ export class OrderCreateComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       notes: ['', [Validators.pattern('[a-zA-Z0-9 .]*')]],
       address: ['', [Validators.pattern('[a-zA-Z0-9 ./-]*')]],
-      eventType: ['', Validators.required]
+      eventType: ['', Validators.required],
+      numberOfGuests: ['', Validators.required],
+      eventDate: ['', Validators.required]
     });
 
     this.dishes = this.menu.items;
@@ -197,6 +200,7 @@ export class OrderCreateComponent implements OnInit {
     this.pickUpDateSelected = null;
     this.pickUpTimeSelected = null;
     this.stylePackage = null;
+    console.log(this.eventType);
   }
 
   onSelectEventType(item) {
@@ -279,6 +283,7 @@ export class OrderCreateComponent implements OnInit {
       eventDetails: {
         eventType: this.eventType,
         eventDate: this.eventDate,
+        numberOfGuests: this.form.value.numbeOfGuests,
         deliveryTimeSelected: this.deliveryTimeSelected,
         pickUpTimeSelected: this.pickUpTimeSelected,
         deliveryAddress: this.deliveryAddress,
@@ -291,6 +296,8 @@ export class OrderCreateComponent implements OnInit {
       __v: null
     };
     this.orderService.createOrder(this.order);
+    this.form.reset();
+    this.navigateBack();
     // console.log(this.order); // this.form.reset();
   }
 }

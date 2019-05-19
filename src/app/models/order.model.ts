@@ -11,6 +11,7 @@ export interface Order {
   orderedItems: any[];
   eventDetails: {
     eventType: string;
+    numberOfGuests: string;
     eventDate: string;
     deliveryTimeSelected: string;
     pickUpTimeSelected: string;
