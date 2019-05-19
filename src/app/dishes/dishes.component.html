@@ -1,4 +1,4 @@
-<div class="flex-row-container row-header" id="toolbar">
+<div class="flex-row-container toolbar">
   <div class="flex-container-33  left-col" id="leftCol">
     <mat-select placeholder="filter by course" (selectionChange)="onSelectCourse($event.value)">
       <mat-option *ngFor="let course of courses" [value]="course">
