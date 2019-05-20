@@ -13,31 +13,8 @@
     margin-top: 64px !important;
   }
 
-  /* .sidebar,
+  .sidebar h2,
   .sidebar-item {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  } */
-
-  /* .list-component,
-  .order-create-component {
-    width: 80%;
-  } */
-  /* .flexContainer {
-    width: 100vw;
-    background-color: #e8f6f9;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-start;
+    margin: 3rem 0;
   }
-
-  .flexContainer {
-    flex-direction: row;
-  } */
-}
-
-.sidebar h2,
-.sidebar-item {
-  margin: 3rem 0;
 }
