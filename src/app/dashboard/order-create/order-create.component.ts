@@ -4,6 +4,7 @@ import { Order } from '../../models/order.model';
 
 import { OrderService } from '../../services/order.service';
 import { DishService } from '../../services/dish.service';
+
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
@@ -16,8 +17,10 @@ export class OrderCreateComponent implements OnInit {
   day = this.today.getDate();
   month = this.today.getMonth();
   minDate = new Date(this.year, this.month, this.day);
+
   // set event date like this
   // eventDateTmp = new Date(this.year, this.month, this.day + 2); [value]="eventDateTmp"
+
   order: Order;
   notes: string;
   menuName: string;
@@ -134,6 +137,7 @@ export class OrderCreateComponent implements OnInit {
   limitedPickUpDates: boolean;
   styling: boolean;
   private _uniqueId = '';
+
   constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) {}
 
   @Output() navigationBack = new EventEmitter<boolean>();
