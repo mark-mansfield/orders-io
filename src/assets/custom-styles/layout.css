@@ -42,7 +42,9 @@
   width: 25%;
 }
 
-.row-header {
+.toolbar {
+  position: fixed;
+  margin-top: 64px;
   height: 64px;
   background-color: var(--row-header-background);
   border-bottom: 1px solid rgb(234, 252, 255);
@@ -69,9 +71,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
-.toolbar {
-  background-color: rgb(38, 38, 38);
 }
 
 .flex-row-container-align-left {
@@ -178,11 +177,11 @@
   .sidebar {
     position: fixed;
     display: flex;
+    margin-top: 128px;
     flex-flow: column;
     justify-content: flex-start;
     align-items: center;
     min-width: 400px;
-    padding-top: 54px;
     height: 100vh;
     background-color: #2b2929;
   }
