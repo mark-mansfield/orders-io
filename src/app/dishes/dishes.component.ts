@@ -1,17 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-dishes',
   templateUrl: './dishes.component.html',
   styleUrls: ['./dishes.component.css']
 })
 export class DishesComponent implements OnInit {
+  form: FormGroup;
   dishes = [];
   courses: any = [];
   selectedItem = null;
-  disableEditTools: Boolean = true;
+
+  mode: string;
+  inputDisabled: Boolean = true;
+
+  disableEditTools: Boolean = false;
   editMode: Boolean = false;
   createMode: Boolean = false;
+  submitted: Boolean = false;
+
   data = [
     {
       name: 'Slow Cooked Lamb Shoulder',
@@ -68,9 +75,27 @@ export class DishesComponent implements OnInit {
       course: 'soup'
     }
   ];
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    this.submitted = false;
+
+    this.form = this.formBuilder.group({
+      dishName: [
+        { value: '', disabled: this.inputDisabled },
+        [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]
+      ],
+      description: [
+        { value: '', disabled: this.inputDisabled },
+        [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]
+      ],
+      portion_sizes: [
+        { value: '', disabled: this.inputDisabled },
+        [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]
+      ],
+      course: [{ value: '', disabled: this.inputDisabled }, [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]]
+    });
+
     this.dishes = this.data;
     this.dishes.forEach((item, index) => {
       if (this.courses[index] !== item.course) {
@@ -81,18 +106,51 @@ export class DishesComponent implements OnInit {
     this.courses = new Set(this.courses);
   }
 
-  toggleEditMode() {
-    if (!this.editMode) {
-      this.editMode = true;
-    } else {
-      this.editMode = false;
+  // toggleEditMode() {
+  //   if (!this.editMode) {
+  //     this.editMode = true;
+  //   } else {
+  //     this.editMode = false;
+  //   }
+  //   this.createMode = false;
+  //   console.log('toggeling edit mode', this.editMode);
+  //   console.log('create mode : false', this.editMode);
+  // }
+
+  updateFormMode(mode) {
+    if (mode === 'create') {
+      this.mode = mode;
+      this.selectedItem = {};
+      this.form.controls.dishName.reset({ value: this.selectedItem.name, disabled: false });
+      this.form.controls.description.reset({ value: this.selectedItem.description, disabled: false });
+      this.form.controls.portion_sizes.reset({ value: this.selectedItem.portion_sizes, disabled: false });
+      this.form.controls.course.reset({ value: this.selectedItem.course, disabled: false });
     }
-    this.createMode = false;
-    console.log('toggeling edit mode', this.editMode);
-    console.log('create mode : false', this.editMode);
+    if (mode === 'edit') {
+      this.inputDisabled = false;
+      this.mode = mode;
+      this.form.controls.dishName.reset({ value: this.selectedItem.name, disabled: false });
+      this.form.controls.description.reset({ value: this.selectedItem.description, disabled: false });
+      this.form.controls.portion_sizes.reset({ value: this.selectedItem.portion_sizes, disabled: false });
+      this.form.controls.course.reset({ value: this.selectedItem.course, disabled: false });
+    }
+    if (mode === 'view') {
+      this.form.controls.dishName.reset({ value: this.selectedItem.name, disabled: true });
+      this.form.controls.description.reset({ value: this.selectedItem.description, disabled: true });
+      this.form.controls.portion_sizes.reset({ value: this.selectedItem.portion_sizes, disabled: true });
+      this.form.controls.course.reset({ value: this.selectedItem.course, disabled: true });
+      this.inputDisabled = true;
+    }
+
+    this.mode = mode;
+    console.log(this.mode);
   }
 
-  onSelectCourse(course) {
+  // onSelectMode(mode) {
+  //   this.mode = mode;
+  // }
+
+  onFilterByCourse(course) {
     if (course === 'all') {
       this.dishes = this.data;
       return;
@@ -102,26 +160,31 @@ export class DishesComponent implements OnInit {
     });
   }
 
-  enableEditTools() {
+  onSelectCourse(course) {
+    this.form.controls.course.reset({ value: course, disabled: false });
+  }
+
+  toggleEditTools() {
     this.disableEditTools = false;
     this.createMode = false;
   }
 
   onItemSelect($event) {
-    console.log(typeof $event);
     this.selectedItem = $event;
-
-    this.enableEditTools();
+    this.updateFormMode('view');
+    this.toggleEditTools();
   }
 
-  onAddDishClicked() {
-    this.selectedItem = null;
-    this.editMode = false;
-    this.createMode = true;
-  }
+  // onAddDishClicked() {
+  //   this.selectedItem = null;
+  //   this.editMode = false;
+  //   this.createMode = true;
+  //   this.updateMode(mode)
+  //   console.log(this.mode);
+  // }
 
   saveDish(dish: Object) {
     console.log('saving dish');
-    this.toggleEditMode();
+    // this.toggleEditMode();
   }
 }
