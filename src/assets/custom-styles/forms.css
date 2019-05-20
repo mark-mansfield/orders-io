@@ -19,15 +19,16 @@ form {
 }
 
 input,
-select {
+select,
+textarea {
   height: 50px;
+  padding: 20px;
 }
 
 input,
 textarea,
 select,
 .mat-select {
-  padding: 20px;
   width: 100% !important;
   font-size: 1rem;
   color: inherit !important;
