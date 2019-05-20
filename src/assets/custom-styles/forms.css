@@ -15,13 +15,20 @@ form {
 
 .form-element {
   margin: 10px 0;
-  width: 100%;
+  width: 500px;
 }
 
-input {
-  padding-left: 10px;
-  width: 300px;
+input,
+select {
   height: 50px;
+}
+
+input,
+textarea,
+select,
+.mat-select {
+  padding: 20px;
+  width: 100% !important;
   font-size: 1rem;
   color: inherit !important;
 }
@@ -30,7 +37,21 @@ input {
   width: 100px !important;
 }
 
-input:read-only,
-textarea:read-only {
+textarea {
+  height: auto;
+}
+
+input:disabled,
+textarea:disabled,
+.disabled {
   background-color: rgba(175, 175, 175, 0.13);
+  color: black;
+}
+
+.mat-select-disabled .mat-select-value {
+  color: black !important;
+}
+
+.enabled {
+  background-color: white;
 }
