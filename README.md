@@ -81,7 +81,20 @@ Auth Server and Data will be on the same server initially. If the project needs 
 A replication server will be set to be used as a fall back.
 
 ## Use Cases
-
+1.
 Customer has placed an order via an external system.
 Admin user uploads the csv file containing order data in the system.
 The admin can then edit order info and then use the Summaries features to generate different reports for the kitchen.
+
+2.
+A customer calls up the office to place an order , teh admin staff log in got to the orders page and create a new order with the details provided from the phone call and saves it to the server.
+
+3. 
+A customer calls up to change an order, the admin staff logs in , goes to the orders page and selects the order in question, performs the edits then saves the order.
+
+4. 
+A new menu is being created, the admin staff logs in, goes to the menus page and create a new menu using the form provided, then saves that data back to the server.
+
+5.
+An exisiting menu needs to be editied, the admin staff logs in, goes to the menu page, selects the meu in question then adds, edits or deletes items, then saves the data back to the server.
+
