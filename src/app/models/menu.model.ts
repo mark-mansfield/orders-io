@@ -3,6 +3,4 @@ export interface Menu {
   title: string;
   description: string;
   items: any;
-  imagePath: string;
-  creator: string;
 }

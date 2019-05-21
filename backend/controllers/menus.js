@@ -1,37 +1,24 @@
 // we need to access our models
 const Menu = require('../models/menu');
 
-exports.createmenu = (req, res, next) => {
-  const url = req.protocol + '://' + req.get('host');
-  const menu = new Menu({
-    _id: req.body.id,
-    title: req.body.title,
-    description: req.body.description,
-    imagePath: url + '/images/' + req.file.filename,
-    creator: req.userData.userId
-  });
-  debugger;
-  // mongoose  automatically creates the collection based upon the Model name it used during Models.exports for this object use node
-  menu
+// create Menu
+exports.createMenu = (req, res, next) => {
+  const newMenu = new Menu(req.body);
+  console.log('new menu: ', newMenu);
+  newMenu
     .save()
     .then(createdMenu => {
       if (createdMenu) {
-        res.status(201).json({
+        res.status(200).json({
           message: 'Menu Added',
-          menu: {
-            id: createdMenu._id, // remap id mongo adds _id property
-            title: createdMenu.title,
-            items: createdMenu.items,
-            description: createdMenu.description,
-            imagePath: createdMenu.imagePath,
-            creator: createdMenu.userId
-          }
+          order: createdMenu
         });
       } else {
         res.status(201).json({ message: 'Menu Not Added' });
       }
     })
     .catch(error => {
+      console.log(error);
       res.status(500).json({
         message: 'Creating a menu Failed!'
       });
@@ -48,14 +35,11 @@ exports.updateMenu = (req, res, next) => {
     _id: req.body.id,
     title: req.body.title,
     items: req.body.items,
-    description: req.body.description,
-    imagePath: imagePath,
-    creator: req.userData.userId
+    description: req.body.description
   });
   Menu.updateOne(
     {
-      _id: req.params.id,
-      creator: req.userData.userId
+      _id: req.params.id
     },
     menu
   )
@@ -106,7 +90,7 @@ exports.getMenu = (req, res, next) => {
 };
 
 exports.deleteMenu = (req, res, next) => {
-  Menu.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+  Menu.deleteOne({ _id: req.params.id })
     .then(result => {
       console.log(result);
       if (result.n > 0) {

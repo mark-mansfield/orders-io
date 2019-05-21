@@ -1,1 +1,76 @@
-<h1>Menus Component works!</h1>
+<div class="flex-row-container" id="content">
+  <div class="sidebar" id="sidebar">
+    <div class="flex-item compose">
+      <button mat-button (click)="updateFormMode('create')">
+        <i class="material-icons md-36 icon-color-light">
+          add
+        </i>
+      </button>
+    </div>
+    <app-list-menus [data]="menusData" (selectItem)="onItemSelect($event)"></app-list-menus>
+  </div>
+  <div class="view inner-margin">
+    <div id="view" class="inner-margin" *ngIf="selectedItem !== null">
+      <div class="flex-container-66 edit-tools" id="rightCol">
+        <button mat-mini-fab (click)="updateFormMode('edit')" [disabled]="this.disableEditTools" title="edit this item">
+          <i class="material-icons icon-color-light">
+            edit
+          </i>
+        </button>
+
+        <button mat-mini-fab [disabled]="this.disableEditTools" title="delete this item">
+          <i class="material-icons icon-color-light">
+            delete
+          </i>
+        </button>
+        <button mat-mini-fab [disabled]="this.disableEditTools" title="clone item">
+          <i class="material-icons icon-color-light">
+            file_copy
+          </i>
+        </button>
+      </div>
+
+      <!-- generic form -->
+      <div class="inner-margin" style="width: 100%">
+        <h2>Menu - {{ this.mode }}</h2>
+        <!-- (ngSubmit)="onSaveDish()"  -->
+        <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveMenu()">
+          <div class="form-element">
+            <label for="name"><h2>Menu Name</h2></label>
+            <input type="text" value="{{ selectedItem.title }}" placeholder="dish name..." formControlName="title" />
+            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.title.errors.required">A menu title is required</mat-error>
+            </div>
+          </div>
+          <div class="form-element">
+            <label for="description"><h2>Description</h2></label>
+            <textarea
+              value="{{ selectedItem.description }}"
+              formControlName="description"
+              placeholder="dish description..."
+            ></textarea>
+            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.description.errors.required">A description is required</mat-error>
+            </div>
+          </div>
+
+          <br />
+          <div>
+            <button class="dialog-button" mat-raised-button color="accent" type="submit">
+              save
+            </button>
+            <button
+              class="dialog-button"
+              mat-raised-button
+              color="accent"
+              style="margin-left: 10px"
+              (click)="updateFormMode('null')"
+            >
+              cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

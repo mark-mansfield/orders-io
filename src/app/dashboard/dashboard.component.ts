@@ -14,7 +14,6 @@ export class DashboardComponent implements OnInit {
 
   _createOrderNumber() {
     this.uniqueId = Math.floor(1000 + Math.random() * 9000).toString();
-
     console.log(this.uniqueId);
   }
 

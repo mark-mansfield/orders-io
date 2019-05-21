@@ -1,47 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { DataService } from '../../services/menu.service';
-import { Subscription } from 'rxjs';
-import { Menu } from '../../models/menu.model';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-list-menus',
   templateUrl: './list-menus.component.html',
   styleUrls: ['./list-menus.component.css']
 })
-export class ListMenusComponent implements OnInit, OnDestroy {
-  menus: Menu[] = [];
-  isLoading = false;
-  userIsAuthenticated = false;
-  userId: string;
-  private menusSub: Subscription;
-  private authStatusSub: Subscription;
+export class ListMenusComponent implements OnInit {
+  @Input() data: any;
+  @Output() selectItem = new EventEmitter<object>();
+  constructor() {}
 
-  constructor(private data: DataService, private authService: AuthService, public route: ActivatedRoute) {}
+  onItemSelect(item) {
+    this.selectItem.emit(item);
+  }
 
   ngOnInit() {
-    this.data.getMenus();
-    this.isLoading = true;
-    this.userId = this.authService.getUserId();
-    this.menusSub = this.data.getMenuUpdateListener().subscribe((menus: Menu[]) => {
-      this.isLoading = false;
-      this.menus = menus;
-    });
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
-      this.userIsAuthenticated = isAuthenticated;
-      this.authService.getUserId();
-    });
-  }
-  // onEditMenu(id: string) {
-  //   this.data.getMenu(id);
-  // }
-  onDelete(id: String) {
-    this.data.deleteMenu(id);
-  }
-
-  ngOnDestroy() {
-    this.menusSub.unsubscribe();
+    console.log(this.data);
   }
 }

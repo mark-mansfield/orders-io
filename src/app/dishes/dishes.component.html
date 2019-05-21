@@ -7,6 +7,7 @@
     </mat-select>
   </div>
 </div>
+
 <div class="flex-row-container" id="content">
   <div class="sidebar" id="sidebar">
     <div class="flex-item compose">
@@ -108,73 +109,7 @@
             </button>
           </div>
         </form>
-
-        <!-- <div *ngIf="selectedItem !== null" class="flex-item">
-          <app-dish-details-edit
-            [data]="selectedItem"
-            [editMode]="editMode"
-            (cancelEdit)="toggleEditMode($event)"
-            (update)="saveDish($event)"
-            [courses]="courses"
-          ></app-dish-details-edit>
-        </div> -->
       </div>
     </div>
-    <!-- <div class="inner-margin" *ngIf="createMode">
-      <div class="flex-item">
-        <app-dish-create [courses]="courses"></app-dish-create>
-        <h2>New Dish</h2>
-        <form [formGroup]="createForm" (ngSubmit)="onSaveDish()" class="inner-margin">
-          <div class="form-element">
-            <label for="name"><h2>Dish Name</h2></label>
-            <input type="text" value="" placeholder="dish name..." formControlName="dishName" />
-            <div *ngIf="submitted && f.dishName.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.dishName.errors.required">Dish name is required</mat-error>
-            </div>
-          </div>
-          <div class="form-element">
-            <label for="description"><h2>Description</h2></label>
-            <textarea value="" formControlName="description" placeholder="dish description..."></textarea>
-            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.description.errors.required">A description is required</mat-error>
-            </div>
-          </div>
-          <div class="form-element">
-            <label for="portion_sizes"><h2>Portion Sizes</h2> </label>
-            <span> * use comma to separate options</span><br />
-            <input type="text" formControlName="portion_sizes" value="" placeholder="portion size options " />
-            <div *ngIf="submitted && f.portion_sizes.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.description.errors.required">Portion sizes are required</mat-error>
-            </div>
-          </div>
-          <div class="form-element">
-            <label for="courses"><h2>Course</h2></label>
-            <mat-select placeholder="course" formControlName="course" (selectionChange)="onSelectCourse($event.value)">
-              <mat-option *ngFor="let course of courses" [value]="course">
-                {{ course }}
-              </mat-option>
-            </mat-select>
-            <div *ngIf="submitted && f.course.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.course.errors.required">Course selection is required</mat-error>
-            </div>
-          </div>
-          <br />
-          <div>
-            <button class="dialog-button" mat-raised-button color="accent" type="submit">
-              save
-            </button>
-            <button
-              class="dialog-button"
-              mat-raised-button
-              color="accent"
-              style="margin-left: 10px"
-              (click)="this.navigateBack()"
-            >
-              cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div> -->
   </div>
 </div>

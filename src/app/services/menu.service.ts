@@ -26,9 +26,7 @@ export class DataService {
               title: menu.title,
               description: menu.description,
               items: menu.items,
-              id: menu._id,
-              imagePath: menu.imagePath,
-              creator: menu.creator
+              id: menu._id
             };
           });
         })
@@ -48,65 +46,50 @@ export class DataService {
       _id: string;
       title: string;
       description: string;
-      imagePath: string;
-      items: any;
-      creator: string;
     }>(BACKEND_URL + id);
   }
 
-  addMenu(title: string, description: string, items: any, image: File) {
-    const menuData = new FormData();
-    menuData.append('title', title);
-    menuData.append('description', description);
-    menuData.append('items', items);
-    menuData.append('image', image, title);
-    // add to server then update local if successful
-    this.http.post<{ message: string; menu: Menu }>(BACKEND_URL, menuData).subscribe(returnedData => {
-      const menu: Menu = {
-        id: returnedData.menu.id,
-        title: title,
-        description: description,
-        items: items,
-        imagePath: returnedData.menu.imagePath,
-        creator: null
-      };
+  addMenu(menu) {
+    // console.log(menu);
+    this.http.post<{ message: string; menu: any }>(BACKEND_URL + 'create', menu).subscribe(returnedData => {
       console.log(returnedData.message);
       this.menus.push(menu);
       this.menusUpdated.next([...this.menus]); // inform UI
-      this.router.navigate(['/list-menus']);
     });
+
+    // this.http.post<{ message: string; menu: Menu }>(BACKEND_URL, menuData).subscribe(returnedData => {
+    //   const menu: Menu = {
+    //     id: returnedData.menu.id,
+    //     title: title,
+    //     description: description,
+    //     items: items
+    //   };
+    //   console.log(returnedData.message);
+    //   this.menus.push(menu);
+    //   this.menusUpdated.next([...this.menus]); // inform UI
+    //   this.router.navigate(['/list-menus']);
+    // });
   }
 
-  updateMenu(id: string, title: string, description: string, items: any, image: File | string, creator: string) {
+  updateMenu(id: string, title: string, description: string, items: any) {
     let menuData: Menu | FormData;
-    if (typeof image === 'object') {
-      menuData = new FormData();
-      menuData.append('id', id);
-      menuData.append('title', title);
-      menuData.append('description', description);
-      menuData.append('items', items);
-      menuData.append('image', image, title);
-      menuData.append('creator', creator);
-    } else {
-      menuData = {
-        id: id,
-        title: title,
-        description: description,
-        items: {
-          entree: ['chopped liver', 'confit tuna', 'hommus', 'romanian eggplant'],
-          main: [
-            'Slow Cooked Lamb Shoulder',
-            'Grilled Ora king salmon',
-            'Ocean trout tarator',
-            'Slow Braised Free Range Chicken'
-          ],
-          soup: 'Holmbrae chicken and vegetable soup',
-          desert: []
-        },
-        imagePath: image,
-        creator: null
-      };
-    }
+
+    menuData = {
+      id: id,
+      title: title,
+      description: description,
+      items: {
+        entree: ['chopped liver', 'confit tuna', 'hommus', 'romanian eggplant'],
+        main: [
+          'Slow Cooked Lamb Shoulder',
+          'Grilled Ora king salmon',
+          'Ocean trout tarator',
+          'Slow Braised Free Range Chicken'
+        ],
+        soup: 'Holmbrae chicken and vegetable soup',
+        desert: []
+      }
+    };
 
     // const menu: Menu = { id: id, title: title, description: description, imagePath: imagePath };
     this.http.put(BACKEND_URL + id, menuData).subscribe(response => {
@@ -126,14 +109,11 @@ export class DataService {
           ],
           soup: 'Holmbrae chicken and vegetable soup',
           desert: []
-        },
-        imagePath: '',
-        creator: creator
+        }
       };
       updatedMenus[oldMenuIndex] = menu;
       this.menus = updatedMenus;
       this.menusUpdated.next([...this.menus]);
-      this.router.navigate(['/list-menus']);
     });
   }
 
