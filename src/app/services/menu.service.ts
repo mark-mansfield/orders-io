@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Menu } from '../models/menu.model';
+import { SnackBarService } from './snackbar.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +13,7 @@ export class DataService {
   private menus: Menu[] = [];
   private menusUpdated = new Subject<Menu[]>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private snackBarService: SnackBarService) {}
 
   getMenus() {
     return this.http
@@ -26,7 +27,7 @@ export class DataService {
               title: menu.title,
               description: menu.description,
               items: menu.items,
-              id: menu._id
+              _id: menu._id
             };
           });
         })
@@ -52,75 +53,31 @@ export class DataService {
   addMenu(menu) {
     // console.log(menu);
     this.http.post<{ message: string; menu: any }>(BACKEND_URL + 'create', menu).subscribe(returnedData => {
-      console.log(returnedData.message);
-      this.menus.push(menu);
+      console.log(returnedData.menu);
+      this.menus.push(returnedData.menu);
       this.menusUpdated.next([...this.menus]); // inform UI
     });
-
-    // this.http.post<{ message: string; menu: Menu }>(BACKEND_URL, menuData).subscribe(returnedData => {
-    //   const menu: Menu = {
-    //     id: returnedData.menu.id,
-    //     title: title,
-    //     description: description,
-    //     items: items
-    //   };
-    //   console.log(returnedData.message);
-    //   this.menus.push(menu);
-    //   this.menusUpdated.next([...this.menus]); // inform UI
-    //   this.router.navigate(['/list-menus']);
-    // });
   }
 
-  updateMenu(id: string, title: string, description: string, items: any) {
-    let menuData: Menu | FormData;
-
-    menuData = {
-      id: id,
-      title: title,
-      description: description,
-      items: {
-        entree: ['chopped liver', 'confit tuna', 'hommus', 'romanian eggplant'],
-        main: [
-          'Slow Cooked Lamb Shoulder',
-          'Grilled Ora king salmon',
-          'Ocean trout tarator',
-          'Slow Braised Free Range Chicken'
-        ],
-        soup: 'Holmbrae chicken and vegetable soup',
-        desert: []
+  updateMenu(menu) {
+    console.log(menu);
+    this.http.put<{ message: string; menu: any }>(BACKEND_URL + 'update', menu).subscribe(returnedData => {
+      console.log(returnedData.message);
+      if (returnedData.message) {
+        const idx = this.menus.findIndex(p => p._id === menu._id);
+        this.menus[idx] = menu;
+        this.menusUpdated.next([...this.menus]); // inform UI
+        this.snackBarService.openSnackBar('order updated');
+      } else {
+        console.log('menu not updated...');
       }
-    };
-
-    // const menu: Menu = { id: id, title: title, description: description, imagePath: imagePath };
-    this.http.put(BACKEND_URL + id, menuData).subscribe(response => {
-      const updatedMenus = [...this.menus];
-      const oldMenuIndex = updatedMenus.findIndex(p => p.id === id);
-      const menu: Menu = {
-        id: id,
-        title: title,
-        description: description,
-        items: {
-          entree: ['chopped liver', 'confit tuna', 'hommus', 'romanian eggplant'],
-          main: [
-            'Slow Cooked Lamb Shoulder',
-            'Grilled Ora king salmon',
-            'Ocean trout tarator',
-            'Slow Braised Free Range Chicken'
-          ],
-          soup: 'Holmbrae chicken and vegetable soup',
-          desert: []
-        }
-      };
-      updatedMenus[oldMenuIndex] = menu;
-      this.menus = updatedMenus;
-      this.menusUpdated.next([...this.menus]);
     });
   }
 
   deleteMenu(id: String) {
     this.http.delete(BACKEND_URL + id).subscribe(result => {
       // filter returns all entries where the  condition === true and removes entries where the condition === false
-      const updateMenus = this.menus.filter(menu => menu.id !== id);
+      const updateMenus = this.menus.filter(menu => menu._id !== id);
       // update menus array with filtered result
       this.menus = updateMenus;
       // inform UI
