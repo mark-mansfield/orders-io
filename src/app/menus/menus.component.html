@@ -16,7 +16,7 @@
           mat-mini-fab
           (click)="updateFormMode('edit')"
           title="edit this item"
-          *ngIf="this.mode !== 'edit'"
+          *ngIf="this.mode !== 'edit' && this.mode !== 'create'"
           class="lock"
         >
           <i class="material-icons icon-color-light ">
@@ -56,9 +56,20 @@
         <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveMenu()">
           <div class="form-element">
             <label for="name"><h2>Menu Name</h2></label>
-            <input type="text" value="{{ selectedItem.title }}" placeholder="Menu name..." formControlName="title" />
+            <input
+              type="text"
+              value="{{ selectedItem.title }}"
+              placeholder="Menu name..."
+              formControlName="title"
+              pattern="[a-zA-Z0-9 .]*"
+            />
             <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
               <mat-error *ngIf="f.title.errors.required">A menu title is required</mat-error>
+              <mat-error *ngIf="f.title.errors.pattern">letters and numbers only</mat-error>
+              <mat-error *ngIf="f.title.errors"></mat-error>
+            </div>
+            <div *ngIf="submitted && isDuplicate" class="invalid-feedback">
+              <mat-error>Menu title already taken</mat-error>
             </div>
           </div>
           <div class="form-element">

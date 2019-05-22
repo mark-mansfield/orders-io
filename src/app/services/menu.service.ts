@@ -53,9 +53,16 @@ export class DataService {
   addMenu(menu) {
     // console.log(menu);
     this.http.post<{ message: string; menu: any }>(BACKEND_URL + 'create', menu).subscribe(returnedData => {
-      console.log(returnedData.menu);
-      this.menus.push(returnedData.menu);
-      this.menusUpdated.next([...this.menus]); // inform UI
+      console.log(returnedData.message);
+      if (returnedData.message === '0') {
+        this.menus.push(returnedData.menu);
+        this.menusUpdated.next([...this.menus]); // inform UI
+        this.snackBarService.openSnackBar('Menu Added!');
+      } else if (returnedData.message === '1') {
+        this.snackBarService.openSnackBar('You are not authorized to perform this action');
+      } else {
+        this.snackBarService.openSnackBar(returnedData);
+      }
     });
   }
 
@@ -69,20 +76,26 @@ export class DataService {
         this.menusUpdated.next([...this.menus]); // inform UI
         this.snackBarService.openSnackBar('order updated');
       } else {
-        console.log('menu not updated...');
+        this.snackBarService.openSnackBar('Menu not deleted due to server error; retry');
       }
     });
   }
 
   deleteMenu(id: String) {
-    this.http.delete(BACKEND_URL + id).subscribe(result => {
-      // filter returns all entries where the  condition === true and removes entries where the condition === false
-      const updateMenus = this.menus.filter(menu => menu._id !== id);
-      // update menus array with filtered result
-      this.menus = updateMenus;
-      // inform UI
-      this.menusUpdated.next([...this.menus]);
-      console.log(result);
+    this.http.delete(BACKEND_URL + id).subscribe(returnedData => {
+      console.log(returnedData);
+      if (returnedData === '0') {
+        const updateMenus = this.menus.filter(menu => menu._id !== id);
+        this.menus = updateMenus;
+        // inform UI
+        this.menusUpdated.next([...this.menus]);
+        this.snackBarService.openSnackBar('Menu Deleted!');
+      }
+      if (returnedData === '1') {
+        this.snackBarService.openSnackBar('You are not authorized to perform this action');
+      } else {
+        this.snackBarService.openSnackBar(returnedData);
+      }
     });
   }
 }

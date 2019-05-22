@@ -5,6 +5,7 @@ import { DeleteItemComponent } from '../dialogs/delete-item/delete-item.componen
 import { DataService } from '../services/menu.service';
 import { Subscription } from 'rxjs';
 import { Menu } from '../models/menu.model';
+import { INVALID } from '@angular/forms/src/model';
 @Component({
   selector: 'app-menus',
   templateUrl: './menus.component.html',
@@ -22,6 +23,7 @@ export class MenusComponent implements OnInit, OnDestroy {
   submitted: Boolean = false;
   isLoading: Boolean = false;
   createMode: Boolean = false;
+  isDuplicate: Boolean = false;
   selectedItem = null;
 
   constructor(private dataService: DataService, private formBuilder: FormBuilder, public dialog: MatDialog) {}
@@ -29,7 +31,10 @@ export class MenusComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.submitted = false;
     this.form = this.formBuilder.group({
-      title: [{ value: '', disabled: this.inputDisabled }, [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]],
+      title: [
+        { value: '', disabled: this.inputDisabled },
+        [(Validators.required, Validators.pattern('[a-zA-Z0-9 .]*'))]
+      ],
       description: [
         { value: '', disabled: this.inputDisabled },
         [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]
@@ -41,6 +46,8 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.menusSub = this.dataService.getMenuUpdateListener().subscribe((menus: Menu[]) => {
       this.isLoading = false;
       this.menusData = menus;
+      this.mode = null;
+      this.submitted = false;
     });
   }
 
@@ -101,20 +108,30 @@ export class MenusComponent implements OnInit, OnDestroy {
       console.log('form is invalid');
       return;
     }
-    const newMenu = {
-      _id: this.selectedItem._id,
-      title: this.form.value.title,
-      description: this.form.value.description,
-      items: this.menuItems
-    };
-    console.log(newMenu);
-    if (this.mode === 'view') {
-    }
-    if (this.mode === 'create') {
-      this.dataService.addMenu(newMenu);
-    }
-    if (this.mode === 'edit') {
-      this.dataService.updateMenu(newMenu);
+
+    // duplicate titles are not allowed.
+    const duplicate = this.menusData.filter(menu => menu.title === this.form.value.title);
+
+    if (duplicate.length === 0) {
+      const newMenu = {
+        _id: this.selectedItem._id,
+        title: this.form.value.title,
+        description: this.form.value.description,
+        items: this.menuItems
+      };
+      console.log(newMenu);
+      if (this.mode === 'view') {
+      }
+      if (this.mode === 'create') {
+        this.dataService.addMenu(newMenu);
+      }
+      if (this.mode === 'edit') {
+        this.dataService.updateMenu(newMenu);
+      }
+    } else {
+      this.isDuplicate = true;
+      // this generates a generic message
+      this.form.controls['title'].setErrors({ incorrect: true });
     }
   }
 

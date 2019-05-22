@@ -10,17 +10,17 @@ exports.createMenu = (req, res, next) => {
     .then(createdMenu => {
       if (createdMenu) {
         res.status(200).json({
-          message: 'Menu Added',
+          message: '0',
           menu: createdMenu
         });
       } else {
-        res.status(201).json({ message: 'Menu Not Added' });
+        res.status(201).json({ message: '1' });
       }
     })
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        message: 'Creating a menu Failed!'
+        message: 'Creating a menu Failed!: 500'
       });
     });
 };
@@ -85,14 +85,14 @@ exports.deleteMenu = (req, res, next) => {
     .then(result => {
       console.log(result);
       if (result.n > 0) {
-        res.status(200).json({ message: 'deletion successful' });
+        res.status(200).json({ message: '0' });
       } else {
-        res.status(401).json({ message: 'Not Authorized!' });
+        res.status(401).json({ message: '1' });
       }
     })
     .catch(error => {
       res.status(500).json({
-        message: 'Deleting Menus Failed!'
+        message: 'Deleting  menu Failed: 500!'
       });
     });
 };
