@@ -70,3 +70,10 @@ h5,
 h6 {
   color: var(--fc-dark);
 }
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: flex;
+}
