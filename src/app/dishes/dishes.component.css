@@ -43,15 +43,6 @@ mat-list-item {
   align-items: center;
 }
 
-.compose {
-  height: 80px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-}
-
 .compose > button {
   width: 100vw;
 }
