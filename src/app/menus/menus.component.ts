@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { DialogsComponent } from '../dialogs/dialogs.component';
+import { DeleteItemComponent } from '../dialogs/delete-item/delete-item.component';
 import { DataService } from '../services/menu.service';
 import { Subscription } from 'rxjs';
 import { Menu } from '../models/menu.model';
@@ -125,7 +125,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     dialogConfig.width = '20%';
     dialogConfig.data = 'Type the word DELETE to delete this item';
 
-    const dialogRef = this.dialog.open(DialogsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(DeleteItemComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(dialogReturnData => {
       if (dialogReturnData !== 'DELETE') {
