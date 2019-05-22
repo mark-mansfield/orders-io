@@ -11,7 +11,7 @@ const checkAuth = require('../middlewear/check-auth');
 router.post('/create', checkAuth, MenuController.createMenu);
 
 // update menu
-router.put('/:id', checkAuth, MenuController.updateMenu);
+router.put('/update', checkAuth, MenuController.updateMenu);
 
 // get menus
 router.get('', checkAuth, MenuController.getMenus);

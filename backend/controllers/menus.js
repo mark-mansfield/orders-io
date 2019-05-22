@@ -11,7 +11,7 @@ exports.createMenu = (req, res, next) => {
       if (createdMenu) {
         res.status(200).json({
           message: 'Menu Added',
-          order: createdMenu
+          menu: createdMenu
         });
       } else {
         res.status(201).json({ message: 'Menu Not Added' });
@@ -26,26 +26,17 @@ exports.createMenu = (req, res, next) => {
 };
 
 exports.updateMenu = (req, res, next) => {
-  let imagePath = req.body.imagePath; // the string already defined in this menu
-  if (req.file) {
-    const url = req.protocol + '://' + req.get('host');
-    imagePath = url + '/images/' + req.file.filename;
-  }
-  const menu = new Menu({
-    _id: req.body.id,
-    title: req.body.title,
-    items: req.body.items,
-    description: req.body.description
-  });
+  const newMenu = new Menu(req.body);
+  console.log('updating menu: ', newMenu);
   Menu.updateOne(
     {
-      _id: req.params.id
+      _id: newMenu.id
     },
-    menu
+    newMenu
   )
     .then(result => {
       if (result.n > 0) {
-        res.status(200).json({ message: 'Menu updated successfully' });
+        res.status(200).json({ message: true });
       } else {
         res.status(401).json({ message: 'Not Authorized!' });
       }
