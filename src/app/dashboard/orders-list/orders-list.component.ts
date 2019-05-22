@@ -3,17 +3,9 @@ import { Subscription } from 'rxjs';
 import { ImportService } from '../../services/import.service';
 import { OrderService } from '../../services/order.service';
 import { DomSanitizer } from '@angular/platform-browser';
-
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatSnackBar,
-  MatSnackBarConfig,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition
-} from '@angular/material';
+import { SnackBarService } from '../../services/snackbar.service';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DialogsComponent } from '../../dialogs/dialogs.component';
-import { FiltersDialogComponent } from '../../dialogs/filters-dialog/filters-dialog.component';
 
 @Component({
   selector: 'app-orders-list',
@@ -47,25 +39,22 @@ export class OrdersListComponent implements OnInit {
   filterTimes = ['4:00pm', '3:30pm', '4:15pm', '5:00pm'];
   filter = null;
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  extraClasses = ['dark-snackbar'];
   constructor(
     public importService: ImportService,
     public orderService: OrderService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
     private sanitizer: DomSanitizer
   ) {}
 
-  openSnackBar(message) {
-    const config = new MatSnackBarConfig();
-    config.verticalPosition = this.verticalPosition;
-    config.horizontalPosition = this.horizontalPosition;
-    config.duration = 3000;
-    config.panelClass = this.extraClasses;
-    this.snackBar.open(message, '', config);
-  }
+  // openSnackBar(message) {
+  //   const config = new MatSnackBarConfig();
+  //   config.verticalPosition = this.verticalPosition;
+  //   config.horizontalPosition = this.horizontalPosition;
+  //   config.duration = 3000;
+  //   config.panelClass = this.extraClasses;
+  //   this.snackBar.open(message, '', config);
+  // }
 
   ngOnInit() {
     // load orders from db
@@ -79,19 +68,19 @@ export class OrdersListComponent implements OnInit {
 
     // listen for deleted orders
     this.ordersDeletedSub = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
-      this.openSnackBar('order deleted');
+      this.snackBarService.openSnackBar('order deleted');
       this.orders = returnedData;
     });
 
     // listen for errors
     this.errorsSub = this.orderService.getErrorsListener().subscribe(errorMsg => {
-      this.openSnackBar(errorMsg);
+      this.snackBarService.openSnackBar(errorMsg);
     });
 
     // listen for orders Updates
     this.ordersUpdatedSub = this.orderService.getOrdersUpdatedListener().subscribe(returnedData => {
       console.log('loading orders after update');
-      this.openSnackBar('order updated');
+      this.snackBarService.openSnackBar('order updated');
       this.orders = returnedData;
     });
 
@@ -102,7 +91,7 @@ export class OrdersListComponent implements OnInit {
 
     // listen for created orders
     this.orderCreatedSub = this.orderService.getOrderCreatedListener().subscribe(returnData => {
-      this.openSnackBar('order created');
+      this.snackBarService.openSnackBar('order created');
       this.orders.unshift(returnData);
     });
 
