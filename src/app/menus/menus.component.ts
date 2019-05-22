@@ -1,5 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { DialogsComponent } from '../dialogs/dialogs.component';
 import { DataService } from '../services/menu.service';
 import { Subscription } from 'rxjs';
 import { Menu } from '../models/menu.model';
@@ -12,20 +14,17 @@ export class MenusComponent implements OnInit, OnDestroy {
   menusData: Menu[] = [];
   menuItems: any;
   form: FormGroup;
-  mode: string;
+  mode: string = null;
 
   private menusSub: Subscription;
 
   inputDisabled: Boolean = true;
-  disableEditTools: Boolean = false;
-  editMode: Boolean = false;
-  createMode: Boolean = false;
   submitted: Boolean = false;
   isLoading: Boolean = false;
-
+  createMode: Boolean = false;
   selectedItem = null;
 
-  constructor(private dataService: DataService, private formBuilder: FormBuilder) {}
+  constructor(private dataService: DataService, private formBuilder: FormBuilder, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.submitted = false;
@@ -50,39 +49,49 @@ export class MenusComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
+  disableForm() {
+    this.form.controls.title.reset({ value: this.selectedItem.title, disabled: true });
+    this.form.controls.description.reset({ value: this.selectedItem.description, disabled: true });
+  }
+
+  enableForm() {
+    this.form.controls.title.reset({ value: this.selectedItem.title, disabled: false });
+    this.form.controls.description.reset({ value: this.selectedItem.description, disabled: false });
+  }
+
   updateFormMode(mode) {
     if (mode === 'create') {
-      this.mode = mode;
+      this.createMode = true;
+      this.inputDisabled = false;
       this.selectedItem = {};
-      this.form.controls.title.reset({ value: this.selectedItem.name, disabled: false });
-      this.form.controls.description.reset({ value: this.selectedItem.description, disabled: false });
+      this.enableForm();
     }
     if (mode === 'edit') {
       this.inputDisabled = false;
-      this.mode = mode;
-      this.form.controls.title.reset({ value: this.selectedItem.name, disabled: false });
-      this.form.controls.description.reset({ value: this.selectedItem.description, disabled: false });
+      this.enableForm();
     }
     if (mode === 'view') {
-      this.form.controls.dishName.reset({ value: this.selectedItem.name, disabled: true });
-      this.form.controls.description.reset({ value: this.selectedItem.description, disabled: true });
       this.inputDisabled = true;
+      this.disableForm();
+    }
+    if (mode === null) {
+      this.inputDisabled = true;
+      this.selectedItem = {};
+      this.submitted = false;
+      this.disableForm();
     }
 
     this.mode = mode;
     console.log(this.mode);
   }
 
-  toggleEditTools() {
-    this.disableEditTools = false;
-    this.createMode = false;
-  }
+  toggleEditTools() {}
 
   onItemSelect($event) {
+    this.selectedItem = $event;
+    this.updateFormMode('view');
+    this.toggleEditTools();
     console.log(this.selectedItem);
-    // this.selectedItem = $event;
-    // this.updateFormMode('view');
-    // this.toggleEditTools();
   }
 
   onSaveMenu() {
@@ -93,15 +102,37 @@ export class MenusComponent implements OnInit, OnDestroy {
       return;
     }
     const newMenu = {
+      _id: this.selectedItem._id,
       title: this.form.value.title,
-      descriptiomn: this.form.value.description,
+      description: this.form.value.description,
       items: this.menuItems
     };
-    this.dataService.addMenu(newMenu);
+    console.log(newMenu);
+    if (this.mode === 'view') {
+    }
+    if (this.mode === 'create') {
+      this.dataService.addMenu(newMenu);
+    }
+    if (this.mode === 'edit') {
+      this.dataService.updateMenu(newMenu);
+    }
   }
 
-  onDelete(id: String) {
-    this.dataService.deleteMenu(id);
+  onDeleteMenu(id: String) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.height = '20%';
+    dialogConfig.width = '20%';
+    dialogConfig.data = 'Type the word DELETE to delete this item';
+
+    const dialogRef = this.dialog.open(DialogsComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(dialogReturnData => {
+      if (dialogReturnData !== 'DELETE') {
+        // this.dataService.deleteMenu(id);
+      }
+    });
+    // this.dataService.deleteMenu(id);
   }
 
   ngOnDestroy() {

@@ -10,24 +10,43 @@
     <app-list-menus [data]="menusData" (selectItem)="onItemSelect($event)"></app-list-menus>
   </div>
   <div class="view inner-margin">
-    <div id="view" class="inner-margin" *ngIf="selectedItem !== null">
+    <div id="view" class="inner-margin" *ngIf="this.mode !== null">
       <div class="flex-container-66 edit-tools" id="rightCol">
-        <button mat-mini-fab (click)="updateFormMode('edit')" [disabled]="this.disableEditTools" title="edit this item">
-          <i class="material-icons icon-color-light">
-            edit
+        <button
+          mat-mini-fab
+          (click)="updateFormMode('edit')"
+          title="edit this item"
+          *ngIf="this.mode !== 'edit'"
+          class="lock"
+        >
+          <i class="material-icons icon-color-light ">
+            lock
+          </i>
+        </button>
+        <button
+          mat-mini-fab
+          (click)="updateFormMode('null')"
+          title="edit this item"
+          *ngIf="this.mode === 'edit'"
+          class="unlock"
+        >
+          <i class="material-icons icon-color-light " *ngIf="this.mode === 'edit'">
+            lock_open
           </i>
         </button>
 
-        <button mat-mini-fab [disabled]="this.disableEditTools" title="delete this item">
-          <i class="material-icons icon-color-light">
-            delete
-          </i>
-        </button>
-        <button mat-mini-fab [disabled]="this.disableEditTools" title="clone item">
-          <i class="material-icons icon-color-light">
-            file_copy
-          </i>
-        </button>
+        <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
+          <button mat-mini-fab title="delete this item" (click)="onDeleteMenu(this.selectedItem._id)">
+            <i class="material-icons icon-color-light">
+              delete
+            </i>
+          </button>
+          <button mat-mini-fab title="clone item">
+            <i class="material-icons icon-color-light">
+              file_copy
+            </i>
+          </button>
+        </div>
       </div>
 
       <!-- generic form -->
@@ -37,7 +56,7 @@
         <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveMenu()">
           <div class="form-element">
             <label for="name"><h2>Menu Name</h2></label>
-            <input type="text" value="{{ selectedItem.title }}" placeholder="dish name..." formControlName="title" />
+            <input type="text" value="{{ selectedItem.title }}" placeholder="Menu name..." formControlName="title" />
             <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
               <mat-error *ngIf="f.title.errors.required">A menu title is required</mat-error>
             </div>
@@ -47,7 +66,7 @@
             <textarea
               value="{{ selectedItem.description }}"
               formControlName="description"
-              placeholder="dish description..."
+              placeholder="Menu description..."
             ></textarea>
             <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
               <mat-error *ngIf="f.description.errors.required">A description is required</mat-error>
@@ -55,19 +74,15 @@
           </div>
 
           <br />
-          <div>
-            <button class="dialog-button" mat-raised-button color="accent" type="submit">
-              save
-            </button>
-            <button
-              class="dialog-button"
-              mat-raised-button
-              color="accent"
-              style="margin-left: 10px"
-              (click)="updateFormMode('null')"
-            >
-              cancel
-            </button>
+          <div name="mode-context-aware-tools" [ngClass]="{ visible: !this.inputDisabled, hidden: this.inputDisabled }">
+            <div>
+              <button mat-raised-button color="accent" type="submit">
+                save
+              </button>
+              <button mat-raised-button color="accent" style="margin-left: 10px" (click)="updateFormMode(null)">
+                cancel
+              </button>
+            </div>
           </div>
         </form>
       </div>

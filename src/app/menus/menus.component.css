@@ -2,4 +2,13 @@
   .sidebar {
     margin-top: 64px !important;
   }
+
+  .lock:after {
+    content: 'Click to unlock this item';
+    display: block;
+  }
+  .unlock:after {
+    content: 'click to lock this item';
+    display: block;
+  }
 }

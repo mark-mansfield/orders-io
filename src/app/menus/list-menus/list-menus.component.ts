@@ -14,7 +14,5 @@ export class ListMenusComponent implements OnInit {
     this.selectItem.emit(item);
   }
 
-  ngOnInit() {
-    console.log(this.data);
-  }
+  ngOnInit() {}
 }
