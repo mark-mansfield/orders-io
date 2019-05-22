@@ -5,11 +5,11 @@ import { MenusRoutingModule } from './menus-routing.module';
 import { MenusComponent } from './menus.component';
 import { ListMenusComponent } from './list-menus/list-menus.component';
 // import { MenuCreateComponent } from './menu-create/menu-create.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../angular-material';
 
 @NgModule({
   declarations: [ListMenusComponent, MenusComponent],
-  imports: [CommonModule, ReactiveFormsModule, AngularMaterialModule, RouterModule, MenusRoutingModule]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, AngularMaterialModule, RouterModule, MenusRoutingModule]
 })
 export class MenusModule {}

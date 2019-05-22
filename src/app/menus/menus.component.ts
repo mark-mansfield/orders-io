@@ -119,17 +119,17 @@ export class MenusComponent implements OnInit, OnDestroy {
   }
 
   onDeleteMenu(id: String) {
+    console.log(id);
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.height = '20%';
     dialogConfig.width = '20%';
     dialogConfig.data = 'Type the word DELETE to delete this item';
-
     const dialogRef = this.dialog.open(DeleteItemComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(dialogReturnData => {
-      if (dialogReturnData !== 'DELETE') {
-        // this.dataService.deleteMenu(id);
+      console.log(dialogReturnData);
+      if (dialogReturnData === 'DELETE') {
+        this.dataService.deleteMenu(id);
       }
     });
     // this.dataService.deleteMenu(id);
