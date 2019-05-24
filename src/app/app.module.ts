@@ -28,6 +28,7 @@ import { DialogsComponent } from './dialogs/dialogs.component';
 import { OrdersFilterComponent } from './dashboard/orders-filter/orders-filter.component';
 import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.component';
 import { DeleteItemComponent } from './dialogs/delete-item/delete-item.component';
+import { AddItemDialogComponent } from './dialogs/add-item-dialog/add-item-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { DeleteItemComponent } from './dialogs/delete-item/delete-item.component
     DialogsComponent,
     OrdersFilterComponent,
     FiltersDialogComponent,
-    DeleteItemComponent
+    DeleteItemComponent,
+    AddItemDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +63,6 @@ import { DeleteItemComponent } from './dialogs/delete-item/delete-item.component
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent, DialogsComponent, DeleteItemComponent]
+  entryComponents: [ErrorComponent, DialogsComponent, DeleteItemComponent, AddItemDialogComponent]
 })
 export class AppModule {}
