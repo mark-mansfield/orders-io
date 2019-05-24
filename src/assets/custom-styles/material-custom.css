@@ -9,9 +9,19 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+/* mat-button */
+
+.dialog-button {
+  margin-right: 5px;
+}
+
 .mat-button {
   font-size: 18px !important  ;
   font-weight: 400;
+}
+
+.mat-raised-button h2 {
+  color: white !important;
 }
 
 .mat-mini-fab {
@@ -23,32 +33,30 @@
   background-color: #c2185b !important;
 }
 
-.mat-dialog-container {
-  background: azure;
-  color: #0a0a0a;
-}
-
-.icon-color-light {
-  color: white;
-}
-
 .icon-color,
 .mat-icon-button,
 .mat-input-element {
   color: black;
 }
 
-.md-36 {
-  font-size: 36px;
+.icon-color-light {
+  color: white;
+}
+
+/* dialogs */
+.mat-dialog-container {
+  background: azure;
+  color: #0a0a0a;
 }
 
 .mat-dialog-content {
   max-height: 70vh !important;
 }
 
-.mat-snack-bar-container.mat-snack-bar-center {
-  margin-bottom: 20px !important;
+.md-36 {
+  font-size: 36px;
 }
+
 /* .mat-radio-outer-circle {
   border-color: black !important ;
 } */
@@ -126,7 +134,7 @@
   padding-left: 10px !important;
 }
 
-/* matt select styles  */
+/* matt select */
 
 .mat-select-trigger {
   height: 100%;
@@ -165,6 +173,10 @@
   color: white;
 }
 
+.mat-snack-bar-container.mat-snack-bar-center {
+  margin-bottom: 20px !important;
+}
+
 /* stepper */
 .stepper-actions {
   margin-top: 20px;
@@ -181,6 +193,8 @@
   border: 1px solid rgb(202, 202, 202);
 }
 
-.dialog-button {
-  margin-right: 5px;
+/* check boxes */
+.mat-checkbox .mat-checkbox-frame {
+  border-color: var(--accent-color) !important;
+  background-color: white !important;
 }
