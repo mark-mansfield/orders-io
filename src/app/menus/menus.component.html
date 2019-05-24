@@ -1,5 +1,6 @@
 <div class="flex-row-container" id="content">
   <div class="sidebar" id="sidebar">
+    <div class="inner-margin"><h2>Menus</h2></div>
     <div class="flex-item compose">
       <button mat-button (click)="updateFormMode('create')">
         <i class="material-icons md-36 icon-color-light">
@@ -23,9 +24,9 @@
             lock
           </i>
         </button>
-        <button
+        <!-- <button
           mat-mini-fab
-          (click)="updateFormMode('null')"
+          (click)="updateFormMode('view')"
           title="edit this item"
           *ngIf="this.mode === 'edit'"
           class="unlock"
@@ -33,7 +34,7 @@
           <i class="material-icons icon-color-light " *ngIf="this.mode === 'edit'">
             lock_open
           </i>
-        </button>
+        </button> -->
 
         <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
           <button mat-mini-fab title="delete this item" (click)="onDeleteMenu(this.selectedItem._id)">
@@ -41,6 +42,7 @@
               delete
             </i>
           </button>
+
           <button mat-mini-fab title="clone item">
             <i class="material-icons icon-color-light">
               file_copy
@@ -57,6 +59,7 @@
           <div class="form-element">
             <label for="name"><h2>Menu Name</h2></label>
             <input
+              (change)="enableSubmit()"
               type="text"
               value="{{ selectedItem.title }}"
               placeholder="Menu name..."
@@ -66,10 +69,7 @@
             <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
               <mat-error *ngIf="f.title.errors.required">A menu title is required</mat-error>
               <mat-error *ngIf="f.title.errors.pattern">letters and numbers only</mat-error>
-              <mat-error *ngIf="f.title.errors"></mat-error>
-            </div>
-            <div *ngIf="submitted && isDuplicate" class="invalid-feedback">
-              <mat-error>Menu title already taken</mat-error>
+              <mat-error *ngIf="f.title.errors.duplicate">Menu title already taken</mat-error>
             </div>
           </div>
           <div class="form-element">
@@ -83,16 +83,53 @@
               <mat-error *ngIf="f.description.errors.required">A description is required</mat-error>
             </div>
           </div>
+          <br />
+          <hr class="line_break" />
+          <br />
+          <div class="flex-container-66 align-space-between form-element valign-center">
+            <h2>Dishes</h2>
+            <button
+              type="button"
+              mat-mini-fab
+              color="accent"
+              (click)="onAddItems()"
+              *ngIf="this.mode === 'edit' || this.mode === 'create'"
+            >
+              <i class="material-icons icon-color-light">
+                add
+              </i>
+            </button>
+          </div>
+          <div
+            *ngFor="let item of this.selectedItem.items"
+            class="flex-container-66 align-space-between form-element valign-center menuItem"
+          >
+            <div>{{ item.name }}</div>
+            <div>
+              <button
+                type="button"
+                mat-button
+                color="accent"
+                (click)="onDeleteDish(this.selectedItem._id, item.name)"
+                *ngIf="this.mode === 'edit' || this.mode === 'create'"
+              >
+                delete
+                <!-- <i class="material-icons icon-color-light md-small">
+                  delete
+                </i> -->
+              </button>
+            </div>
+          </div>
 
           <br />
           <div name="mode-context-aware-tools" [ngClass]="{ visible: !this.inputDisabled, hidden: this.inputDisabled }">
             <div>
-              <button mat-raised-button color="accent" type="submit">
+              <button mat-raised-button color="accent" [disabled]="this.disableSubmit" type="submit">
                 save
               </button>
-              <button mat-raised-button color="accent" style="margin-left: 10px" (click)="updateFormMode(null)">
+              <!-- <button mat-raised-button color="accent" style="margin-left: 10px" (click)="updateFormMode(null)">
                 cancel
-              </button>
+              </button> -->
             </div>
           </div>
         </form>
