@@ -11,4 +11,10 @@
     content: 'click to lock this item';
     display: block;
   }
+
+  .menuItem {
+    height: 50px;
+    padding: 20px;
+    background-color: rgba(175, 175, 175, 0.13);
+  }
 }
