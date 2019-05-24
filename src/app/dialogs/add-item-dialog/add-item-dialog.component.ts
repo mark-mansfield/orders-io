@@ -34,6 +34,10 @@ export class AddItemDialogComponent implements OnInit {
     });
 
     // check any pre exisitng items
+
+    if (this.exisitngSelections.length === this.injectedData.length) {
+      this.allSelected = true;
+    }
     this.exisitngSelections.forEach(item => {
       const idx = this.injectedData.findIndex(p => p.name === item.name);
       this.updateCheckboxChecked(idx);

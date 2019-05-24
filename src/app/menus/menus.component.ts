@@ -134,7 +134,6 @@ export class MenusComponent implements OnInit, OnDestroy {
       if (this.selectedItem.items == null) {
         this.selectedItem.items = [];
       }
-      console.log(dishes);
       this.selectedItem.items = [];
       dishes.forEach(element => {
         this.selectedItem.items.push(element);

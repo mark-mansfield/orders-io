@@ -1,7 +1,11 @@
 <div class="header-item">
   <h2>Dish Name</h2>
   <!-- <div><button (click)="addClicked(item)">select</button></div> -->
-  <div><mat-checkbox color="accent" (change)="toggleCheckBoxChecked()" id="">select all</mat-checkbox></div>
+  <div>
+    <mat-checkbox color="accent" (change)="toggleCheckBoxChecked()" [checked]="allSelected" id=""
+      ><span *ngIf="allSelected">un-select all</span><span *ngIf="!allSelected">select all</span></mat-checkbox
+    >
+  </div>
 </div>
 <div *ngFor="let item of injectedData; let i = index" class="list-item ">
   <div>{{ item.name }}</div>
