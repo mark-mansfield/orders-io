@@ -134,6 +134,8 @@ export class MenusComponent implements OnInit, OnDestroy {
       if (this.selectedItem.items == null) {
         this.selectedItem.items = [];
       }
+      console.log(dishes);
+      this.selectedItem.items = [];
       dishes.forEach(element => {
         this.selectedItem.items.push(element);
       });
@@ -276,7 +278,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     dialogConfig.disableClose = false;
     dialogConfig.height = '80%';
     dialogConfig.width = '30%';
-    dialogConfig.data = this.data;
+    dialogConfig.data = [this.data, this.selectedItem.items];
     const dialogRef = this.dialog.open(AddItemDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(dialogReturnData => {
       // this.menuItems = dialogReturnData;
