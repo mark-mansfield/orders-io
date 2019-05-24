@@ -111,6 +111,9 @@
 .align-left {
   justify-content: flex-start !important;
 }
+.valign-center {
+  align-items: center;
+}
 
 .align-space-between {
   justify-content: space-between !important;
