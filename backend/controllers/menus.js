@@ -83,7 +83,7 @@ exports.getMenu = (req, res, next) => {
 exports.deleteMenu = (req, res, next) => {
   Menu.deleteOne({ _id: req.params.id })
     .then(result => {
-      console.log(result);
+      // console.log(result);
       if (result.n > 0) {
         res.status(200).json({ message: '0' });
       } else {
@@ -91,6 +91,7 @@ exports.deleteMenu = (req, res, next) => {
       }
     })
     .catch(error => {
+      // console.log(error);
       res.status(500).json({
         message: 'Deleting  menu Failed: 500!'
       });
