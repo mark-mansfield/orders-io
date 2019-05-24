@@ -20,6 +20,7 @@
   --inner-margin: 54px;
   --row-header-background: rgba(0, 238, 255, 0.14);
   --placeholder-color: var(--fc-mid);
+  --accent-color: #c2185b;
 }
 
 ::placeholder {
