@@ -5,6 +5,7 @@
 @import url('./assets/custom-styles/normalize.css');
 @import url('./assets/custom-styles/forms.css');
 @import url('./assets/custom-styles/messages.css');
+@import url('./assets/custom-styles/annimations.css');
 /* Global Styles */
 * {
   margin: 0;
@@ -77,4 +78,8 @@ h6 {
 }
 .visible {
   display: flex;
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.82) !important;
 }

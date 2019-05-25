@@ -87,6 +87,60 @@ export class MenusComponent implements OnInit, OnDestroy {
       description: 'DF',
       portion_sizes: ['250', '500', '1kg'],
       course: 'soup'
+    },
+    {
+      name: 'Slow Cooked Lamb Shoulder',
+      description: 'Hawaiij spices, pomegranate molasses, honey and lemon w coriander and almonds',
+      portion_sizes: [1, 2, 3],
+      course: 'main'
+    },
+    {
+      name: 'Grilled Ora king salmon',
+      description: 'chermoula marinade, cherry tomato and green bean salsa',
+      portion_sizes: [1, 2, 3],
+      course: 'main'
+    },
+    {
+      name: 'Ocean trout tarator',
+      description: 'w tahini yoghurt, coriander, sumac and chilli',
+      portion_sizes: [1, 2, 3],
+      course: 'main'
+    },
+    {
+      name: 'Slow Braised Free Range Chicken',
+      description: 'Jerusalem artichokes, bay, lemon, olives, eschallots , dates (Legs and thighs - 18 pieces)',
+      portion_sizes: [1, 2],
+      course: 'main'
+    },
+    {
+      name: 'chopped liver',
+      description: 'w caramelised onions egg &amp; herb mayo',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'hommus',
+      description: "Lox's famous chick pea hummus used at the restaurant",
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'confit tuna',
+      description: 'Olive oil, caper and parsley dip',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'Romanian eggplant',
+      description: 'roasted eggplant, capsicum, pomegranate, dill, lemon, shallot)',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'entree'
+    },
+    {
+      name: 'holmbrae chicken and vegetable ',
+      description: 'DF',
+      portion_sizes: ['250', '500', '1kg'],
+      course: 'soup'
     }
   ];
 

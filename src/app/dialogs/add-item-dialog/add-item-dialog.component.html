@@ -1,13 +1,34 @@
+<div class="header-item" mat-dialog-title>choose your dishes</div>
 <div class="header-item">
-  <h2>Dish Name</h2>
-  <!-- <div><button (click)="addClicked(item)">select</button></div> -->
-  <div>
-    <mat-checkbox color="accent" (change)="toggleCheckBoxChecked()" [checked]="allSelected" id=""
-      ><span *ngIf="allSelected">un-select all</span><span *ngIf="!allSelected">select all</span></mat-checkbox
-    >
+  <div style="width: 40%; padding-right: 20px">
+    <h2>Search by name</h2>
+    <sub><i>or part of</i></sub>
   </div>
+  <div style="width: 60%; ">
+    <div class="search-box" style=" display:flex; height:50px">
+      <div class="search-input" style="height: 100% ;width: 80%">
+        <input type="text" value="" #searchTerm style="padding-left: 10px; width:100%; height: 100%; font-size: 1rem" />
+      </div>
+      <div class="search-button" style=" width: 50px; height:50px">
+        <button
+          type="submit"
+          style="height: 100%; width:100%; background-color: #c2185b"
+          (click)="filterByName(searchTerm.value)"
+        >
+          <i class="material-icons" style="font-size: 1.5rem; color: white">search</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div><button (click)="addClicked(item)">select</button></div> -->
 </div>
-<div *ngFor="let item of injectedData; let i = index" class="list-item ">
+<div class="flex-row-container-align-right" style="padding-right: 20px;">
+  <mat-checkbox color="accent" labelPosition="before" (change)="toggleCheckBoxChecked()" [checked]="allSelected" id=""
+    ><span *ngIf="allSelected">un-select all</span><span *ngIf="!allSelected">select all</span></mat-checkbox
+  >
+</div>
+<div mat-dialog-content *ngFor="let item of injectedData; let i = index" class="list-item ">
   <div>{{ item.name }}</div>
   <!-- <div><button (click)="addClicked(item)">select</button></div> -->
   <div>
@@ -18,6 +39,8 @@
     ></mat-checkbox>
   </div>
 </div>
-<button mat-raised-button (click)="onFinishClicked()" style=" width: 100%; padding: 20px;">
-  <h2>DONE CHOOSING</h2>
-</button>
+<div mat-dialog-actions style="position:fixed; bottom: 50px; width: 30%" class="animation-fade-in ">
+  <button mat-raised-button (click)="onFinishClicked()" style=" width: 100%; padding: 20px; margin-right: 50px ">
+    <h2>DONE CHOOSING</h2>
+  </button>
+</div>
