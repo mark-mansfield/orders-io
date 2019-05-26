@@ -1,12 +1,19 @@
 <div class="flex-row-container">
   <div class="sidebar">
-    <div class="sidebar-item">
+    <div class="flex-item compose">
+      <button mat-button (click)="_toggleViews()" class="action-button">
+        <i class="material-icons md-36 .">
+          add
+        </i>
+      </button>
+    </div>
+    <!-- <div class="sidebar-item">
       <h2>Create a new Order</h2>
       <button mat-raised-button color="accent" type="submit" (click)="_toggleViews()">
         create
       </button>
-    </div>
-    <app-import-order></app-import-order>
+    </div> -->
+    <app-import-order style="margin-top: 200px"></app-import-order>
   </div>
   <div class="view" [ngClass]="{ visible: this.viewOrders, hidden: !this.viewOrders }">
     <app-orders-list style="width: 100%;"></app-orders-list>
