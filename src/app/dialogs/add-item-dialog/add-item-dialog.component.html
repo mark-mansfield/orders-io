@@ -1,13 +1,18 @@
-<div class="header-item" mat-dialog-title>choose your dishes</div>
+<div class="header-item" mat-dialog-title><h2>Choose your dishes</h2></div>
 <div class="header-item">
   <div style="width: 40%; padding-right: 20px">
-    <h2>Search by name</h2>
+    <h3>Search by name</h3>
     <sub><i>or part of</i></sub>
   </div>
   <div style="width: 60%; ">
     <div class="search-box" style=" display:flex; height:50px">
       <div class="search-input" style="height: 100% ;width: 80%">
-        <input type="text" value="" #searchTerm style="padding-left: 10px; width:100%; height: 100%; font-size: 1rem" />
+        <input
+          type="text"
+          [(ngModel)]="searchInputValue"
+          #searchTerm
+          style="padding-left: 10px; width:100%; height: 100%; font-size: 1rem"
+        />
       </div>
       <div class="search-button" style=" width: 50px; height:50px">
         <button
@@ -20,26 +25,59 @@
       </div>
     </div>
   </div>
-
-  <!-- <div><button (click)="addClicked(item)">select</button></div> -->
 </div>
-<div class="flex-row-container-align-right" style="padding-right: 20px;">
-  <mat-checkbox color="accent" labelPosition="before" (change)="toggleCheckBoxChecked()" [checked]="allSelected" id=""
+<div class="header-item" *ngIf="!searchResults">
+  <mat-select placeholder="filter by course" (selectionChange)="onFilterByCourse($event.value)">
+    <mat-option *ngFor="let course of courses" [value]="course">
+      {{ course }}
+    </mat-option>
+  </mat-select>
+</div>
+<div *ngIf="!searchResults" class="flex-row-container-align-right" style="padding-right: 20px;">
+  <mat-checkbox
+    color="accent"
+    labelPosition="before"
+    (change)="toggleAllCheckBoxesChecked()"
+    [checked]="allSelected"
+    id=""
     ><span *ngIf="allSelected">un-select all</span><span *ngIf="!allSelected">select all</span></mat-checkbox
   >
 </div>
-<div mat-dialog-content *ngFor="let item of injectedData; let i = index" class="list-item ">
+<div mat-dialog-content *ngFor="let item of injectedData; let i = index" class="list-item">
   <div>{{ item.name }}</div>
   <!-- <div><button (click)="addClicked(item)">select</button></div> -->
-  <div>
+  <!-- this.checkBoxArr[i].checked -->
+  <div *ngIf="!searchResults">
     <mat-checkbox
       color="accent"
-      (change)="updateCheckboxChecked(i)"
+      (change)="updateCheckboxChecked(item.name)"
       [checked]="this.checkBoxArr[i].checked"
     ></mat-checkbox>
   </div>
+  <div *ngIf="searchResults">
+    <mat-checkbox
+      color="accent"
+      (change)="updateCheckboxChecked(item.name)"
+      [checked]="getCheckboxChecked(item.name)"
+    ></mat-checkbox>
+  </div>
 </div>
-<div mat-dialog-actions style="position:fixed; bottom: 50px; width: 30%" class="animation-fade-in ">
+
+<!-- if showing search Results -->
+<div *ngIf="searchResults" class="list-item align-center">
+  <div *ngIf="injectedData.length === 0" style="text-align: center">
+    <h4>We found no results try again</h4>
+    <button mat-raised-button (click)="resetList()" style="width : 200px; padding: 14px; margin : 20px">
+      <h2>Clear Search</h2>
+    </button>
+  </div>
+  <div *ngIf="injectedData.length > 0" style="text-align: center">
+    <button mat-raised-button (click)="resetList()" style="width : 200px; padding: 14px; margin : 20px">
+      <h2>Continue Adding</h2>
+    </button>
+  </div>
+</div>
+<div mat-dialog-actions style="position:fixed; bottom: 50px; width: 30%" class="animation-fade-in">
   <button mat-raised-button (click)="onFinishClicked()" style=" width: 100%; padding: 20px; margin-right: 50px ">
     <h2>DONE CHOOSING</h2>
   </button>
