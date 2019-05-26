@@ -5,7 +5,7 @@
   <p *ngIf="!showTick" style="text-align: center">Acceptable file types: <br /><strong> CSV files.</strong></p>
   <br /><br />
   <button mat-button type="button" color="accent" (click)="filePicker.click()">
-    <span class="material-icons" style="font-size: 6rem; background-color: none">computer</span>
+    <span class="material-icons" style="font-size: 6rem;  color: var(--accent-color)">computer</span>
   </button>
 
   <div *ngIf="showTick"><ng-container *ngTemplateOutlet="greenTick"></ng-container></div>
