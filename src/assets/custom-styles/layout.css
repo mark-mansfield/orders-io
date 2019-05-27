@@ -185,7 +185,7 @@
   .sidebar {
     position: fixed;
     display: flex;
-    margin-top: 128px;
+    margin-top: 64px;
     flex-flow: column;
     justify-content: flex-start;
     align-items: center;
