@@ -1,15 +1,21 @@
-<div class="flex-row-container toolbar">
-  <div class="flex-container-33  left-col" id="leftCol">
-    <mat-select placeholder="filter by course" (selectionChange)="onFilterByCourse($event.value)">
+<div class="flex-row-container toolbar valign-center">
+  <div class="flex-container-33  left-col " id="leftCol">
+    <h2>Dishes</h2>
+    <!-- <mat-select placeholder="filter by course" (selectionChange)="onFilterByCourse($event.value)">
       <mat-option *ngFor="let course of courses" [value]="course">
         {{ course }}
       </mat-option>
-    </mat-select>
+    </mat-select> -->
   </div>
 </div>
 
 <div class="flex-row-container" id="content">
   <div class="sidebar" id="sidebar">
+    <mat-select placeholder="filter by course" (selectionChange)="onFilterByCourse($event.value)">
+      <mat-option *ngFor="let course of courses" [value]="course">
+        {{ course }}
+      </mat-option>
+    </mat-select>
     <div class="flex-item compose">
       <button mat-button (click)="updateFormMode('create')" class="action-button">
         <i class="material-icons md-36 icon-color-light">

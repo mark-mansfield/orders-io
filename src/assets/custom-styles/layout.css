@@ -117,7 +117,7 @@
 }
 
 .valign-center {
-  align-items: center;
+  align-items: center !important;
 }
 
 .align-space-between {
