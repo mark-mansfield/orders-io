@@ -167,6 +167,10 @@
   color: black;
 }
 
+.mat-select {
+  border: none !important;
+}
+
 /* snack bar */
 ::ng-deep snack-bar-container.dark-snackbar {
   background: #424242;
