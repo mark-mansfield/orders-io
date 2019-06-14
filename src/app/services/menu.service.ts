@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Menu } from '../models/menu.model';
 import { SnackBarService } from './snackbar.service';
-import { Router } from '@angular/router';
+
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -13,11 +13,37 @@ export class DataService {
   private menus: Menu[] = [];
   private selectedMenu: Menu[];
   private menuMetaDataUpdated = new Subject<Menu[]>();
+  private menusFiltered = new Subject<Menu[]>();
+  private searchResultsCleared = new Subject<Menu[]>();
   private dishesAdded = new Subject<Menu[]>();
   private dishesDeleted = new Subject();
   private menuDeleted = new Subject();
 
-  constructor(private http: HttpClient, private router: Router, private snackBarService: SnackBarService) {}
+  constructor(private http: HttpClient, private snackBarService: SnackBarService) {}
+
+  getMenuMetaDataUpdatedListener() {
+    return this.menuMetaDataUpdated.asObservable();
+  }
+
+  getMenuDeletedListener() {
+    return this.menuDeleted.asObservable();
+  }
+
+  getMenusFilteredListener() {
+    return this.menusFiltered.asObservable();
+  }
+
+  getDishesDeletedListener() {
+    return this.dishesDeleted.asObservable();
+  }
+
+  getDishesAddedListener() {
+    return this.dishesAdded.asObservable();
+  }
+
+  getSearchResultsClearedListener() {
+    return this.searchResultsCleared.asObservable();
+  }
 
   getMenus() {
     return this.http
@@ -42,28 +68,24 @@ export class DataService {
       });
   }
 
-  getMenuMetaDataUpdatedListener() {
-    return this.menuMetaDataUpdated.asObservable();
-  }
-
-  getMenuDeletedlistener() {
-    return this.menuDeleted.asObservable();
-  }
-
-  getDishesDeletedListener() {
-    return this.dishesDeleted.asObservable();
-  }
-
-  getDishesAddedListener() {
-    return this.dishesAdded.asObservable();
-  }
-
   getMenu(id: string) {
     return this.http.get<{
       _id: string;
       title: string;
       description: string;
     }>(BACKEND_URL + id);
+  }
+
+  filterByName(name) {
+    const filteredData = [...this.menus].filter(function(item) {
+      return item.title.includes(name.toLowerCase());
+    });
+
+    this.menusFiltered.next([...filteredData]);
+  }
+
+  clearSearchResults() {
+    this.menuMetaDataUpdated.next([...this.menus]);
   }
 
   ondDishesAdded(dishes) {

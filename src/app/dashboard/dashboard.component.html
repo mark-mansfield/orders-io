@@ -1,29 +1,124 @@
-<div class="flex-row-container">
-  <div class="sidebar">
-    <div class="flex-item compose">
-      <button mat-button (click)="_toggleViews()" class="action-button">
+<div class="flex-row-container device-toolbar" id="device-toolbar">
+  <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+    <i class="material-icons md-36 icon-color-light">
+      add
+    </i>
+  </button>
+  <button
+    mat-button
+    (click)="toggleViews('search')"
+    class="action-button"
+    style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+  >
+    <i class="material-icons md-36 icon-color-light">
+      search
+    </i>
+  </button>
+</div>
+<div class="inner-margin device-search  col-width" *ngIf="searchVisible" id="device-search">
+  <div style="text-align: end; margin-top:20px">
+    <button mat-icon-button (click)="toggleViews('default')">
+      <mat-icon aria-label="hide search options">close</mat-icon>
+    </button>
+  </div>
+  <!-- search components  tablet -->
+  <app-search (searchTerm)="filterByName($event)"> </app-search>
+  <br /><br />
+  <app-search-filter-events
+    [eventTypes]="EVENT_TYPES"
+    (selectItem)="onSelectEventType($event)"
+  ></app-search-filter-events>
+</div>
+<div class="flex-row-container" id="desktop-view">
+  <div class="sidebar" id="desktop-toolbar">
+    <div class="flex-row">
+      <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
         <i class="material-icons md-36 icon-color-light">
           add
         </i>
       </button>
-    </div>
-    <!-- <div class="sidebar-item">
-      <h2>Create a new Order</h2>
-      <button mat-raised-button color="accent" type="submit" (click)="_toggleViews()">
-        create
+      <button
+        mat-button
+        (click)="toggleViews('search')"
+        class="action-button"
+        style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+      >
+        <i class="material-icons md-36 icon-color-light">
+          search
+        </i>
       </button>
-    </div> -->
-    <app-import-order style="margin-top: 200px"></app-import-order>
-  </div>
-  <div class="view" [ngClass]="{ visible: this.viewOrders, hidden: !this.viewOrders }">
-    <app-orders-list style="width: 100%;"></app-orders-list>
+    </div>
+
+    <div
+      style="height: auto!important ; margin: 2rem 0px; text-align: end"
+      class="align-items-start"
+      *ngIf="searchVisible"
+    >
+      <button mat-icon-button (click)="toggleViews('default')">
+        <mat-icon aria-label="hide search options">close</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="searchVisible" class="col-width" style="height: auto!important; margin-top: 2rem">
+      <!-- search components  desktop -->
+      <app-search (searchTerm)="filterByName($event)"> </app-search>
+      <br /><Br />
+      <app-search-filter-events
+        [eventTypes]="EVENT_TYPES"
+        (selectItem)="onSelectEventType($event)"
+      ></app-search-filter-events>
+    </div>
   </div>
 
-  <div class="view" [ngClass]="{ visible: this.viewOrderCreate, hidden: !this.viewOrderCreate }">
-    <app-order-create
-      [uniqueId]="uniqueId"
-      (navigationBack)="_navgationBackDetected($event)"
-      style="width: 100%;"
-    ></app-order-create>
+  <!-- use ngClass here to avoid redraw and the network call that goes with it -->
+  <div class="view ">
+    <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
+    <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
+
+    <!-- date filter -->
+
+    <div
+      class="filter-event-date"
+      [ngClass]="{
+        'flex-row-container
+              row-style
+              valign-center
+              align-space-between': eventTypeSelected,
+        hidden: !eventTypeSelected
+      }"
+      id="select-pickup-day"
+    >
+      <div style="width: 55%">
+        <h2>Search By Event Date</h2>
+        <small class="placeholder">results listed for pick up date selected</small>
+      </div>
+      <div>
+        <mat-label>Select a pickup date</mat-label>
+        <mat-select panelClass="accent-colors" style="background-color: white; height:50px; color: black">
+          <mat-option *ngFor="let date of filterDates" value="{{ date }}" (click)="updateFilterSelected(date)">{{
+            date
+          }}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <!-- list component  -->
+    <app-orders-list
+      [data]="this.orders"
+      (selectItem)="onItemSelect($event)"
+      class="col-width view-margin-top"
+      [ngClass]="{
+        hidden: formVisible
+      }"
+    ></app-orders-list>
+
+    <div class="col-width view-margin-top" *ngIf="formVisible">
+      <app-order-create
+        [mode]="formMode"
+        [uniqueId]="uniqueId"
+        [selectedItem]="selectedItem"
+        (notify)="onNotifyClicked($event)"
+        class="col-width"
+      ></app-order-create>
+    </div>
   </div>
 </div>

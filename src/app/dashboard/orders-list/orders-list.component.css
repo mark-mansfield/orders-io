@@ -9,7 +9,7 @@
 .flex-2Col-right {
   display: flex;
   justify-content: flex-end;
-  width: 50%;
+  width: 48%;
 }
 
 .flex-4col-left {
@@ -55,15 +55,6 @@
   align-items: center;
 }
 
-.flex-row-container {
-  display: flex;
-  flex-flow: row;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  max-height: 100%;
-}
-
 .flex-full-width-col-container {
   display: flex;
   flex-flow: column;
@@ -93,7 +84,7 @@
 }
 
 .inner-margin {
-  margin: 10px;
+  margin: var(--inner-margin-ipad);
 }
 
 .row-style {
@@ -106,12 +97,8 @@
   margin-bottom: 10px;
 }
 
-h1 {
-  color: black;
-}
-
 @media (min-width: 40rem) {
   .inner-margin {
-    margin: 54px;
+    margin: var(--inner-margin-ipad);
   }
 }

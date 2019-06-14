@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ImportService } from '../../services/import.service';
 import { OrderService } from '../../services/order.service';
@@ -12,14 +12,24 @@ import { DialogsComponent } from '../../dialogs/dialogs.component';
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.css']
 })
-export class OrdersListComponent implements OnInit {
-  orderImportSub: Subscription;
-  orderCreatedSub: Subscription;
-  ordersUpdatedSub: Subscription;
-  ordersLoadedSub: Subscription;
-  ordersDeletedSub: Subscription;
-  ordersFilteredSub: Subscription;
-  errorsSub: Subscription;
+export class OrdersListComponent implements OnInit, OnDestroy {
+  @Input() data: any;
+
+  @Output() selectItem = new EventEmitter<object>();
+
+  selectedIdx = null;
+  onItemSelect(item, idx) {
+    this.selectedIdx = idx;
+    this.selectItem.emit(item);
+  }
+
+  // orderImportSub: Subscription;
+  // orderCreatedSub: Subscription;
+  // ordersUpdatedSub: Subscription;
+  // ordersLoadedSub: Subscription;
+  // ordersDeletedSub: Subscription;
+  // ordersFilteredSub: Subscription;
+  // errorsSub: Subscription;
 
   fileUrl;
   fileName;
@@ -31,14 +41,18 @@ export class OrdersListComponent implements OnInit {
     orderedItems: {},
     __v: 0
   };
+
   isLoading = true;
   buildingRunsheet = false;
   createRunSheet = false;
   filterIsSelected = false;
-  filterDates = ['Tuesday 18th Sep', 'Wednesday 19th Sep'];
+  filterDates = [];
   filterTimes = ['4:00pm', '3:30pm', '4:15pm', '5:00pm'];
   filter = null;
 
+  eventTypeSelected = false;
+
+  date = null;
   constructor(
     public importService: ImportService,
     public orderService: OrderService,
@@ -56,102 +70,66 @@ export class OrdersListComponent implements OnInit {
   //   this.snackBar.open(message, '', config);
   // }
 
-  ngOnInit() {
-    // load orders from db
+  ngOnInit() {``}
 
-    this.orderService.getOrders({ mode: 'list' });
-
-    this.ordersLoadedSub = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {
-      this.isLoading = false;
-      this.orders = returnedData;
-    });
-
-    // listen for deleted orders
-    this.ordersDeletedSub = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
-      this.snackBarService.openSnackBar('order deleted');
-      this.orders = returnedData;
-    });
-
-    // listen for errors
-    this.errorsSub = this.orderService.getErrorsListener().subscribe(errorMsg => {
-      this.snackBarService.openSnackBar(errorMsg);
-    });
-
-    // listen for orders Updates
-    this.ordersUpdatedSub = this.orderService.getOrdersUpdatedListener().subscribe(returnedData => {
-      console.log('loading orders after update');
-      this.snackBarService.openSnackBar('order updated');
-      this.orders = returnedData;
-    });
-
-    // listen for order imports
-    this.orderImportSub = this.importService.getOrderImportListener().subscribe(arr => {
-      this.orderService.createOrder(this.transformOrder(arr[0], arr[1]));
-    });
-
-    // listen for created orders
-    this.orderCreatedSub = this.orderService.getOrderCreatedListener().subscribe(returnData => {
-      this.snackBarService.openSnackBar('order created');
-      this.orders.unshift(returnData);
-    });
-
-    // listen for filtered orders
-    this.ordersFilteredSub = this.orderService.getOrdersFilteredListener().subscribe(filteredData => {
-      console.log(filteredData);
-      this.orders = filteredData;
-    });
+  getFormattedDate(item) {
+    console.log(item);
+    const arr = item.split('-');
+    this.date = arr[2].slice(0, 2) + ' / ' + arr[1] + ' / ' + arr[0];
+    // this.date = this.orderService.formatDate(item);
   }
 
-  OnDestroy() {
-    this.ordersUpdatedSub.unsubscribe();
-    this.orderImportSub.unsubscribe();
-    this.orderCreatedSub.unsubscribe();
-    this.ordersDeletedSub.unsubscribe();
-    this.ordersFilteredSub.unsubscribe();
-    this.errorsSub.unsubscribe();
+  ngOnDestroy() {
+    // this.ordersUpdatedSub.unsubscribe();
+    // this.orderImportSub.unsubscribe();
+    // this.orderCreatedSub.unsubscribe();
+    // this.ordersDeletedSub.unsubscribe();
+    // this.ordersFilteredSub.unsubscribe();
+    // this.ordersLoadedSub.unsubscribe();
+    // this.errorsSub.unsubscribe();
   }
 
-  transformOrder(order, menuName) {
-    // data comes in as json Array
-    const jsonObj = JSON.parse(JSON.stringify(order));
-    const customerInfo = {};
-    const items = {};
+  // transformOrder(order, menuName) {
+  //   // data comes in as json Array
+  //   const jsonObj = JSON.parse(JSON.stringify(order));
+  //   const customerInfo = {};
+  //   const items = {};
 
-    Object.entries(jsonObj).forEach(([key, value]) => {
-      // perform some transforms on key names and omit the total
-      if (key === 'Order #') {
-        key = 'orderNum';
-      }
-      if (this.orderService.hasWhiteSpace(key)) {
-        key = key.split(' ').join('_');
-      }
-      if (value === '') {
-        value = '0';
-      }
-      // omit the total
-      if (key === '$') {
-        key = 'Cost';
-      }
+  //   Object.entries(jsonObj).forEach(([key, value]) => {
+  //     // perform some transforms on key names and omit the total
+  //     if (key === 'Order #') {
+  //       key = 'orderNum';
+  //     }
+  //     if (this.orderService.hasWhiteSpace(key)) {
+  //       key = key.split(' ').join('_');
+  //     }
+  //     if (value === '') {
+  //       value = '0';
+  //     }
+  //     // omit the total
+  //     if (key === '$') {
+  //       key = 'Cost';
+  //     }
 
-      if (
-        key !== 'orderNum' &&
-        key !== 'contactName' &&
-        key !== 'contactNumber' &&
-        key !== 'pickUpDay' &&
-        key !== 'pickUpTime' &&
-        key !== 'Cost'
-      ) {
-        items[key] = value;
-      } else {
-        customerInfo[key] = value;
-      }
-    });
-    this.order.menuName = menuName;
-    this.order.customerDetails = customerInfo;
-    this.order.orderedItems = items;
-    console.log(this.order);
-    return this.order;
-  }
+  //     if (
+  //       key !== 'orderNum' &&
+  //       key !== 'contactName' &&
+  //       key !== 'contactNumber' &&
+  //       key !== 'pickUpDay' &&
+  //       key !== 'pickUpTime' &&
+  //       key !== 'Cost'
+  //     ) {
+  //       items[key] = value;
+  //     } else {
+  //       customerInfo[key] = value;
+  //     }
+  //   });
+  //   this.order.menuName = menuName;
+  //   this.order.customerDetails = customerInfo;
+  //   this.order.orderedItems = items;
+  //   console.log(this.order);
+  //   return this.order;
+  // }
 
   launchStepper() {
     this.createRunSheet = true;
@@ -164,14 +142,18 @@ export class OrdersListComponent implements OnInit {
     dialogConfig.height = '95%';
     dialogConfig.width = '95%';
     dialogConfig.data = this.orders[idx];
+    console.log(dialogConfig.data);
+    // const dialogRef = this.dialog.open(DialogsComponent, dialogConfig);
 
-    const dialogRef = this.dialog.open(DialogsComponent, dialogConfig);
+    // dialogRef.afterClosed().subscribe(dialogReturnData => {
+    //   if (dialogReturnData !== null) {
+    //     this.orderService.updateSingleOrder(dialogReturnData);
+    //   }
+    // });
+  }
 
-    dialogRef.afterClosed().subscribe(dialogReturnData => {
-      if (dialogReturnData !== null) {
-        this.orderService.updateSingleOrder(dialogReturnData);
-      }
-    });
+  showOrder(idx) {
+    console.log(this.orders[idx]);
   }
 
   deleteOrder(_id) {
@@ -179,9 +161,14 @@ export class OrdersListComponent implements OnInit {
   }
 
   updateFilterSelected(filter) {
+    // console.log('************** ORDER - LIST COMPONENT *******************');
+    // console.log('filterByEventType recieved  event : ');
+    // console.log(filter);
+    // console.log('********************************************');
+
     this.filterIsSelected = true;
     this.filter = filter;
-    this.orderService.filterOrdersByPickUpDayAndTime(filter, this.filterTimes);
+    this.orderService.filterOrdersByPickUpDayAndTime(filter);
   }
 
   resetFilterSelected() {

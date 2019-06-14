@@ -1,296 +1,374 @@
 <div class="flex-column-container main__content">
   <div class="inner-margin">
-    <div class="flex-row  align-left">
-      <div class="flex-2Col-left title">
-        <button
-          class="dialog-button"
-          mat-raised-button
-          color="accent"
-          style="margin-left: 10px"
-          (click)="this.navigateBack()"
-        >
-          cancel
+    <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
+      <button mat-mini-fab (click)="this.notifyParent()" class="action-button" style="border-radius: none">
+        <i class="material-icons icon-color-light">
+          keyboard_arrow_left
+        </i>
+      </button>
+      <button
+        mat-mini-fab
+        (click)="updateFormMode('edit')"
+        title="edit this item"
+        *ngIf="this.mode !== 'edit' && this.mode !== 'create'"
+        class="lock"
+      >
+        <i class="material-icons icon-color-light ">
+          lock
+        </i>
+      </button>
+
+      <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
+        <button mat-mini-fab title="delete this item" (click)="onDeleteOrder(this.selectedItem._id)">
+          <i class="material-icons icon-color-light">
+            delete
+          </i>
         </button>
+
+        <button mat-mini-fab title="clone item">
+          <i class="material-icons icon-color-light">
+            file_copy
+          </i>
+        </button>
+        <div style="margin-top: 100px">
+          <button class="dialog-button" mat-raised-button color="accent" type="submit" style="width: 100px">
+            save
+          </button>
+          <br /><br />
+          <button
+            class="dialog-button"
+            mat-raised-button
+            color="accent"
+            style="width:100px"
+            (click)="this.notifyParent()"
+          >
+            cancel
+          </button>
+        </div>
       </div>
     </div>
-    <div class="full-width-row-container" style="justify-content: flex-start">
-      <h1>Create Order</h1>
-      <hr />
-    </div>
+    <div style="justify-content: flex-start ">
+      <h1>{{ this.mode }} Order</h1>
 
-    <div class="form-element">
       <h2>Order Number</h2>
-      {{ this.uniqueId }}
-    </div>
-    <form [formGroup]="form" (ngSubmit)="onSaveOrder()" class="inner-margin">
-      <div class="full-width-row-container align-items-start">
-        <div class="flex-2Col-left">
-          <div class="form-element" style="width: 300px; height: 76px; margin: 10px 0 ">
-            <label for="menu"><h2>Menu</h2></label>
+      <ng-container *ngIf="uniqueId"
+        ><span style="color: var(--unique-id)">{{ this.uniqueId }}</span></ng-container
+      >
+      <a id="formStart"></a>
+      <form [formGroup]="form" (ngSubmit)="onSaveOrder()" class="inner-margin">
+        <!-- <div> -->
+        <!-- <div class="flex-2Col-left"> -->
+        <div class="form-element">
+          <label for="eventOptions"><h2>Event Type</h2></label>
+          <small class="instructions">client pickup / delivery service / staffed event</small>
+          <div
+            [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+            style="height: 50px;    display: grid;
+          place-items: center;"
+          >
             <mat-select
-              placeholder="menu"
-              name="menu"
-              (selectionChange)="onSelectMenu($event.value)"
-              style="background-color: white; height:50px; "
+              placeholder="event type..."
+              formControlName="eventType"
+              (selectionChange)="onSelectEventType($event.value)"
             >
+              <mat-option *ngFor="let type of EVENT_TYPES" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div *ngIf="submitted && f.eventType.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.eventType.errors.required">An Event type is required</mat-error>
+          </div>
+        </div>
+        <br /><br />
+
+        <div class="form-element" style="height: 76px; margin: 10px 0 ">
+          <label for="menu"><h2>Menu</h2></label>
+          <div
+            [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+            style="height: 50px;    display: grid;
+          place-items: center;"
+          >
+            <mat-select placeholder="menu" formControlName="menu" (selectionChange)="onSelectMenu($event.value)">
               <mat-option *ngFor="let menu of menus" [value]="menu">
                 {{ menu }}
               </mat-option>
             </mat-select>
           </div>
-          <div class="form-element">
-            <label for="contactName"><h2>Name</h2></label>
-
-            <input
-              type="text"
-              formControlName="contactName"
-              required
-              [ngClass]="{ 'is-invalid': submitted && f.contactName.errors }"
-            />
-            <div *ngIf="submitted && f.contactName.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.contactName.errors.required">Contact Name is required</mat-error>
-            </div>
-          </div>
-          <div class="form-element">
-            <label for="email"><h2>Email</h2></label>
-            <input formControlName="email" email required [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.email.errors.required">Email is required</mat-error>
-              <mat-error *ngIf="f.email.errors.email">Email must be a valid email address</mat-error>
-            </div>
-          </div>
-          <div class="form-element" style="width: 100%">
-            <label for="notes"><h2>Phone</h2></label>
-            <small>please double check your number</small>
-            <div class="" style="width: 100%">
-              <input type="text" formControlName="phone" />
-            </div>
-            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.phone.errors.required">A contact number is required</mat-error>
-            </div>
+          <div *ngIf="submitted && f.menu.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.menu.errors.required">Please select from a menu</mat-error>
           </div>
         </div>
-        <!-- Event options -->
-        <div class="flex-column-container-50">
-          <!-- select event type -->
-          <div class="form-element">
-            <div style="width: 300px; height: 76px; margin: 10px 0 ">
-              <label for="eventOptions"><h2>Event Type</h2></label>
-              <small>client pickup / delivery service / staffed event</small>
+        <div class="form-element">
+          <label for="contactName"><h2>Name</h2></label>
 
-              <mat-select
-                placeholder="event type..."
-                formControlName="eventType"
-                name="eventOptions"
-                (selectionChange)="onSelectEventType($event.value)"
-                style="background-color: white; height:50px; "
-              >
-                <mat-option *ngFor="let option of eventOptions" [value]="option">
-                  {{ option }}
-                </mat-option>
-              </mat-select>
+          <input
+            type="text"
+            formControlName="contactName"
+            value="{{ selectedItem.customerDetails.contactName }}"
+            required
+            [ngClass]="{ 'is-invalid': submitted && f.contactName.errors }"
+          />
+          <div *ngIf="submitted && f.contactName.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.contactName.errors.required">Contact Name is required</mat-error>
+          </div>
+        </div>
+        <div class="form-element">
+          <label for="email"><h2>Email</h2></label>
+          <input formControlName="email" email required [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.email.errors.required">Email is required</mat-error>
+            <mat-error *ngIf="f.email.errors.email">Email must be a valid email address</mat-error>
+          </div>
+        </div>
+        <div class="form-element" style="width: 100%">
+          <label for="notes"><h2>Phone</h2></label>
+          <small class="instructions">please double check your number</small>
+          <div class="" style="width: 100%">
+            <input type="text" formControlName="phone" />
+          </div>
+          <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.phone.errors.required">A contact number is required</mat-error>
+          </div>
+        </div>
 
-              <div *ngIf="submitted && f.eventType.errors" class="invalid-feedback">
-                <mat-error *ngIf="f.eventType.errors.required">An Event type is required</mat-error>
+        <!-- number of guests -->
+
+        <div class="form-element">
+          <label for="number Of Guests"><h2>Number of Guests</h2></label>
+
+          <input formControlName="numberOfGuests" type="text" placeholder="how many guests?" />
+
+          <div *ngIf="submitted && f.numberOfGuests.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.numberOfGuests.errors.required">Please add the number of guests</mat-error>
+          </div>
+        </div>
+
+        <!-- date picker -->
+        <div class="form-element">
+          <div>
+            <label for="pickup_date"><h2>Event Date</h2></label>
+            <div class="event-date">
+              <div class="date-field">
+                <span style="font-size:100px">{{ this.serverDateFormatted }}</span>
               </div>
             </div>
-          </div>
-          <br /><br />
-          <!-- number of guests -->
-
-          <div class="form-element">
-            <label for="number Of Guests"><h2>Number of Guests</h2></label>
-
-            <mat-form-field class="">
-              <input
-                matInput
-                name="numberOfGuests"
-                formControlName="numberOfGuests"
-                [min]="minDate"
-                placeholder="how many guests?"
-              />
-            </mat-form-field>
-            <div *ngIf="submitted && f.numberOfGuests.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.numberOfGuests.errors.required">Please add the number of guests</mat-error>
+            <div *ngIf="this.mode === 'edit' || this.mode === 'create'" style="text-align:right">
+              <button mat-fab type="button" (click)="eventDatePicker.open()">
+                <i class="material-icons icon-color-light">
+                  date_range
+                </i>
+              </button>
             </div>
-          </div>
-
-          <div class="form-element">
-            <label for="pickup_date"><h2>Event Date</h2></label>
-            <mat-form-field class="">
+            <div  style="position:fixed; bottom: 0px; opacity: 0; z-index: -1">
+              <!-- <label for="pickup_date"
+                ><h2>{{ this.dateOfEvent }}</h2></label
+              > -->
+              <!-- (dateChange)="setEventDate($event.value)" -->
               <input
                 formControlName="eventDate"
+                (dateChange)="onDateChange($event.value)"
+
                 matInput
                 [min]="minDate"
                 [matDatepicker]="eventDatePicker"
-                (dateChange)="setEventDate($event.value)"
                 placeholder="Choose a date"
               />
-              <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="eventDatePicker" style="opacity: 0;"></mat-datepicker-toggle>
               <mat-datepicker touchUi #eventDatePicker></mat-datepicker>
-            </mat-form-field>
-            <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.eventDate.errors.required">Date required</mat-error>
             </div>
           </div>
+          <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.eventDate.errors.required">Date required</mat-error>
+          </div>
+        </div>
 
-          <!-- start conditional displays -->
+        <!-- start conditional displays -->
 
-          <!-- Delivery address -->
-          <div *ngIf="!pickUp && eventType !== null">
-            <div class="form-element">
-              <label for="address"><h2>Event Address</h2></label>
-              <small>client delivery address</small>
-              <textarea
-                formControlName="address"
-                name="address"
-                value=""
-                style="width: 100%; height: 200px ; padding: 10px"
-                placeholder="deliver to..."
-                pattern="[a-zA-Z0-9 ./-]*"
-                (ngModelChange)="onUpdateDeliveryAddress($event)"
-              ></textarea>
-              <mat-error *ngIf="submitted && f.address.errors" class="invalid-feedback"
+        <!-- Delivery address -->
+        <div *ngIf="eventType === 'delivery_service' || eventType === 'staffed_event'" style="width: 100%">
+          <div class="form-element">
+            <label for="address"><h2>Event Address</h2></label>
+
+            <textarea
+              formControlName="address"
+              style="width: 100%; height: 200px ; padding: 10px"
+              placeholder="deliver to..."
+              (ngModelChange)="onUpdateDeliveryAddress($event)"
+              value="this.deliveryAddress"
+            ></textarea>
+            <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.address.errors.required">Address required</mat-error>
+              <mat-error *ngIf="f.address.errors.pattern" class="invalid-feedback"
                 >only numbers and letters are allowed
               </mat-error>
             </div>
+          </div>
 
-            <!-- delivery times select -->
-            <div class="form-element">
-              <label for="menu"><h2>Event Time</h2></label>
-              <small>To arrive at address</small>
+          <!-- delivery times select -->
+          <div class="form-element">
+            <label for="delivery time"><h2>Delivery Time</h2></label>
+            <small class="instructions">To arrive at address</small>
+            <div
+              [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+              style="height: 50px;    display: grid;
+            place-items: center;"
+            >
               <mat-select
                 placeholder="delivery time..."
-                name="deliveryTimeOptions"
+                formControlName="deliveryTime"
                 (selectionChange)="onSelectDeliveryTime($event.value)"
-                style="background-color: white; height:50px; "
               >
-                <mat-option *ngFor="let time of deliveryTimeOptions" [value]="time">
+                <mat-option *ngFor="let time of delivery_time_options" [value]="time">
                   {{ time }}
                 </mat-option>
               </mat-select>
             </div>
+            <div *ngIf="submitted && f.deliveryTime.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.deliveryTime.errors.required">Delivery time required</mat-error>
+            </div>
           </div>
+        </div>
 
-          <!-- pickup Event option -->
-          <div *ngIf="pickUp" class="form-element">
-            <!-- pick up times select -->
-            <div *ngIf="pickUp" class="form-element">
-              <label for="pickUpTime"><h2>Pick Up Time</h2></label>
-              <small>client to pick up from H.Q.</small>
+        <!-- pickup Event option -->
+
+        <div *ngIf="eventType === 'pick_up'" class="form-element">
+          <!-- pick up times select -->
+          <div class="form-element" style="height: 76px; margin: 10px 0 ">
+            <label for="pickUpTime"><h2>Pick Up Time</h2></label>
+            <small class="instructions">client to pick up from H.Q.</small>
+            <div
+              [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+              style="height: 50px;    display: grid;
+              place-items: center;"
+            >
               <mat-select
-                placeholder="pick up time..."
-                name="pickupTimeOptions"
+                [value]="pickUpTime"
+                placeholder="time"
+                formControlName="pickUpTime"
                 (selectionChange)="onSelectPickUpTime($event.value)"
-                style="background-color: white; height:50px; "
               >
-                <mat-option *ngFor="let time of pickupTimeOptions" [value]="time">
+                <mat-option *ngFor="let time of pickup_time_options" [value]="time">
                   {{ time }}
                 </mat-option>
               </mat-select>
             </div>
-          </div>
-
-          <!-- staffed event option -->
-          <div *ngIf="staffed">
-            <!-- styling packages select -->
-            <div class="form-element">
-              <label for="address"><h2>Event Styling</h2></label>
-              <mat-select
-                placeholder="styling options..."
-                name="stylingOptions"
-                (selectionChange)="onSelectStylingOption($event.value)"
-                style="background-color: white; height:50px; "
-              >
-                <mat-option *ngFor="let option of stylingOptions" [value]="option">
-                  {{ option }}
-                </mat-option>
-              </mat-select>
-            </div>
-
-            <!-- event start time -->
-            <div class="form-element">
-              <label for="eventStartTime"><h2>Event Start Time</h2></label>
-              <small>time the event starts - not the time the production starts</small>
-              <mat-select
-                placeholder="Event start time..."
-                name="eventStartTimeOptions"
-                (selectionChange)="onSelectEventStartTime($event.value)"
-                style="background-color: white; height:50px; "
-              >
-                <mat-option *ngFor="let time of eventStartTimeOptions" [value]="time">
-                  {{ time }}
-                </mat-option>
-              </mat-select>
+            <div *ngIf="submitted && f.pickUpTime.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.menu.pickUpTime.required">Please select a pick up time</mat-error>
             </div>
           </div>
         </div>
-      </div>
-      <br />
 
-      <hr class="line_break" />
-      <br />
-      <!-- dishes on menu -->
-      <div *ngFor="let dish of dishes; let i = index" class=" form-element flex-row align-space-between ">
-        <div class="flex-2Col-left">
-          <label for="{{ dish.name }}"
-            ><h2>{{ dish.name }}</h2></label
-          >
-          <input type="text" value="{{ dish.description }}" readonly style="width: 100%" />
-        </div>
-        <div>
-          <div>
-            <label for="{{ dish.name }} quantity"><h2>Qty</h2></label>
+        <!-- staffed event option -->
+        <div *ngIf="eventType === 'staffed_event'">
+          <!-- styling packages select -->
+          <div class="form-element">
+            <label for="address"><h2>Event Styling</h2></label>
             <mat-select
-              class="select-qty"
-              placeholder="qty"
-              name="qty"
-              (selectionChange)="updateItemQty(i, $event.value)"
+              placeholder="styling options..."
+              formControlName="stylingOptions"
+              (selectionChange)="onSelectStylingOption($event.value)"
               style="background-color: white; height:50px; "
             >
-              <mat-option *ngFor="let qty of dish.portion_sizes" [value]="qty">
-                {{ qty }}
+              <mat-option *ngFor="let option of styling_options" [value]="option">
+                {{ option }}
               </mat-option>
             </mat-select>
+            <div *ngIf="submitted && f.stylingOptions.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.stylingOptions.errors.required">Please select a styling package</mat-error>
+            </div>
+          </div>
+
+          <!-- event start time -->
+          <div class="form-element">
+            <label for="eventStartTime"><h2>Event Start Time</h2></label>
+            <small class="instructions">time the event starts - not the time the production starts</small>
+            <mat-select
+              [value]="eventStartTime"
+              placeholder="Event start time..."
+              formControlName="eventStartTime"
+              (selectionChange)="onSelectEventStartTime($event.value)"
+              style="background-color: white; height:50px; "
+            >
+              <mat-option *ngFor="let time of EVENT_START_TIME_OPTIONS" [value]="time">
+                {{ time }}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.eventStartTime.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.eventStartTime.errors.required">Please select an event start time</mat-error>
+            </div>
           </div>
         </div>
-      </div>
-      <br />
-      <hr class="line_break" />
-      <br />
-      <div class="form-element" style="width: 100%">
-        <label for="notes"><h2>Notes</h2></label>
-        <small>type all in one line. numbers letters . and spaces allowed</small>
-        <textarea
-          formControlName="notes"
-          name="notes"
-          value=""
-          style="width: 100%; height: 200px ; padding: 10px"
-          placeholder="add any notes here..."
-          pattern="[a-zA-Z0-9 .]*"
-        ></textarea>
+        <!-- </div> -->
+        <br />
 
-        <mat-error *ngIf="submitted && f.notes.errors" class="invalid-feedback"
-          >only numbers and letters are allowed
-        </mat-error>
-      </div>
-      <br />
-      <hr class="line_break" />
-      <br />
-      <div class="flex-2Col-right">
-        <button class="dialog-button" mat-raised-button color="accent" type="submit">
-          save
-        </button>
-        <button
-          class="dialog-button"
-          mat-raised-button
-          color="accent"
-          style="margin-left: 10px"
-          (click)="this.navigateBack()"
-        >
-          cancel
-        </button>
-      </div>
-    </form>
+        <br />
+        <!-- </div> -->
+        <!-- dishes on menu -->
+        <h2>Dishes</h2>
+        <div *ngFor="let dish of dishes; let i = index" class=" form-element flex-row align-space-between ">
+          <div class="dish-item align-space-between">
+            <div class="dish-item-description">
+              <label for="{{ dish.name }}"
+                ><h4>{{ dish.name }}</h4></label
+              >
+              <br />
+              <p>{{ dish.description }}</p>
+            </div>
+            <div class="dish-item-qty">
+              <br />
+              <mat-select
+                class="select-qty"
+                placeholder="qty"
+                name="qty"
+                (selectionChange)="updateItemQty(i, $event.value)"
+                style="background-color: white; height:50px;"
+              >
+                <mat-option *ngFor="let qty of dish.portion_sizes" [value]="qty">
+                  {{ qty }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+        <br />
+        <hr class="line_break" />
+        <br />
+        <div class="form-element" style="width: 100%">
+          <label for="notes"><h2>Notes</h2></label>
+          <small class="instructions">type all in one line. numbers letters . and spaces allowed</small>
+          <textarea
+            formControlName="notes"
+            name="notes"
+            value=""
+            style="width: 100%; height: 200px ; padding: 10px"
+            placeholder="add any notes here..."
+          ></textarea>
+          <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.notes.errors.pattern" class="invalid-feedback"
+              >only numbers and letters<br />these characters '/' '.' ',' and spaces ar allowed.
+            </mat-error>
+          </div>
+        </div>
+        <br />
+        <hr class="line_break" />
+        <br />
+        <div class="flex-2Col-right" *ngIf="this.mode === 'edit' || this.mode === 'create'" style="margin-bottom: 50px">
+          <button class="dialog-button" mat-raised-button color="accent" type="submit">
+            save
+          </button>
+          <button
+            class="dialog-button"
+            mat-raised-button
+            color="accent"
+            style="margin-left: 10px"
+            (click)="this.notifyParent()"
+          >
+            cancel
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

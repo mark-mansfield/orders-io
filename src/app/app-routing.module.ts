@@ -5,9 +5,10 @@ import { ListMenusComponent } from './menus/list-menus/list-menus.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AuthGuard } from './auth/auth-guard';
 import { DishesComponent } from './dishes/dishes.component';
-
+import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout.component';
 const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
+  { path: 'desktop-layout', component: ResponsiveLayoutComponent },
   { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
   { path: 'menus', loadChildren: './menus/menus.module#MenusModule' },
   { path: 'list-dishes', component: DishesComponent, canActivate: [AuthGuard] },

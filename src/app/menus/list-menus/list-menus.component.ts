@@ -10,7 +10,9 @@ export class ListMenusComponent implements OnInit {
   @Output() selectItem = new EventEmitter<object>();
   constructor() {}
 
-  onItemSelect(item) {
+  selectedIdx = null;
+  onItemSelect(item, idx) {
+    this.selectedIdx = idx;
     this.selectItem.emit(item);
   }
 

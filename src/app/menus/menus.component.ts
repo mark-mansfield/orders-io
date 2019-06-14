@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DeleteItemComponent } from '../dialogs/delete-item/delete-item.component';
@@ -19,15 +19,25 @@ export class MenusComponent implements OnInit, OnDestroy {
   mode: string = null;
 
   private menusSub: Subscription;
-  private dishesAddedSub: Subscription;
+  private menusFilteredSub: Subscription;
+  private searchResultsCleared: Subscription;
   private menuDeletedSub: Subscription;
+  private dishesAddedSub: Subscription;
   private dishesDeletedSub: Subscription;
-  inputDisabled: Boolean = true;
-  submitted: Boolean = false;
-  isLoading: Boolean = false;
-  createMode: Boolean = false;
-  isDuplicate: Boolean = false;
-  disableSubmit: Boolean = true;
+
+  inputDisabled = true;
+  submitted = false;
+  isLoading = false;
+  createMode = false;
+  isDuplicate = false;
+  disableSubmit = true;
+
+  noSearchResults = false;
+  hasSearchResults = false;
+  isSearching = false;
+  searchVisible = false;
+  listVisible = false;
+  formVisible = false;
 
   selectedItem: any;
 
@@ -92,6 +102,15 @@ export class MenusComponent implements OnInit, OnDestroy {
 
   constructor(private dataService: DataService, private formBuilder: FormBuilder, public dialog: MatDialog) {}
 
+  initSelectedItem() {
+    this.selectedItem = {
+      _id: '',
+      title: '',
+      description: '',
+      items: ''
+    };
+  }
+
   ngOnInit() {
     this.submitted = false;
     this.form = this.formBuilder.group({
@@ -107,6 +126,7 @@ export class MenusComponent implements OnInit, OnDestroy {
 
     this.menusSub = this.dataService.getMenuMetaDataUpdatedListener().subscribe((menus: Menu[]) => {
       this.isLoading = false;
+      this.isSearching = false;
       this.menusData = menus;
       if (this.mode === 'create') {
         // get the last item in array i.e. newly created item
@@ -119,8 +139,21 @@ export class MenusComponent implements OnInit, OnDestroy {
       this.submitted = false;
     });
 
-    this.menuDeletedSub = this.dataService.getMenuDeletedlistener().subscribe(() => {
+    this.menusFilteredSub = this.dataService.getMenusFilteredListener().subscribe((menus: Menu[]) => {
+      this.toggleViews('search');
+      if (menus.length === 0) {
+        this.noSearchResults = true;
+      } else if (menus.length > 0) {
+        this.noSearchResults = false;
+        this.hasSearchResults = true;
+      }
+      this.isSearching = true;
+      this.menusData = menus;
+    });
+
+    this.menuDeletedSub = this.dataService.getMenuDeletedListener().subscribe(() => {
       //  update UI and form mode
+      this.toggleViews('default');
       this.mode = null;
       // this.updateFormMode(null);
     });
@@ -140,6 +173,12 @@ export class MenusComponent implements OnInit, OnDestroy {
       });
       this.disableSubmit = false;
     });
+
+    this.searchResultsCleared = this.dataService.getSearchResultsClearedListener().subscribe((menus: Menu[]) => {
+      this.menusData = menus;
+    });
+
+    this.toggleViews('default');
   }
 
   enableSubmit() {
@@ -170,6 +209,7 @@ export class MenusComponent implements OnInit, OnDestroy {
   updateFormMode(mode) {
     if (mode === 'create') {
       this.createMode = true;
+      this.formVisible = true;
       this.inputDisabled = false;
       this.disableSubmit = true;
       this.selectedItem = {
@@ -182,17 +222,20 @@ export class MenusComponent implements OnInit, OnDestroy {
       this.resetForm();
     }
     if (mode === 'edit') {
+      this.createMode = true;
       this.inputDisabled = false;
       this.enableForm();
     }
     if (mode === 'view') {
+      this.formVisible = true;
+      this.createMode = true;
       this.inputDisabled = true;
       this.disableForm();
     }
     if (mode === null) {
       this.inputDisabled = true;
-      this.selectedItem = null;
       this.submitted = false;
+      this.initSelectedItem();
       this.disableForm();
     }
 
@@ -200,9 +243,48 @@ export class MenusComponent implements OnInit, OnDestroy {
     console.log(this.mode);
   }
 
-  toggleEditTools() {}
+  toggleViews(view) {
+    console.log(view);
+    switch (view) {
+      case 'create':
+        this.searchVisible = false;
+        this.listVisible = false;
+        this.createMode = true;
+        this.updateFormMode('create');
+
+        break;
+
+      case 'search':
+        this.searchVisible = true;
+        this.listVisible = false;
+        this.createMode = false;
+        this.isSearching = true;
+        this.hasSearchResults = false;
+        break;
+
+      case 'import':
+        this.searchVisible = false;
+        this.listVisible = false;
+        this.formVisible = false;
+        break;
+
+      case 'view-item':
+        this.updateFormMode('view');
+
+      default:
+        this.searchVisible = false;
+        this.listVisible = true;
+        this.formVisible = false;
+        this.updateFormMode(null);
+        this.isSearching = false;
+        this.hasSearchResults = false;
+        break;
+    }
+  }
 
   onItemSelect($event) {
+    this.isSearching = false;
+    this.hasSearchResults = false;
     this.disableSubmit = true;
     this.selectedItem = {
       _id: $event._id, // because this value comes from mongo db and  already has the _id prop
@@ -211,13 +293,22 @@ export class MenusComponent implements OnInit, OnDestroy {
       items: $event.items
     };
 
-    this.updateFormMode('view');
-    // console.log($event);
+    this.formVisible = true;
+    console.log($event);
     // console.log(`item selected: `);
     // console.log(`${this.selectedItem._id}`);
     // console.log(`${this.selectedItem.title}`);
     // console.log(`${this.selectedItem.description}`);
     // console.log(`${this.selectedItem.items.length}`);
+  }
+
+  onFilterByName(name) {
+    this.dataService.filterByName(name);
+  }
+
+  onClearSearchResults() {
+    this.toggleViews('search');
+    this.dataService.clearSearchResults();
   }
 
   onDeleteDish(menuIdx, dishName) {
@@ -275,8 +366,8 @@ export class MenusComponent implements OnInit, OnDestroy {
   onAddItems() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
-    dialogConfig.height = '80%';
-    dialogConfig.width = '30%';
+    dialogConfig.height = '500px';
+    dialogConfig.width = '400px';
     dialogConfig.data = [this.data, this.selectedItem.items];
     const dialogRef = this.dialog.open(AddItemDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(dialogReturnData => {
@@ -290,5 +381,10 @@ export class MenusComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.menusSub.unsubscribe();
+    this.menuDeletedSub.unsubscribe();
+    this.menusFilteredSub.unsubscribe();
+    this.dishesAddedSub.unsubscribe();
+    this.dishesDeletedSub.unsubscribe();
+    this.searchResultsCleared.unsubscribe();
   }
 }

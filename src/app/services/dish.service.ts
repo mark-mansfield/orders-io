@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Dish } from '../models/dish.model';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SnackBarService } from './snackbar.service';
 import { environment } from '../../environments/environment';
 const BACKEND_URL = environment.apiUrl + 'dishes/';
 
@@ -11,110 +11,121 @@ const BACKEND_URL = environment.apiUrl + 'dishes/';
 export class DishService {
   private dishes: Dish[] = [];
   private dishesUpdated = new Subject<Dish[]>();
+  private dishesFiltered = new Subject<Dish[]>();
+  private dishAdded = new Subject<Dish[]>();
+  private dishDeleted = new Subject();
+  private dishMetaDataUpdated = new Subject<Dish[]>();
+  private searchResultsCleared = new Subject<Dish[]>();
+  constructor(
+    private http: HttpClient,
 
-  constructor(private http: HttpClient, private router: Router) {}
-
-  getMenus() {
-    return this.http
-      .get<{ id: string; message: string; dishes: any }>(BACKEND_URL)
-      .pipe(
-        map(data => {
-          // transform object back into a new object
-          return data.dishes.map(menu => {
-            // server creates _id:, we want to use id: like our model suggests.
-            return {
-              // title: menu.title,
-              // description: menu.description,
-              // id: menu._id,
-              // imagePath: menu.imagePath,
-              // creator: menu.creator
-            };
-          });
-        })
-      )
-      .subscribe(transformedData => {
-        this.dishes = transformedData;
-        this.dishesUpdated.next([...this.dishes]);
-      });
-  }
+    private snackBarService: SnackBarService
+  ) {}
 
   getDishesUpdateListener() {
     return this.dishesUpdated.asObservable();
   }
 
-  getDish(id: string) {
-    return this.http.get<{
-      // _id: string;
-      // title: string;
-      // description: string;
-      // imagePath: string;
-      // creator: string;
-    }>(BACKEND_URL + id);
+  getDishesFilteredListener() {
+    return this.dishesFiltered.asObservable();
   }
 
-  addDish(name: string, description: string, portion_sizes: any, course: string) {
-    const data = new FormData();
-    data.append('name', name);
-    data.append('description', description);
-    data.append('portion_sizes', portion_sizes);
-    data.append('course', course);
+  getDishMetaDataUpdated() {
+    return this.dishMetaDataUpdated.asObservable();
+  }
 
-    this.http.post<{ message: string; dish: Dish }>(BACKEND_URL, data).subscribe(returnedData => {
-      const dish: Dish = {
-        id: returnedData.dish.description,
-        name: returnedData.dish.name,
-        description: returnedData.dish.description,
-        portion_sizes: returnedData.dish.portion_sizes,
-        course: returnedData.dish.course
-        // id: returnedData.menu.id,
-        // title: title,
-        // description: description,
-        // creator: null
-      };
-      console.log(returnedData.message);
-      this.dishes.push(dish);
-      this.dishesUpdated.next([...this.dishes]); // inform UI
-      // this.router.navigate(['/list-menus']);
+  getDishAddedListener() {
+    return this.dishAdded.asObservable();
+  }
+
+  getSearchResultsClearedListener() {
+    return this.searchResultsCleared.asObservable();
+  }
+
+  getDishes() {
+    return this.http
+      .get<{ id: string; message: string; dishes: any }>(BACKEND_URL)
+      .pipe(
+        map(dishData => {
+          // transform object back into a new object
+          return dishData.dishes.map(dish => {
+            // server creates _id:, we want to use id: like our model suggests.
+            return {
+              name: dish.name,
+              description: dish.description,
+              portion_sizes: dish.portion_sizes,
+              _id: dish._id
+            };
+          });
+        })
+      )
+      .subscribe(transformedMenuData => {
+        this.dishes = transformedMenuData;
+        this.dishesUpdated.next([...this.dishes]);
+      });
+  }
+
+  addDish(dish) {
+    console.log(dish);
+
+    this.http.post<{ message: string; dish: any }>(BACKEND_URL + 'create', dish).subscribe(returnedData => {
+      console.log(returnedData);
+
+      if (returnedData.message === '0') {
+        this.dishes.push(returnedData.dish);
+        this.dishAdded.next([...this.dishes]); // inform UI
+        this.snackBarService.openSnackBar('Dish Added!');
+      } else if (returnedData.message === '1') {
+        this.snackBarService.openSnackBar('You are not authorized to perform this action');
+      } else {
+        this.snackBarService.openSnackBar(returnedData);
+      }
     });
   }
 
-  updateDish(id: string, name: string, description: string, portion_sizes: any, course: string) {
-    let data: Dish | FormData;
-    data = {
-      id: id,
-      name: name,
-      description: description,
-      portion_sizes: portion_sizes,
-      course: course
-    };
-
-    // const menu: Menu = { id: id, title: title, description: description, imagePath: imagePath };
-    this.http.put(BACKEND_URL + id, data).subscribe(response => {
-      const updatedDishes = [...this.dishes];
-      const oldDishndex = updatedDishes.findIndex(p => p.id === id);
-      const dish: Dish = {
-        id: id,
-        name: name,
-        description: description,
-        portion_sizes: portion_sizes,
-        course: course
-      };
-      updatedDishes[oldDishndex] = dish;
-      this.dishes = updatedDishes;
-      this.dishesUpdated.next([...this.dishes]);
-      // this.router.navigate(['/list-menus']);
+  updateDish(dish) {
+    console.log(dish);
+    this.http.put<{ message: string; menu: any }>(BACKEND_URL + 'update', dish).subscribe(returnedData => {
+      console.log(returnedData.message);
+      if (returnedData.message) {
+        const idx = this.dishes.findIndex(p => p._id === dish._id);
+        this.dishes[idx] = dish;
+        this.dishMetaDataUpdated.next([...this.dishes]); // inform UI
+        this.snackBarService.openSnackBar('Dish updated');
+      } else {
+        this.snackBarService.openSnackBar('Dish not deleted due to server error; retry');
+      }
     });
   }
 
   deleteDish(id: String) {
-    this.http.delete(BACKEND_URL + id).subscribe(result => {
-      // filter returns all entries where the  condition === true and removes entries where the condition === false
-      const updateDishes = this.dishes.filter(menu => menu.id !== id);
-      // update menus array with filtered result
-      this.dishes = updateDishes;
-      // inform UI
-      this.dishesUpdated.next([...this.dishes]);
-      console.log(result);
+    this.http.delete<{ message: any }>(BACKEND_URL + id).subscribe(returnedData => {
+      console.log(returnedData.message === '0');
+
+      if (returnedData.message === '0') {
+        const updateDishes = this.dishes.filter(dish => dish._id !== id);
+        this.dishes = updateDishes;
+        this.dishMetaDataUpdated.next([...this.dishes]); // inform UI
+        this.dishDeleted.next(); // inform UI
+        this.snackBarService.openSnackBar('Dish Deleted!');
+      } else if (returnedData.message === '1') {
+        this.snackBarService.openSnackBar('You are not authorized to perform this action');
+      } else {
+        this.snackBarService.openSnackBar(returnedData.message);
+      }
     });
+  }
+
+  filterByName(name) {
+    console.log(this.dishes);
+    const filteredData = [...this.dishes].filter(function(item) {
+      return item.name.toLowerCase().includes(name.toLowerCase());
+    });
+
+    this.dishesFiltered.next([...filteredData]);
+  }
+
+  clearSearchResults() {
+    this.dishMetaDataUpdated.next([...this.dishes]);
   }
 }

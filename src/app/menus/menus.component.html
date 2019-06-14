@@ -1,18 +1,93 @@
-<div class="flex-row-container" id="content">
-  <div class="sidebar" id="sidebar">
-    <!-- <div class="inner-margin"><h2>Menus</h2></div> -->
-    <div class="flex-item compose">
-      <button mat-button (click)="updateFormMode('create')" class="action-button">
+<div class="flex-row-container device-toolbar" id="device-toolbar">
+  <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+    <i class="material-icons md-36 icon-color-light">
+      add
+    </i>
+  </button>
+  <button
+    mat-button
+    (click)="toggleViews('search')"
+    class="action-button"
+    style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+  >
+    <i class="material-icons md-36 icon-color-light">
+      search
+    </i>
+  </button>
+</div>
+<div class="inner-margin device-search" *ngIf="searchVisible">
+  <div style="text-align: end; margin-top:20px">
+    <button mat-icon-button (click)="toggleViews('default')">
+      <mat-icon aria-label="hide search options">close</mat-icon>
+    </button>
+  </div>
+  <app-search-filter-dishes
+    [courses]="COURSE_OPTIONS"
+    (selectItem)="onFilterByCourse($event.value)"
+    id="filter_by_course"
+  ></app-search-filter-dishes>
+  <app-search (searchTerm)="onFilterByName($event)" class="col-width"></app-search>
+</div>
+<div class="flex-row-container">
+  <div class="sidebar" id="desktop-toolbar">
+    <div class="flex-row">
+      <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
         <i class="material-icons md-36 icon-color-light">
           add
         </i>
       </button>
+      <button
+        mat-button
+        (click)="toggleViews('search')"
+        class="action-button"
+        style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+      >
+        <i class="material-icons md-36 icon-color-light">
+          search
+        </i>
+      </button>
     </div>
-    <app-list-menus [data]="menusData" (selectItem)="onItemSelect($event)"></app-list-menus>
+    <!-- search and select component -->
+
+    <div
+      style="height: auto!important ; margin: 2rem 0px; text-align: end"
+      class="align-items-start"
+      *ngIf="searchVisible"
+    >
+      <button mat-icon-button (click)="toggleViews('default')">
+        <mat-icon aria-label="hide search options">close</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="searchVisible" style="height: auto!important; margin-top: 2rem">
+      <app-search (searchTerm)="onFilterByName($event)" class="col-width"> </app-search>
+      <!-- <app-search-filter-events
+        [eventTypes]="EVENT_TYPES"
+        (selectItem)="onSelectEventType($event)"
+      ></app-search-filter-events> -->
+    </div>
   </div>
-  <div class="view inner-margin">
-    <div id="view" class="inner-margin" *ngIf="this.mode !== null">
-      <div class="flex-container-66 edit-tools" id="rightCol">
+
+  <!-- use ngClass here to avoid redraw and the network call that goes with it -->
+  <div class="view col-align-center">
+    <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
+    <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
+    <app-list-menus
+      [data]="this.menusData"
+      [ngClass]="{
+        hidden: formVisible
+      }"
+      (selectItem)="onItemSelect($event)"
+      class="col-width"
+    ></app-list-menus>
+
+    <!-- form -->
+    <div *ngIf="formVisible">
+      <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
+        <button mat-mini-fab (click)="toggleViews('default')" class="action-button" style="border-radius: none">
+          <i class="material-icons icon-color-light">
+            keyboard_arrow_left
+          </i>
+        </button>
         <button
           mat-mini-fab
           (click)="updateFormMode('edit')"
@@ -24,17 +99,6 @@
             lock
           </i>
         </button>
-        <!-- <button
-          mat-mini-fab
-          (click)="updateFormMode('view')"
-          title="edit this item"
-          *ngIf="this.mode === 'edit'"
-          class="unlock"
-        >
-          <i class="material-icons icon-color-light " *ngIf="this.mode === 'edit'">
-            lock_open
-          </i>
-        </button> -->
 
         <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
           <button mat-mini-fab title="delete this item" (click)="onDeleteMenu(this.selectedItem._id)">
@@ -50,8 +114,6 @@
           </button>
         </div>
       </div>
-
-      <!-- generic form -->
       <div class="inner-margin" style="width: 100%">
         <h2>Menu - {{ this.mode }}</h2>
         <!-- (ngSubmit)="onSaveDish()"  -->
@@ -115,8 +177,8 @@
               >
                 delete
                 <!-- <i class="material-icons icon-color-light md-small">
-                  delete
-                </i> -->
+                        delete
+                      </i> -->
               </button>
             </div>
           </div>
@@ -128,8 +190,8 @@
                 save
               </button>
               <!-- <button mat-raised-button color="accent" style="margin-left: 10px" (click)="updateFormMode(null)">
-                cancel
-              </button> -->
+                      cancel
+                    </button> -->
             </div>
           </div>
         </form>

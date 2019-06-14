@@ -1,5 +1,24 @@
-<mat-list role="list">
-  <mat-list-item role="list-item" *ngFor="let item of data">
-    <button mat-button (click)="onItemSelect(item)">{{ item.name }}</button>
-  </mat-list-item>
-</mat-list>
+<!-- <div class="compose" *ngFor="let item of data; let i = index" [ngClass]="{ highlight: selectedIdx === i }">
+  <button mat-button (click)="onItemSelect(item, i)">
+    {{ item.name }}
+  </button>
+</div> -->
+<div class="inner-margin">
+  <div class="inner-margin"><h1>Dishes</h1></div>
+  <div class="inner-margin" *ngIf="data.length > 0">
+    <div class="flex-row-container row-style valign-center align-space-between ">
+      <div>Dish Name</div>
+    </div>
+
+    <div
+      class="flex-row-container row-style  valign-center align-space-between "
+      *ngFor="let item of data; let i = index"
+    >
+      <div>{{ item.name }} :</div>
+
+      <div>
+        <button mat-button (click)="onItemSelect(item, i)">view</button>
+      </div>
+    </div>
+  </div>
+</div>

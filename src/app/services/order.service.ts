@@ -43,6 +43,14 @@ export class OrderService {
     return this.errorsRecieved.asObservable();
   }
 
+  formatDate(dateObj) {
+    const date = dateObj.getDate();
+    const month = dateObj.getMonth() + 1;
+    const year = dateObj.getFullYear();
+    // console.log(date + '/' + month + '/' + year);
+    return date + '/' + month + '/' + year;
+  }
+
   updateSingleOrder(order) {
     this.http.put<{ message: string; responseCode: number }>(BACKEND_URL + 'update', order).subscribe(returnedData => {
       console.log(returnedData.message, returnedData.responseCode);
@@ -154,98 +162,86 @@ export class OrderService {
     return string;
   }
 
-  // orderByPickUpTimes()
-  // @param: orderList []
-  // @param: pickUptimes []
+  filterByEventType(eventType) {
+    console.log('************** ORDER SERVICE *******************');
+    console.log('filterByEventType recieved  event : ');
+    console.log(eventType);
+    console.log('********************************************');
 
-  // clean values / convert to number: remove ':' and 'pm' parts '4:15' = 415
-  cleanTimeStr(str) {
-    const arr = str.split('');
-    let string = '';
-    arr.forEach(item => {
-      if (item !== ':' && item !== 'p' && item !== 'm') {
-        string += item;
-      }
-    });
-    return parseInt(string);
-  }
+    if (eventType === 'all') {
+      this.ordersLoaded.next([...this.orders]);
+      return;
+    }
 
-  createTimeStr(str) {
-    let arr = str.split('');
-    arr.splice(1, 0, ':');
-    arr.push('p');
-    arr.push('m');
-
-    return arr.join('');
-  }
-
-  // iterate  over ther orders array picktimes(n) times with a different filter for each iteration
-  // push each iteration to a storage array
-  // @return: returns a storage array  ordered ascending by pickupTime
-  orderByPickUpTimes(orderList: any, pickUpTimes: any) {
-    // dismantle values, '4:15pm'  = '415' ,  ['3:00pm','3:15pm','4:15pm','5:00pm'] = [300,315,415,500]
-    // re-order low to high [415,300,500,315] = [300,315,415,500]
-    // recreate values as strings '415' = '4:15pm'  [300,315,415,500] = ['3:00pm','3:15pm','4:15pm','5:00pm']
-
-    const arr = [];
-    const times = [];
-    let filteredListByTime = [];
-    let filteredList = [];
-    pickUpTimes.forEach(item => {
-      arr.push(this.cleanTimeStr(item));
-    });
-
-    const sortedArr = arr.sort((a, b) => {
-      return a - b;
-    });
-
-    sortedArr.forEach(item => {
-      times.push(this.createTimeStr(item.toString()));
-    });
-
-    times.forEach(element => {
-      filteredListByTime = orderList.filter(item => {
-        return item.customerDetails.pickUpTime === element;
-      });
-      filteredList = filteredList.concat(filteredListByTime);
-    });
-    return filteredList;
-  }
-
-  filterByName(name) {
     const filteredList = this.orders.filter(item => {
-      return item.customerDetails.contactName.includes(name);
+      return item.eventDetails.eventType === eventType;
     });
-    console.log(filteredList.length);
+
+    // console.log(filteredList.length);
     if (filteredList.length > 0) {
       this.ordersFiltered.next([...filteredList]);
     } else {
       this.errorsRecieved.next('search term not found');
     }
   }
-  // @param: pickupday is of type string and represents a pickupDay
-  // @return: returns an array of orders according to the pickupDay
-  // filterOrdersByPickUpDay(pickupDay) {
-  //   const filteredList = this.orders.filter(item => {
-  //     return item.customerDetails.pickUpDay === pickupDay;
-  //   });
-  //   this.ordersFiltered.next([...filteredList]);
-  // }
 
-  // @param: pickupday is of type string and represents a pickupDay
-  // @return: returns an array of orders sorted by pickup time ascending accoring to the pickupDay
-  filterOrdersByPickUpDayAndTime(pickupDay, pickUpTimes) {
+  filterByName(name) {
     const filteredList = this.orders.filter(item => {
-      return item.customerDetails.pickUpDay === pickupDay;
+      return item.customerDetails.contactName.includes(name);
     });
+    // console.log(filteredList.length);
+    if (filteredList.length > 0) {
+      this.ordersFiltered.next([...filteredList]);
+    } else {
+      this.errorsRecieved.next('search term not found');
+    }
+  }
 
+  destructureEventDate(obj) {
+    const str = obj.date + ' / ' + obj.month + ' / ' + obj.year;
+    return str;
+  }
+
+  // @param: pickUpDate is of type object and represents a pickUpDate
+  // @return: returns an array of orders sorted by pickup date ascending according to the pickUpDate
+  filterOrdersByPickUpDayAndTime(pickUpDate) {
+    console.log('starting list to filter');
+    console.log(this.orders);
+    const filteredList = this.orders.filter(
+      item => this.destructureEventDate(item.eventDetails.eventDate) === pickUpDate
+    );
+    console.log('filtered list l');
+    console.log(filteredList);
     // we don't need filter by time if there is only one element in the list
     if (filteredList.length > 1) {
-      const filteredByDayAndTime = this.orderByPickUpTimes(filteredList, pickUpTimes);
-      this.ordersFiltered.next([...filteredByDayAndTime]);
+      // filteredList.sort((a, b) => (a.pickUpTimeSelected - b.pickUpTimeSelected ? 1 : -1));
+
+      this.ordersFiltered.next([...filteredList]);
     } else {
       this.ordersFiltered.next([...filteredList]);
     }
+  }
+
+  // clean values / convert to number: remove ':' and 'pm' parts '4:15' = 415
+  // cleanTimeStr(str) {
+  //   const arr = str.split('');
+  //   let string = '';
+  //   arr.forEach(item => {
+  //     if (item !== '.' || item !== 'p' || item !== 'm') {
+  //       string += item;
+  //     }
+  //   });
+  //   console.log(str);
+  //   return string;
+  // }
+
+  createTimeStr(str) {
+    let arr = str.split('');
+    arr.splice(1, 0, '.');
+    arr.push('p');
+    arr.push('m');
+
+    return arr.join('');
   }
 
   // @param: obj represents an order or collection of orders

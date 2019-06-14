@@ -1,10 +1,18 @@
 @media (min-width: 40rem) {
-  .sidebar {
-    margin-top: 64px !important;
-  }
-
   .sidebar h2,
   .sidebar-item {
     margin: 3rem 0;
+  }
+
+  .margin-top {
+    margin: 0 !important;
+    margin-top: 3rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  #search label > h2.margin-top:first-child {
+    margin: 0 !important;
+
+    margin-bottom: 0.5rem !important;
   }
 }

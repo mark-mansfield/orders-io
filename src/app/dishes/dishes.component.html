@@ -1,50 +1,135 @@
-<div class="flex-row-container" id="content">
-  <div class="sidebar" id="sidebar">
-    <mat-select placeholder="filter by course" (selectionChange)="onFilterByCourse($event.value)">
-      <mat-option *ngFor="let course of courses" [value]="course">
-        {{ course }}
-      </mat-option>
-    </mat-select>
-    <div class="flex-item compose">
-      <button mat-button (click)="updateFormMode('create')" class="action-button">
+<div class="flex-row-container device-toolbar" id="device-toolbar">
+  <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+    <i class="material-icons md-36 icon-color-light">
+      add
+    </i>
+  </button>
+  <button
+    mat-button
+    (click)="toggleViews('search')"
+    class="action-button"
+    style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+  >
+    <i class="material-icons md-36 icon-color-light">
+      search
+    </i>
+  </button>
+</div>
+<div class="inner-margin device-search" *ngIf="searchVisible">
+  <div style="text-align: end; margin-top:20px">
+    <button mat-icon-button (click)="toggleViews('default')">
+      <mat-icon aria-label="hide search options">close</mat-icon>
+    </button>
+  </div>
+  <app-search-filter-dishes
+    [courses]="COURSE_OPTIONS"
+    (selectItem)="onFilterByCourse($event.value)"
+    id="filter_by_course"
+  ></app-search-filter-dishes>
+  <app-search (searchTerm)="onFilterByName($event)" class="col-width"></app-search>
+
+  <!-- <app-search [eventTypes]="COURSE_OPTIONS" (selectItem)="onFilterByCourse($event.value)"></app-search> -->
+</div>
+<div class="flex-row-container">
+  <div class="sidebar" id="desktop-toolbar">
+    <div class="flex-row">
+      <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
         <i class="material-icons md-36 icon-color-light">
           add
         </i>
       </button>
+      <button
+        mat-button
+        (click)="toggleViews('search')"
+        class="action-button"
+        style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+      >
+        <i class="material-icons md-36 icon-color-light">
+          search
+        </i>
+      </button>
     </div>
-    <app-dishes-list [data]="dishes" (selectItem)="onItemSelect($event)"></app-dishes-list>
+    <!-- search and select component -->
+
+    <div
+      style="height: auto!important ; margin: 2rem 0px; text-align: end"
+      class="align-items-start"
+      *ngIf="searchVisible"
+    >
+      <button mat-icon-button (click)="toggleViews('default')">
+        <mat-icon aria-label="hide search options">close</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="searchVisible" style="height: auto!important; margin-top: 2rem">
+      <app-search (searchTerm)="onFilterByName($event)" class="col-width"> </app-search>
+      <app-search-filter-dishes
+        [courses]="COURSE_OPTIONS"
+        (selectItem)="onFilterByCourse($event)"
+        id="filter_by_course"
+      ></app-search-filter-dishes>
+    </div>
   </div>
-  <div class="view inner-margin">
-    <div id="view" class="inner-margin" *ngIf="selectedItem !== null">
-      <div class="flex-container-66 edit-tools" id="rightCol">
-        <button mat-mini-fab (click)="updateFormMode('edit')" [disabled]="this.disableEditTools" title="edit this item">
+
+  <!-- use ngClass here to avoid redraw and the network call that goes with it -->
+  <div class="view col-align-center">
+    <div *ngIf="noSearchResults" class="action-button"><h4>no matches found try again</h4></div>
+    <button mat-button class="action-button" (click)="onClearSearchResults()" *ngIf="hasSearchResults">
+      Clear Search
+    </button>
+    <app-dishes-list
+      [data]="this.dishes"
+      [ngClass]="{
+        hidden: formVisible
+      }"
+      (selectItem)="onItemSelect($event)"
+      class="col-width"
+    ></app-dishes-list>
+
+    <!-- form -->
+    <div *ngIf="formVisible">
+      <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
+        <button mat-mini-fab (click)="toggleViews('default')" class="action-button" style="border-radius: none">
           <i class="material-icons icon-color-light">
-            edit
+            keyboard_arrow_left
+          </i>
+        </button>
+        <button
+          mat-mini-fab
+          (click)="updateFormMode('edit')"
+          title="edit this item"
+          *ngIf="this.mode !== 'edit' && this.mode !== 'create'"
+          class="lock"
+        >
+          <i class="material-icons icon-color-light ">
+            lock
           </i>
         </button>
 
-        <button mat-mini-fab [disabled]="this.disableEditTools" title="delete this item">
-          <i class="material-icons icon-color-light">
-            delete
-          </i>
-        </button>
-        <button mat-mini-fab [disabled]="this.disableEditTools" title="clone item">
-          <i class="material-icons icon-color-light">
-            file_copy
-          </i>
-        </button>
+        <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
+          <button mat-mini-fab title="delete this item" (click)="onDeleteDish(this.selectedItem._id)">
+            <i class="material-icons icon-color-light">
+              delete
+            </i>
+          </button>
+
+          <button mat-mini-fab title="clone item">
+            <i class="material-icons icon-color-light">
+              file_copy
+            </i>
+          </button>
+        </div>
       </div>
-
-      <!-- generic form -->
       <div class="inner-margin" style="width: 100%">
         <h2>Dish - {{ this.mode }}</h2>
         <!-- (ngSubmit)="onSaveDish()"  -->
-        <form [formGroup]="form" class="inner-margin">
+        <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveDish()">
           <div class="form-element">
             <label for="name"><h2>Dish Name</h2></label>
             <input type="text" value="{{ selectedItem.name }}" placeholder="dish name..." formControlName="dishName" />
             <div *ngIf="submitted && f.dishName.errors" class="invalid-feedback">
               <mat-error *ngIf="f.dishName.errors.required">Dish name is required</mat-error>
+              <mat-error *ngIf="f.dishName.errors.pattern">letters and numbers only</mat-error>
+              <mat-error *ngIf="f.dishName.errors.duplicate">Menu title already taken</mat-error>
             </div>
           </div>
           <div class="form-element">
@@ -60,7 +145,7 @@
           </div>
           <div class="form-element">
             <label for="portion_sizes"><h2>Portion Sizes</h2> </label>
-            <span> * use comma to separate options</span><br />
+            <span>use comma to separate options</span><br />
             <input
               type="text"
               formControlName="portion_sizes"
@@ -68,7 +153,7 @@
               placeholder="portion size options "
             />
             <div *ngIf="submitted && f.portion_sizes.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.description.errors.required">Portion sizes are required</mat-error>
+              <mat-error *ngIf="f.portion_sizes.errors.required">Portion sizes are required</mat-error>
             </div>
           </div>
           <div class="form-element">
@@ -79,7 +164,7 @@
                 formControlName="course"
                 (selectionChange)="onSelectCourse($event.value)"
               >
-                <mat-option *ngFor="let course of courses" [value]="course">
+                <mat-option *ngFor="let course of COURSE_OPTIONS" [value]="course">
                   {{ course }}
                 </mat-option>
               </mat-select>

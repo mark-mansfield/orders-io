@@ -1,0 +1,13 @@
+<label for="eventOptions"><h2 class="margin-top">Courses</h2></label>
+<small class="placeholder">filter by course</small>
+
+<mat-select
+  placeholder="course type..."
+  name="course options"
+  (selectionChange)="onCourseSelected($event.value)"
+  style="background-color: white; height:50px;  color: black"
+>
+  <mat-option *ngFor="let course of courses" [value]="course">
+    {{ course }}
+  </mat-option>
+</mat-select>

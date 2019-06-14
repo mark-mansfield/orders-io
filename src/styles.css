@@ -15,17 +15,33 @@
 }
 
 :root {
+  /* colors */
   --fc-light: white;
   --fc-dark: black;
   --fc-mid: grey;
-  --inner-margin: 54px;
   --row-header-background: rgba(0, 238, 255, 0.14);
   --placeholder-color: var(--fc-mid);
   --accent-color: #c2185b;
+  --unique-id: grey;
+
+  /* margins */
+  --inner-margin: 54px;
+  --inner-margin-ipad: 20px;
+  --inner-margin-phone: 10px;
+
+  /* typography */
+  --extraLetterSpace: 0.5px;
+
+  /* widths */
+  --desktop-width: 50%;
+  --tablet-width: 90%;
+  --device-width: 100%;
 }
 
-::placeholder {
+::placeholder,
+.placeholder {
   color: var(--placeholder-color);
+  letter-spacing: var(--extraLetterSpace);
 }
 
 body {
@@ -43,7 +59,7 @@ body {
   font-size: 14px;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--fc-dark);
+  color: var(--fc-light);
   width: 100vw;
   height: 100vh;
   margin: 0;
@@ -65,18 +81,30 @@ a {
 }
 
 button.action-button.mat-button {
+  height: 80px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   background-color: var(--accent-color);
 }
 
-git statush1,
+h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--fc-dark);
+  color: var(--fc-light);
 }
 
+.highlight {
+  background-color: seagreen;
+}
+
+.instructions {
+  color: var(--fc-mid);
+}
 .hidden {
   display: none;
 }
@@ -90,4 +118,20 @@ h6 {
 
 .accent {
   color: var(--accent-color);
+}
+
+.lock:after {
+  position: relative;
+  top: -35px;
+  margin-bottom: -30px;
+  content: 'Click to unlock this item';
+  display: flex;
+  align-items: flex-start;
+  color: white;
+  margin-left: 60px;
+}
+
+.unlock:after {
+  content: 'click to lock this item';
+  display: block;
 }

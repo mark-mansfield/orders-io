@@ -5,8 +5,6 @@ export interface Order {
     email: string;
     orderNum: string;
     contactNum: number;
-    pickUpDay: string;
-    pickUpTime: string;
   };
   orderedItems: any[];
   eventDetails: {
@@ -16,8 +14,9 @@ export interface Order {
     deliveryTimeSelected: string;
     pickUpTimeSelected: string;
     deliveryAddress: string;
-    stylePackage: string;
+    stylingOptionSelected: string;
     eventStartTime: string;
+    notes: string;
   };
   notes: string;
   id: string;

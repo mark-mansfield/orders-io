@@ -1,0 +1,15 @@
+<div id="search">
+  <h2 class="margin-top">Search by name</h2>
+  <small class="placeholder">or part thereof</small>
+
+  <div class="search-container">
+    <div class="search-input">
+      <input type="text" value="" #searchTerm placeholder="search for something..." />
+    </div>
+    <div class="search-button">
+      <button mat-button class="action-button" style="height:100%" (click)="onSearchClicked(searchTerm.value)">
+        <i class="material-icons" style="font-size: 1.5rem; color: white">search</i>
+      </button>
+    </div>
+  </div>
+</div>

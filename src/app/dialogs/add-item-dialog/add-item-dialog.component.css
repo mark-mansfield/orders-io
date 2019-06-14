@@ -12,3 +12,11 @@
   width: 100%;
   background-color: none;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--fc-dark) !important;
+}

@@ -14,8 +14,8 @@ form {
 }
 
 .form-element {
-  margin: 10px 0;
-  width: 500px;
+  margin: 20px 0;
+  width: 100%;
 }
 
 input,
@@ -28,10 +28,11 @@ textarea {
 input,
 textarea,
 select,
-.mat-select {
+.mat-select,
+.disabled {
   width: 100% !important;
   font-size: 1rem;
-  color: inherit !important;
+  color: black !important;
   border: 1px solid #ccc;
 }
 

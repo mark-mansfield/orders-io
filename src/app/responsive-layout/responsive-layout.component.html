@@ -1,0 +1,88 @@
+<mat-toolbar *ngIf="userIsAuthenticated">
+  <div class="branding">
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      *ngIf="isHandset$ | async"
+      (click)="this.drawer.open()"
+    >
+      <mat-icon aria-label="Side nav toggle icon" class="icon-color-light">menu</mat-icon>
+    </button>
+    <div class="header__branding">
+      orders.<span style="color:#c2185b"
+        ><strong><i>io</i></strong></span
+      >
+    </div>
+  </div>
+  <div *ngIf="!(isHandset$ | async) && userIsAuthenticated" class="header">
+    <div>
+      <a routerLink="dashboard" mat-button routerLinkActive="">
+        <span>orders</span>
+      </a>
+    </div>
+
+    <div *ngIf="userIsAuthenticated">
+      <!-- <a routerLink="list-menus" mat-button routerLinkActive="">
+        <span class="header__tool-bar-link">menus</span>
+      </a> -->
+      <a routerLink="menus" mat-button routerLinkActive="">
+        <span>menus</span>
+      </a>
+    </div>
+    <div *ngIf="userIsAuthenticated">
+      <a routerLink="list-dishes" mat-button routerLinkActive="">
+        <span>dishes</span>
+      </a>
+    </div>
+    <div *ngIf="userIsAuthenticated">
+      <a mat-button (click)="onLogout()"> <span>logout</span></a>
+    </div>
+    <div *ngIf="!userIsAuthenticated">
+      <a routerLink="welcome">login</a>
+    </div>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    [ngClass]="{ visible: userIsAuthenticated, hidden: !userIsAuthenticated }"
+    #drawer
+    class="sidenav"
+    fixedInViewport="false"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'before'"
+  >
+    <div>
+      <a routerLink="dashboard" mat-button routerLinkActive="">
+        <span>orders</span>
+      </a>
+    </div>
+
+    <div *ngIf="userIsAuthenticated">
+      <!-- <a routerLink="list-menus" mat-button routerLinkActive="">
+      <span class="header__tool-bar-link">menus</span>
+    </a> -->
+      <a routerLink="menus" mat-button routerLinkActive="">
+        <span>menus</span>
+      </a>
+    </div>
+    <div *ngIf="userIsAuthenticated">
+      <a routerLink="list-dishes" mat-button routerLinkActive="">
+        <span>dishes</span>
+      </a>
+    </div>
+    <div *ngIf="userIsAuthenticated">
+      <a mat-button (click)="onLogout()"> <span>logout</span></a>
+    </div>
+    <div *ngIf="!userIsAuthenticated">
+      <a routerLink="welcome">login</a>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <!---->
+    <!-- Add Content Here -->
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
