@@ -86,11 +86,7 @@ Order List - filter by date/ person ....
 1. Send http get request containing the order object to getOrders api endpoint and return the resulting array of objects
 2. Display a list of orders showing the order number, customer name , pickup day fields.
 
-### User interactions
 
-#### Create run sheet
-
-Takes all the orders and combines them into a single object, convert this to csv file , download file.
 
 ## RoadMap
 2. Uploaded Order data containing the following items
