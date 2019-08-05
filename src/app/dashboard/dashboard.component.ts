@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { environment } from '../../environments/environment';
 import { OrderService } from '../services/order.service';
+import { DataService } from '../services/menu.service';
 import { Subscription } from 'rxjs';
 import { ImportService } from '../services/import.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   uniqueId: string;
 
   orders = [];
+  menus = [];
   filterDates = [];
   selectedItem = null;
   filter = null;
@@ -44,16 +45,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ordersDeletedSub: Subscription;
   ordersFilteredSub: Subscription;
   errorsSub: Subscription;
+  menusLoadedSub: Subscription;
 
   constructor(
     public importService: ImportService,
     public orderService: OrderService,
+    public menuService: DataService,
     private snackBarService: SnackBarService,
     private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
     this.orderService.getOrders({ mode: 'list' });
+    this.menuService.getMenus();
+
+    // listen for menus data loaded from server
+    this.menusLoadedSub = this.menuService.getMenuMetaDataUpdatedListener().subscribe(returnedData => {
+      this.menus = returnedData;
+      // console.log('menu data loaded from server');
+      // console.log(this.menus);
+    });
 
     // Listen for all orders loaded from server
     this.ordersLoadedSub = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {

@@ -1,6 +1,6 @@
 ## Design Doc
 
-## Project Name: Catering Manager
+## Project Name: Orders.io
 
 ## Author: Mark Mansfield
 
@@ -8,22 +8,13 @@
 
 ## Project Goals
 
-The overall goal of this project is to enable the transformation of
-saved order data, taken through a web interface, into printable reports that are to be used by the kitchen team
-when prepping food for customers.
+Simple Crud application for managing food orders for a catering business
 
 ## Data Inputs
 
-1. Uploaded Order data containing the following items
-   name:
-   email address:
-   contact number:
-   pick up date:
-   pick up time:
-   order items:
-   Special notes - for dietary concerns:
 
-2. Admin Inputted Data
+
+1. Admin Inputted Data
    1. additional annotations to order data inputted by admin staff
    2. Access to the following data fields by admin
       1. Contact Number
@@ -32,9 +23,7 @@ when prepping food for customers.
       4. Special Notes
       5. Order Items
 
-Uploaded order data will be in be converted from csv to json and stored.
-Summary generated data for print will be in convert from json to csv format.
-Summary data for screen will consume json data.
+
 
 ### Data validation
 
@@ -47,9 +36,7 @@ Summary data for screen will consume json data.
 
 ## Data outputs
 
-1. Order Summary data will be formatted to a specific csv format out lined in the section 'Order Summary Layout'
-2. Daily Orders Summary data will be formatted using a row column based layout with one row representing an order contain all the relevant fields as specified by the section "Daily Orders Summary Layout".
-3. Order data updated by admin will be saved as json
+JSON - backend / csv (printable)
 
 ### Tech Stack
 
@@ -57,9 +44,9 @@ Angular / node / express / mongo db
 
 ## Order Summary Layout
 
-The layout for screen will be a single vertical column layout listing.
+Data grid layout
 
-1. Customer data in an easy to read format of ( order number / Customer name / Pickup Day / [action button delete ] / [action button view] ) one data item per line
+1. Data Fields( order number / Customer name / Pickup Day / [action button delete ] / [action button view] ) one data item per line
 2. Action buttons launch a modal dialog containing and order detail summary
 
 ## Order detail Summary / modal
@@ -73,7 +60,7 @@ The layout for the screen will be a single vertical column with an inner 2 colum
 5. @saveOrder: Method sends data back to parent component
 6. @Close: method send null back to the parent component
 
-## Create run sheet layout
+## Create run sheet - feature
 
 The layout for creating a run sheet uses the mat-stepper component
 
@@ -82,23 +69,17 @@ The layout for creating a run sheet uses the mat-stepper component
 3. Step 2: Review orders: displays a list of all orders that contain the selected pickup day, sorted by pickup time earliest to latest. Action buttons launch a the order detail / summary modal dialog
 4. Step 3: Build run sheet: takes all the order data and build it into a csv file for download.
 
-## Architecture
 
-Auth Server and Data will be on the same server initially. If the project needs to scale then look at breaking these items out into different servers.
-
-## Replication
-
-A replication server will be set to be used as a fall back.
 
 ## Use Cases
 
 Customer has placed an order via an external system.
-Admin user uploads the csv file containing order data in the system.
-The admin can then edit order info and then use the Summaries features to generate different reports for the kitchen.
+Admin user can perform crud operations into mongo db
+Admin user can use the summaries features to generate different reports for the kitchen.
 
 # Views
 
-Order List
+Order List - filter by date/ person ....
 
 ### Description
 
@@ -110,3 +91,16 @@ Order List
 #### Create run sheet
 
 Takes all the orders and combines them into a single object, convert this to csv file , download file.
+
+## RoadMap
+2. Uploaded Order data containing the following items
+   name:
+   email address:
+   contact number:
+   pick up date:
+   pick up time:
+   order items:
+   Special notes - for dietary concerns:
+Uploaded order data will be in be converted from csv to json and stored.
+Summary generated data for print will be in convert from json to csv format.
+Summary data for screen will consume json data.

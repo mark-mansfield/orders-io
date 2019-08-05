@@ -11,11 +11,8 @@
     </div>
   </div>
   <div class="inner-margin" *ngIf="data.length > 0">
-    <div
-      class="flex-row-container row-style  valign-center"
-      *ngFor="let order of data; let i = index"
-      id="{{ this.getFormattedDate(order.eventDetails.eventDate) }}"
-    >
+    <div class="flex-row-container row-style  valign-center" *ngFor="let order of data; let i = index">
+      <!-- id="{{ this.getFormattedDate(order.eventDetails.eventDate) }}" -->
       <div class="flex-4col-left">{{ order.customerDetails.orderNum }} : {{ data.length }}</div>
       <div class="flex-4col-middle-left">{{ order.customerDetails.contactName }}</div>
       <div class="flex-4col-middle-right">{{ order.eventDetails.eventType }}</div>

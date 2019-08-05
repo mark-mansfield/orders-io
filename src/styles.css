@@ -112,6 +112,14 @@ h6 {
   display: flex;
 }
 
+.opacity1 {
+  opacity: 0.1;
+}
+
+.opacity10 {
+  opacity: 1;
+}
+
 .cdk-overlay-dark-backdrop {
   background: rgba(0, 0, 0, 0.82) !important;
 }

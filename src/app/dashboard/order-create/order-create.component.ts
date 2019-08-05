@@ -27,11 +27,12 @@ export class OrderCreateComponent implements OnInit {
   menuName: string;
   form: FormGroup;
 
+  menu: any;
   dishes: any = [];
   itemsOnMenu: any = [];
 
   // object properties all could be enhanced to come from api
-  menus = ['rosh hashanah', 'menu 2', 'menu 3'];
+  // menus = ['rosh hashanah', 'menu 2', 'menu 3'];
   delivery_time_options = ['10.30am', '11.00am', '11.30am', '4.30pm', '5.00pm', '5.30pm'];
   pickup_time_options = ['3.30pm', '4.00pm', '4.30pm', '5.00pm'];
   styling_options = ['none', '$', '$$$', '$$$$$'];
@@ -40,79 +41,15 @@ export class OrderCreateComponent implements OnInit {
   EVENT_TYPES = environment.eventOptions; // <-- should remain constant
   EVENT_START_TIME_OPTIONS = environment.eventStartTimeOptions; // <-- should remain constant
 
-  menu = {
-    _id: '5b8aa5ff78bf462cbfab5903',
-    title: 'rosh hashanah',
-    description: 'aaaaa',
-    limitedPickUpDates: false,
-    items: [
-      {
-        name: 'Slow_Cooked_Lamb_Shoulder',
-        description: 'Hawaiij spices, pomegranate molasses, honey and lemon w coriander and almonds',
-        portion_sizes: [0, 1, 2, 3],
-        course: 'main'
-      },
-      {
-        name: 'Grilled_Ora_king_salmon',
-        description: 'chermoula marinade, cherry tomato and green bean salsa',
-        portion_sizes: [0, 1, 2, 3],
-        course: 'main'
-      },
-      {
-        name: 'Ocean_trout_tarator',
-        description: 'w tahini yoghurt, coriander, sumac and chilli',
-        portion_sizes: [0, 1, 2, 3],
-        course: 'main'
-      },
-      {
-        name: 'Slow_Braised_Free_Range_Chicken',
-        description: 'Jerusalem artichokes, bay, lemon, olives, eschallots , dates (Legs and thighs- 18 pieces)',
-        portion_sizes: [0, 1],
-        course: 'main'
-      },
-      {
-        name: 'chopped_liver',
-        description: 'w caramelised onions egg &amp; herb mayo',
-        portion_sizes: ['0', '250', '500', '1kg'],
-        course: 'entree'
-      },
-      {
-        name: 'hommus',
-        description: "Lox's famous chick pea hummus used at the restaurant",
-        portion_sizes: ['0', '250', '500', '1kg'],
-        course: 'entree'
-      },
-      {
-        name: 'confit_tuna',
-        description: 'Olive oil, caper and parsley dip',
-        portion_sizes: ['0', '250', '500', '1kg'],
-        course: 'entree'
-      },
-      {
-        name: 'Romanian_eggplant',
-        description: 'roasted eggplant, capsicum, pomegranate, dill, lemon, shallot)',
-        portion_sizes: ['250', '500', '1kg'],
-        course: 'entree'
-      },
-      {
-        name: 'holmbrae_chicken_and_vegetable ',
-        description: 'DF',
-        portion_sizes: ['250', '500', '1kg'],
-        course: 'soup'
-      }
-    ],
-    imagePath: 'http://localhost:3000/images/rosh-hashanah-1552960275177.jpg',
-    creator: '5b89d99441204620fb7fa0d4',
-    __v: 0
-  };
-
   eventType = null;
   deliveryTimeSelected = null;
   pickUpTimeSelected = null;
   deliveryAddress = null;
   pickUpDateSelected = null;
   stylingOptionSelected = null;
+  menuSelected = null;
   eventStartTimeSelected = null;
+  menuNameSelected = null;
   eventDate = null;
   eventStartTime = null;
   formattedDate = null;
@@ -133,14 +70,25 @@ export class OrderCreateComponent implements OnInit {
   disableSubmit = true;
   isLoading = true;
 
-  //input data
+  // input data
   private _uniqueId = '';
   private _formMode = '';
+  private _menus = '';
   private _selectedItem = null;
 
   constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) {}
 
+  // provides ref to scroll to in case of form errors
   @ViewChild('#formStart')
+  @Input('menus')
+  set menus(menus: any) {
+    this._menus = menus;
+  }
+
+  get menus() {
+    return this._menus;
+  }
+
   @Input('uniqueId')
   set uniqueId(uniqueId: string) {
     this._uniqueId = uniqueId;
@@ -161,6 +109,7 @@ export class OrderCreateComponent implements OnInit {
   set selectedItem(selectedItem: any) {
     this._selectedItem = selectedItem;
   }
+
   get selectedItem(): any {
     return this._selectedItem;
   }
@@ -182,7 +131,6 @@ export class OrderCreateComponent implements OnInit {
     const stylingOptionsSelector = this.form.get('stylingOptions');
     const eventStartTimeSelector = this.form.get('eventStartTime');
     const eventTypeSelector = this.form.get('eventType').valueChanges.subscribe(eventTypeSelector => {
-      console.log(eventTypeSelector);
       if (eventTypeSelector === 'pick_up') {
         pickUpTimeSelector.setValidators([Validators.required]);
         pickUpTimeSelector.updateValueAndValidity();
@@ -212,7 +160,6 @@ export class OrderCreateComponent implements OnInit {
         stylingOptionsSelector.setValidators([Validators.required]);
         eventStartTimeSelector.setValidators([Validators.required]);
 
-        // addressSelector.updateValueAndValidity();
         deliveryTimeSelector.updateValueAndValidity();
         stylingOptionsSelector.updateValueAndValidity();
         eventStartTimeSelector.updateValueAndValidity();
@@ -221,11 +168,8 @@ export class OrderCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.selectedItem);
-    console.log(this.mode);
     this.isLoading = false;
     const regexPattern = '[a-zA-Z0-9/s\t\n\r, \\.]*';
-    this.limitedPickUpDates = this.menu.limitedPickUpDates;
     if (this.mode === 'create') {
       this.inputDisabled = false;
       this.form = this.formBuilder.group({
@@ -246,15 +190,17 @@ export class OrderCreateComponent implements OnInit {
     }
 
     if (this.mode === 'view') {
-      // const localDateHack = new Date(this.selectedItem.eventDetails.eventDate.replace(/-/g, '/').replace(/T.+/, ''));
-      // console.log(this.selectedItem.eventDetails.eventDate);
-      // console.lo(localDateHack)
+      this.dishes = this.selectedItem.orderedItems;
       this.eventType = this.selectedItem.eventDetails.eventType;
       this.pickUpTimeSelected = this.selectedItem.eventDetails.pickUpTimeSelected + 'pm';
       this.deliveryTimeSelected = this.selectedItem.eventDetails.deliveryTimeSelected;
       this.stylingOptionSelected = this.selectedItem.eventDetails.stylingOptionSelected;
       this.eventStartTimeSelected = this.selectedItem.eventDetails.eventStartTime;
       this.deliveryAddress = this.selectedItem.eventDetails.deliveryAddress;
+
+      this.menuNameSelected = this.selectedItem.menuName;
+      this.initItemsOnMenu(this.selectedItem.orderedItems);
+
       this.form = this.formBuilder.group({
         contactName: [
           { value: this.selectedItem.customerDetails.contactName, disabled: this.inputDisabled },
@@ -295,15 +241,6 @@ export class OrderCreateComponent implements OnInit {
       this.serverDate = new Date(this.selectedItem.eventDetails.eventDate);
       this.serverDateFormatted = this.orderService.formatDate(this.serverDate);
     }
-
-    this.dishes = this.menu.items;
-    this.menu.items.forEach(item => {
-      const orderItem = {
-        name: item.name,
-        qty: ''
-      };
-      this.itemsOnMenu.push(orderItem);
-    });
 
     this.setConditionalFormFieldValidators();
   }
@@ -381,7 +318,7 @@ export class OrderCreateComponent implements OnInit {
 
   updateItemQty(index, item) {
     this.itemsOnMenu[index].qty = item;
-    // console.log(this.itemsOnMenu[index]);
+    console.log(this.itemsOnMenu);
   }
 
   setEventType(type) {
@@ -423,8 +360,29 @@ export class OrderCreateComponent implements OnInit {
     // console.log(`Delivery Address ${this.deliveryAddress}`);
   }
 
+  // make  each dish into order item object  { name: string,  quantity: string }
+  initItemsOnMenu(arr) {
+    arr.forEach(item => {
+      console.log(item);
+      const orderItem = {
+        name: item.name,
+        qty: ''
+      };
+      this.itemsOnMenu.push(orderItem);
+    });
+
+    console.log(arr);
+  }
+
   onSelectMenu(value) {
-    this.menuName = value;
+    console.log(value);
+    const idx = this.menus.findIndex(p => p.title === value.title);
+    // this.menuSelected = this.menus[idx];
+    // this.form.menu.get('patientCategory').setValue(this.menus[idx]);
+    // this.dishes = this.menuSelected.items;
+    // this.initItemsOnMenu(this.dishes);
+    console.log(this.form.controls.menu);
+    // console.log(idx);
   }
 
   onSelectDeliveryTime(time) {
@@ -449,16 +407,6 @@ export class OrderCreateComponent implements OnInit {
     // console.log(`stying package selected ${option}`);
   }
 
-  // calendar events
-  // setEventDate(value) {
-  //   // moment object ._i = {year: 2019, month: 5, date: 5}
-  //   console.log(value);
-  //   const date = value._i;
-  //   this.formattedDate = date.date + '/' + date.month + '/' + date.year;
-  //   console.log(this.formattedDate);
-  //   // this.form.controls.eventDate.value = value._i;
-  // }
-
   onDeleteOrder(_id) {
     this.orderService.deleteOrder(_id);
     this.notifyParent();
@@ -478,7 +426,7 @@ export class OrderCreateComponent implements OnInit {
 
     if (this.mode === 'edit') {
       const exisitngOrder = {
-        menuName: this.form.value.menu,
+        menuName: this.form.value.menuName,
         customerDetails: {
           contactName: this.form.value.contactName,
           email: this.form.value.email,
@@ -505,7 +453,7 @@ export class OrderCreateComponent implements OnInit {
     }
     if (this.mode === 'create') {
       this.order = {
-        menuName: this.form.value.menu,
+        menuName: this.menuSelected.title,
         customerDetails: {
           contactName: this.form.value.contactName,
           email: this.form.value.email,
@@ -530,8 +478,8 @@ export class OrderCreateComponent implements OnInit {
       };
       this.orderService.createOrder(this.order);
     }
-
-    this.form.reset();
-    this.notifyParent();
+    console.log(this.order);
+    // this.form.reset();
+    // this.notifyParent();
   }
 }

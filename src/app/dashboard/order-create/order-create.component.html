@@ -83,23 +83,6 @@
         </div>
         <br /><br />
 
-        <div class="form-element" style="height: 76px; margin: 10px 0 ">
-          <label for="menu"><h2>Menu</h2></label>
-          <div
-            [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
-            style="height: 50px;    display: grid;
-          place-items: center;"
-          >
-            <mat-select placeholder="menu" formControlName="menu" (selectionChange)="onSelectMenu($event.value)">
-              <mat-option *ngFor="let menu of menus" [value]="menu">
-                {{ menu }}
-              </mat-option>
-            </mat-select>
-          </div>
-          <div *ngIf="submitted && f.menu.errors" class="invalid-feedback">
-            <mat-error *ngIf="f.menu.errors.required">Please select from a menu</mat-error>
-          </div>
-        </div>
         <div class="form-element">
           <label for="contactName"><h2>Name</h2></label>
 
@@ -155,13 +138,13 @@
               </div>
             </div>
             <div *ngIf="this.mode === 'edit' || this.mode === 'create'" style="text-align:right">
-              <button mat-fab type="button" (click)="eventDatePicker.open()">
+              <button mat-fab type="button" class="mat-accent" (click)="eventDatePicker.open()">
                 <i class="material-icons icon-color-light">
                   date_range
                 </i>
               </button>
             </div>
-            <div  style="position:fixed; bottom: 0px; opacity: 0; z-index: -1">
+            <div style="position:fixed; bottom: 0px; opacity: 0; z-index: -1">
               <!-- <label for="pickup_date"
                 ><h2>{{ this.dateOfEvent }}</h2></label
               > -->
@@ -169,7 +152,6 @@
               <input
                 formControlName="eventDate"
                 (dateChange)="onDateChange($event.value)"
-
                 matInput
                 [min]="minDate"
                 [matDatepicker]="eventDatePicker"
@@ -244,7 +226,6 @@
               place-items: center;"
             >
               <mat-select
-                [value]="pickUpTime"
                 placeholder="time"
                 formControlName="pickUpTime"
                 (selectionChange)="onSelectPickUpTime($event.value)"
@@ -255,7 +236,7 @@
               </mat-select>
             </div>
             <div *ngIf="submitted && f.pickUpTime.errors" class="invalid-feedback">
-              <mat-error *ngIf="f.menu.pickUpTime.required">Please select a pick up time</mat-error>
+              <mat-error *ngIf="f.pickUpTime.errors.required">Please select a pick up time</mat-error>
             </div>
           </div>
         </div>
@@ -303,11 +284,28 @@
         <!-- </div> -->
         <br />
 
+        <div class="form-element" style="height: 76px; margin: 10px 0 ">
+          <label for="menu"><h2>Menu</h2></label>
+          <div
+            [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+            style="height: 50px;    display: grid;
+          place-items: center;"
+          >
+            <mat-select placeholder="menu" formControlName="menu" (selectionChange)="onSelectMenu($event.value)">
+              <mat-option *ngFor="let menu of menus" [value]="menu">
+                {{ menu.title }}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div *ngIf="submitted && f.menu.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.menu.errors.required">Please select from a menu</mat-error>
+          </div>
+        </div>
         <br />
         <!-- </div> -->
         <!-- dishes on menu -->
         <h2>Dishes</h2>
-        <div *ngFor="let dish of dishes; let i = index" class=" form-element flex-row align-space-between ">
+        <div *ngFor="let dish of itemsOnMenu; let i = index" class=" form-element flex-row align-space-between ">
           <div class="dish-item align-space-between">
             <div class="dish-item-description">
               <label for="{{ dish.name }}"
@@ -325,7 +323,7 @@
                 (selectionChange)="updateItemQty(i, $event.value)"
                 style="background-color: white; height:50px;"
               >
-                <mat-option *ngFor="let qty of dish.portion_sizes" [value]="qty">
+                <mat-option *ngFor="let item of portion_sizes" [value]="item">
                   {{ qty }}
                 </mat-option>
               </mat-select>
@@ -354,18 +352,29 @@
         <br />
         <hr class="line_break" />
         <br />
-        <div class="flex-2Col-right" *ngIf="this.mode === 'edit' || this.mode === 'create'" style="margin-bottom: 50px">
-          <button class="dialog-button" mat-raised-button color="accent" type="submit">
+        <div
+          *ngIf="this.mode === 'edit' || this.mode === 'create'"
+          style="width: 100%; margin-bottom: 50px; display:flex; justify-content: space-between"
+        >
+          <!-- <button
+        class="action-button"
+        mat-fab
+        color="accent"
+        mat-raised-button
+        style="margin-left: 10px"
+        (click)="this.notifyParent()"
+      >
+        <mat-icon
+          aria-label="quit and go back to orders list"
+          class="mat-icon material-icons"
+          role="img"
+          aria-hidden="true"
+          >close</mat-icon
+        >
+      </button> -->
+
+          <button class="action-button" mat-button color="accent" type="submit">
             save
-          </button>
-          <button
-            class="dialog-button"
-            mat-raised-button
-            color="accent"
-            style="margin-left: 10px"
-            (click)="this.notifyParent()"
-          >
-            cancel
           </button>
         </div>
       </form>

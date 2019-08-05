@@ -36,8 +36,11 @@ mat-toolbar.mat-toolbar.mat-toolbar-single-row.ng-star-inserted {
 }
 
 .mat-mini-fab.mat-accent,
-.mat-raised-button {
+.mat-raised-button,
+.mat-fab.mat-accent,
+.mat-button.mat-accent {
   background-color: #c2185b !important;
+  color: var(--fc-light);
 }
 
 .icon-color,

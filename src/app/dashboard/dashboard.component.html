@@ -32,12 +32,21 @@
 <div class="flex-row-container" id="desktop-view">
   <div class="sidebar" id="desktop-toolbar">
     <div class="flex-row">
-      <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+      <button
+        mat-button
+        [ngClass]="{ opacity1: formVisible, opacity10: !formVisible }"
+        (click)="toggleViews('create')"
+        [disabled]="formVisible"
+        class="action-button"
+        style="border-radius: none"
+      >
         <i class="material-icons md-36 icon-color-light">
           add
         </i>
       </button>
       <button
+        [disabled]="formVisible"
+        [ngClass]="{ opacity1: formVisible, opacity10: !formVisible }"
         mat-button
         (click)="toggleViews('search')"
         class="action-button"
@@ -116,6 +125,7 @@
         [mode]="formMode"
         [uniqueId]="uniqueId"
         [selectedItem]="selectedItem"
+        [menus]="this.menus"
         (notify)="onNotifyClicked($event)"
         class="col-width"
       ></app-order-create>
