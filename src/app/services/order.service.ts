@@ -78,6 +78,9 @@ export class OrderService {
       }
     });
   }
+  addDishes(dishes) {
+    console.log(dishes);
+  }
 
   deleteOrder(id) {
     console.log(id);

@@ -4,7 +4,6 @@ import { Order } from '../../models/order.model';
 import { environment } from '../../../environments/environment';
 import { OrderService } from '../../services/order.service';
 import { DishService } from '../../services/dish.service';
-import { DateAdapter } from '@angular/material';
 
 @Component({
   selector: 'app-order-create',
@@ -271,6 +270,7 @@ export class OrderCreateComponent implements OnInit {
     this.form.controls.deliveryTime.reset({ value: this.deliveryTimeSelected, disabled: false });
     this.form.controls.stylingOptions.reset({ value: this.stylingOptionSelected, disabled: false });
     this.form.controls.eventStartTime.reset({ value: this.eventStartTimeSelected, disabled: false });
+    console.log(this.form.status);
   }
 
   disableForm() {
@@ -361,6 +361,7 @@ export class OrderCreateComponent implements OnInit {
 
   // make  each dish into order item object  { name: string,  quantity: string }
   initItemsOnMenu(arr) {
+    this.itemsOnMenu = [];
     arr.forEach(item => {
       console.log(item);
       const orderItem = {
@@ -369,19 +370,17 @@ export class OrderCreateComponent implements OnInit {
       };
       this.itemsOnMenu.push(orderItem);
     });
-
-    console.log(arr);
+    console.log('items on menu');
+    console.log(this.itemsOnMenu);
   }
 
   onSelectMenu(value) {
-    console.log(value);
+    if (value.title === 'none') {
+      this.form.controls.menu.reset({ value: '', disabled: false });
+    }
     const idx = this.menus.findIndex(p => p.title === value.title);
-    // this.menuSelected = this.menus[idx];
-    // this.form.menu.get('patientCategory').setValue(this.menus[idx]);
-    // this.dishes = this.menuSelected.items;
-    // this.initItemsOnMenu(this.dishes);
-    console.log(this.form.controls.menu);
-    // console.log(idx);
+    this.menuSelected = this.menus[idx];
+    this.initItemsOnMenu(this.menuSelected.items);
   }
 
   onSelectDeliveryTime(time) {

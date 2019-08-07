@@ -83,7 +83,6 @@
             <mat-error *ngIf="f.eventType.errors.required">An Event type is required</mat-error>
           </div>
         </div>
-        <br /><br />
 
         <div class="form-element">
           <label for="contactName"><h2>Name</h2></label>
@@ -162,7 +161,7 @@
               <mat-datepicker touchUi #eventDatePicker></mat-datepicker>
             </div>
           </div>
-          <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback">
+          <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback" style="position:relative; top: -60px">
             <mat-error *ngIf="f.eventDate.errors.required">Date required</mat-error>
           </div>
         </div>
@@ -305,8 +304,10 @@
         <br />
         <!-- </div> -->
         <!-- dishes on menu -->
-        <h2>Dishes</h2>
-        <div *ngFor="let dish of itemsOnMenu; let i = index" class=" form-element flex-row align-space-between ">
+        <div class="form-element"><h2>Dishes</h2></div>
+        <div *ngIf="itemsOnMenu.length === 0" class="form-element">No dishes as yet... select a menu first</div>
+
+        <div *ngFor="let dish of itemsOnMenu; let i = index" class="form-element flex-row align-space-between ">
           <div class="dish-item align-space-between">
             <div class="dish-item-description">
               <label for="{{ dish.name }}"
@@ -331,9 +332,7 @@
             </div>
           </div>
         </div>
-        <br />
-        <hr class="line_break" />
-        <br />
+
         <div class="form-element" style="width: 100%">
           <label for="notes"><h2>Notes</h2></label>
           <small class="instructions">type all in one line. numbers letters . and spaces allowed</small>

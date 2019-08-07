@@ -62,8 +62,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // listen for menus data loaded from server
     this.menusLoadedSub = this.menuService.getMenuMetaDataUpdatedListener().subscribe(returnedData => {
       this.menus = returnedData;
-      // console.log('menu data loaded from server');
-      // console.log(this.menus);
+
+      // so user can select no menu to reset the dishes
+      this.menus.unshift({
+        title: 'none',
+        description: 'none',
+        items: [],
+        _id: null
+      });
     });
 
     // Listen for all orders loaded from server
