@@ -8,6 +8,11 @@
   height: inherit;
   background: rgba(0, 0, 0, 0.8);
 }
+
+.mat-drawer-container {
+  background-color: transparent !important;
+  color: var(--fc-dark);
+}
 /* mat-list */
 
 /* mat-tool-bar */

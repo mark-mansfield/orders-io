@@ -203,7 +203,7 @@
     align-items: flex-start;
     width: 100%;
     padding: 20px;
-    background-color: #343434;
+    background-color: #d1e9f2;
   }
 
   .dish-item-description {
@@ -392,6 +392,8 @@
 
   .view .edit-tools {
     position: absolute;
+    display: flex;
+    justify-content: flex-start;
     top: 0px;
     left: 400px;
     padding-top: 20px;
@@ -408,10 +410,11 @@
   .inner-margin {
     margin: var(--inner-margin-desktop);
   }
+
   .event-date .date-field {
     width: 100%;
     height: 200px;
-    background-color: #343434;
+    background-color: #d1e9f2;
     /* border: 1px solid white; */
     padding: 20px;
     margin: 5px 0;

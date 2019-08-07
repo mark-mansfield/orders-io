@@ -36,7 +36,7 @@ export class OrderCreateComponent implements OnInit {
   delivery_time_options = ['10.30am', '11.00am', '11.30am', '4.30pm', '5.00pm', '5.30pm'];
   pickup_time_options = ['3.30pm', '4.00pm', '4.30pm', '5.00pm'];
   styling_options = ['none', '$', '$$$', '$$$$$'];
-
+  quantities = [1, 2, 3, 4, 5];
   // object constants
   EVENT_TYPES = environment.eventOptions; // <-- should remain constant
   EVENT_START_TIME_OPTIONS = environment.eventStartTimeOptions; // <-- should remain constant
@@ -318,7 +318,6 @@ export class OrderCreateComponent implements OnInit {
 
   updateItemQty(index, item) {
     this.itemsOnMenu[index].qty = item;
-    console.log(this.itemsOnMenu);
   }
 
   setEventType(type) {

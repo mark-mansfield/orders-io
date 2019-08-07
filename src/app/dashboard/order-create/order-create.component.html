@@ -18,23 +18,27 @@
         </i>
       </button>
 
-      <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
-        <button mat-mini-fab title="delete this item" (click)="onDeleteOrder(this.selectedItem._id)">
-          <i class="material-icons icon-color-light">
-            delete
-          </i>
-        </button>
-
-        <button mat-mini-fab title="clone item">
-          <i class="material-icons icon-color-light">
-            file_copy
-          </i>
-        </button>
-        <div style="margin-top: 100px">
-          <button class="dialog-button" mat-raised-button color="accent" type="submit" style="width: 100px">
-            save
+      <div
+        id="edit-tools"
+        class="mode-context-aware-tools"
+        style="flex:2"
+        name="mode-context-aware-tools"
+        *ngIf="this.mode === 'edit'"
+      >
+        <div style="flex:2">
+          <button mat-mini-fab title="delete this item" (click)="onDeleteOrder(this.selectedItem._id)">
+            <i class="material-icons icon-color-light">
+              delete
+            </i>
           </button>
-          <br /><br />
+
+          <button mat-mini-fab title="clone item">
+            <i class="material-icons icon-color-light">
+              file_copy
+            </i>
+          </button>
+        </div>
+        <div style="flex:1">
           <button
             class="dialog-button"
             mat-raised-button
@@ -47,9 +51,7 @@
         </div>
       </div>
     </div>
-    <div style="justify-content: flex-start ">
-      <h1>{{ this.mode }} Order</h1>
-
+    <div id="order-form" class="view-margin-top" style="justify-content: flex-start ">
       <h2>Order Number</h2>
       <ng-container *ngIf="uniqueId"
         ><span style="color: var(--unique-id)">{{ this.uniqueId }}</span></ng-container
@@ -85,7 +87,6 @@
 
         <div class="form-element">
           <label for="contactName"><h2>Name</h2></label>
-
           <input
             type="text"
             formControlName="contactName"
@@ -323,7 +324,7 @@
                 (selectionChange)="updateItemQty(i, $event.value)"
                 style="background-color: white; height:50px;"
               >
-                <mat-option *ngFor="let item of portion_sizes" [value]="item">
+                <mat-option *ngFor="let qty of quantities" [value]="qty">
                   {{ qty }}
                 </mat-option>
               </mat-select>

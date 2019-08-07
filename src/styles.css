@@ -33,7 +33,7 @@
   --extraLetterSpace: 0.5px;
 
   /* widths */
-  --desktop-width: 50%;
+  --desktop-width: 70%;
   --tablet-width: 90%;
   --device-width: 100%;
 }
@@ -45,21 +45,24 @@
 }
 
 body {
-  /* background:url(/assets/images/CBP-for-Commercial-Kitchens-slide.png) top/cover no-repeat border-box,
-  rgb(43, 39, 39) top; */
-  /* background-attachment: fixed; */
-  /* background-color: #e8f6f9; */
-  background: rgb(232, 246, 249);
-  background: -moz-linear-gradient(213deg, rgba(232, 246, 249, 1) 0%, rgba(173, 225, 246, 0.7133228291316527) 100%);
+  background: #ece9e6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ffffff, #ece9e6); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #ece9e6
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: rgb(232, 246, 249); */
+  /* background: -moz-linear-gradient(213deg, rgba(232, 246, 249, 1) 0%, rgba(173, 225, 246, 0.7133228291316527) 100%);
   background: -webkit-linear-gradient(213deg, rgba(232, 246, 249, 1) 0%, rgba(173, 225, 246, 0.7133228291316527) 100%);
   background: linear-gradient(213deg, rgba(232, 246, 249, 1) 0%, rgba(173, 225, 246, 0.7133228291316527) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e8f6f9",endColorstr="#ade1f6",GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e8f6f9",endColorstr="#ade1f6",GradientType=1); */
   background-attachment: fixed;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--fc-light);
+  color: var(--fc-dark);
   width: 100vw;
   height: 100vh;
   margin: 0;
@@ -95,7 +98,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--fc-light);
+  color: var(--fc-dark);
 }
 
 .highlight {
@@ -105,9 +108,11 @@ h6 {
 .instructions {
   color: var(--fc-mid);
 }
+
 .hidden {
   display: none;
 }
+
 .visible {
   display: flex;
 }

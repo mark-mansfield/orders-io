@@ -4,7 +4,7 @@
   </button>
 </div> -->
 <div class="inner-margin">
-  <div class="inner-margin"><h1>Dishes</h1></div>
+  <h1>Dishes</h1>
   <div class="inner-margin" *ngIf="data.length > 0">
     <div class="flex-row-container row-style valign-center align-space-between ">
       <div>Dish Name</div>
@@ -17,7 +17,7 @@
       <div>{{ item.name }} :</div>
 
       <div>
-        <button mat-button (click)="onItemSelect(item, i)">view</button>
+        <button mat-button color="accent" (click)="onItemSelect(item, i)">view</button>
       </div>
     </div>
   </div>

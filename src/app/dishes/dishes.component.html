@@ -71,7 +71,7 @@
   </div>
 
   <!-- use ngClass here to avoid redraw and the network call that goes with it -->
-  <div class="view col-align-center">
+  <div class="view view-margin-top">
     <div *ngIf="noSearchResults" class="action-button"><h4>no matches found try again</h4></div>
     <button mat-button class="action-button" (click)="onClearSearchResults()" *ngIf="hasSearchResults">
       Clear Search
@@ -86,7 +86,7 @@
     ></app-dishes-list>
 
     <!-- form -->
-    <div *ngIf="formVisible">
+    <div *ngIf="formVisible" class="col-width">
       <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
         <button mat-mini-fab (click)="toggleViews('default')" class="action-button" style="border-radius: none">
           <i class="material-icons icon-color-light">
@@ -120,7 +120,7 @@
         </div>
       </div>
       <div class="inner-margin" style="width: 100%">
-        <h2>Dish - {{ this.mode }}</h2>
+        <h2>{{ this.mode }}</h2>
         <!-- (ngSubmit)="onSaveDish()"  -->
         <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveDish()">
           <div class="form-element">

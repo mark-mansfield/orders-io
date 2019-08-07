@@ -68,7 +68,7 @@
   </div>
 
   <!-- use ngClass here to avoid redraw and the network call that goes with it -->
-  <div class="view col-align-center">
+  <div class="view view-margin-top">
     <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
     <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
     <app-list-menus

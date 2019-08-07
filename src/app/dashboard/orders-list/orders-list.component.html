@@ -1,5 +1,5 @@
 <div class="inner-margin">
-  <div class="inner-margin"><h1>Orders</h1></div>
+  <h1>Orders</h1>
   <div class="flex-row-container row-style  valign-center">
     <div class="flex-row-container">
       <div class="flex-4col-left">Order number</div>
@@ -10,7 +10,7 @@
       <div class="flex-4col-right"></div>
     </div>
   </div>
-  <div class="inner-margin" *ngIf="data.length > 0">
+  <div *ngIf="data.length > 0">
     <div class="flex-row-container row-style  valign-center" *ngFor="let order of data; let i = index">
       <!-- id="{{ this.getFormattedDate(order.eventDetails.eventDate) }}" -->
       <div class="flex-4col-left">{{ order.customerDetails.orderNum }} : {{ data.length }}</div>
@@ -23,8 +23,8 @@
         {{ date }}
       </div>
       <div class="flex-4col-right">
-        <button mat-button (click)="deleteOrder(order._id)">delete</button>
-        <button mat-button (click)="onItemSelect(order, i)">view</button>
+        <button mat-button color="warn" (click)="deleteOrder(order._id)">delete</button>
+        <button mat-button color="accent" (click)="onItemSelect(order, i)">view</button>
       </div>
     </div>
   </div>
