@@ -1,5 +1,11 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+
+
 import { ImportService } from '../../services/import.service';
 import { OrderService } from '../../services/order.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -7,29 +13,20 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DialogsComponent } from '../../dialogs/dialogs.component';
 
+
+
+
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit, OnDestroy {
-  @Input() data: any;
 
-  @Output() selectItem = new EventEmitter<object>();
 
-  selectedIdx = null;
-  onItemSelect(item, idx) {
-    this.selectedIdx = idx;
-    this.selectItem.emit(item);
-  }
-
-  // orderImportSub: Subscription;
-  // orderCreatedSub: Subscription;
-  // ordersUpdatedSub: Subscription;
-  // ordersLoadedSub: Subscription;
-  // ordersDeletedSub: Subscription;
-  // ordersFilteredSub: Subscription;
-  // errorsSub: Subscription;
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map(result => result.matches));
 
   fileUrl;
   fileName;
@@ -53,13 +50,35 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   eventTypeSelected = false;
 
   date = null;
+
+
+  @Input() data: any;
+
+  @Output() selectItem = new EventEmitter<object>();
+
+  selectedIdx = null;
+  onItemSelect(item, idx) {
+    this.selectedIdx = idx;
+    this.selectItem.emit(item);
+  }
+
+  // orderImportSub: Subscription;
+  // orderCreatedSub: Subscription;
+  // ordersUpdatedSub: Subscription;
+  // ordersLoadedSub: Subscription;
+  // ordersDeletedSub: Subscription;
+  // ordersFilteredSub: Subscription;
+  // errorsSub: Subscription;
+
+
   constructor(
+    private breakpointObserver: BreakpointObserver,
     public importService: ImportService,
     public orderService: OrderService,
     public dialog: MatDialog,
     private snackBarService: SnackBarService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   // openSnackBar(message) {
   //   const config = new MatSnackBarConfig();
@@ -70,12 +89,17 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   //   this.snackBar.open(message, '', config);
   // }
 
-  ngOnInit() {``}
+  ngOnInit() { }
 
+
+  returnFormattedDate() {
+    return 'xyz'
+  }
   getFormattedDate(item) {
     console.log(item);
     const arr = item.split('-');
     this.date = arr[2].slice(0, 2) + ' / ' + arr[1] + ' / ' + arr[0];
+    return this.date;
     // this.date = this.orderService.formatDate(item);
   }
 

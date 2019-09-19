@@ -80,8 +80,8 @@
       class="col-width"
     ></app-list-menus>
 
-    <!-- form -->
-    <div *ngIf="formVisible">
+    <!-- menu edit form -->
+    <div class="menu-details" *ngIf="formVisible">
       <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
         <button mat-mini-fab (click)="toggleViews('default')" class="action-button" style="border-radius: none">
           <i class="material-icons icon-color-light">

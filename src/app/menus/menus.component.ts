@@ -100,7 +100,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private dataService: DataService, private formBuilder: FormBuilder, public dialog: MatDialog) {}
+  constructor(private dataService: DataService, private formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   initSelectedItem() {
     this.selectedItem = {

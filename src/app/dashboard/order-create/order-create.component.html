@@ -17,7 +17,7 @@
           lock
         </i>
       </button>
-
+      <!-- if mode = edit -->
       <div
         id="edit-tools"
         class="mode-context-aware-tools"
@@ -51,6 +51,15 @@
         </div>
       </div>
     </div>
+    <div class="form-title">
+      <h1>{{ formTitle }}</h1>
+    </div>
+    <p class="edit-mode-note" *ngIf="this.mode === 'view'">
+      This Item is locked for security. Please click the padlock icon to begin editing
+    </p>
+
+    <p>Fill data in all fields . We will show you if and where there are any errors.</p>
+    <br /><br />
     <div id="order-form" class="view-margin-top" style="justify-content: flex-start ">
       <h2>Order Number</h2>
       <ng-container *ngIf="uniqueId"
@@ -74,7 +83,7 @@
               (selectionChange)="onSelectEventType($event.value)"
             >
               <mat-option *ngFor="let type of EVENT_TYPES" [value]="type">
-                {{ type }}
+                {{ type | RemoveUnderscorePipe }}
               </mat-option>
             </mat-select>
           </div>
@@ -134,7 +143,7 @@
             <label for="pickup_date"><h2>Event Date</h2></label>
             <div class="event-date">
               <div class="date-field">
-                <span style="font-size:100px">{{ this.serverDateFormatted }}</span>
+                <span>{{ this.serverDateFormatted }}</span>
               </div>
             </div>
             <div *ngIf="this.mode === 'edit' || this.mode === 'create'" style="text-align:right">
@@ -306,7 +315,7 @@
         <!-- dishes on menu -->
         <div class="form-element"><h2>Dishes</h2></div>
         <div *ngIf="itemsOnMenu.length === 0" class="form-element">No dishes as yet... select a menu first</div>
-
+<ng-container *ngIf="!this.inputDisabled">
         <div *ngFor="let dish of itemsOnMenu; let i = index" class="form-element flex-row align-space-between ">
           <div class="dish-item align-space-between">
             <div class="dish-item-description">
@@ -314,7 +323,7 @@
                 ><h4>{{ dish.name }}</h4></label
               >
               <br />
-              <p>{{ dish.description }}</p>
+              <p>{{ dish.description }} {{ dish.qty }}</p>
             </div>
             <div class="dish-item-qty">
               <br />
@@ -324,15 +333,16 @@
                 name="qty"
                 (selectionChange)="updateItemQty(i, $event.value)"
                 style="background-color: white; height:50px;"
-              >
-                <mat-option *ngFor="let qty of quantities" [value]="qty">
+                selectedIndex = "2"
+               >
+                <mat-option *ngFor="let qty of quantities" [value]="dish.qty">
                   {{ qty }}
                 </mat-option>
               </mat-select>
             </div>
           </div>
         </div>
-
+      </ng-container>
         <div class="form-element" style="width: 100%">
           <label for="notes"><h2>Notes</h2></label>
           <small class="instructions">type all in one line. numbers letters . and spaces allowed</small>

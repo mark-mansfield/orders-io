@@ -1,25 +1,41 @@
-<!-- <mat-card class="matt-card"> -->
-
-<form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading" class="login-form">
-  <h1>LOGIN</h1>
-  <div class="custom-input">
-    <i class="user-icon"></i>
-
-    <input type="email" name="email" ngModel placeholder="Email" #emailInput="ngModel" required email />
+<section *ngIf="!userIsAuthenticated" class="main__welcome-message">
+  <div class="header__branding">
+    <h1>
+      orders.<span style="color:#c2185b"><strong>io</strong></span>
+    </h1>
   </div>
+  <h2>Testing Logins</h2>
+  <p>U: test@test.com</p>
+  <p>P: 1234</p>
 
-  <div *ngIf="emailInput.invalid">please enter a valid email</div>
-  <div class="custom-input">
-    <i class="secure-icon"></i>
-    <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required />
-  </div>
+  <form #loginForm="ngForm" *ngIf="!isLoading" class="login-form">
+    <h1>LOGIN</h1>
+    <div class="custom-input">
+      <i class="user-icon"></i>
 
-  <div *ngIf="passwordInput.invalid">Please enter a valid password</div>
+      <input type="email" name="email" ngModel placeholder="Email" #emailInput="ngModel" required email />
+    </div>
 
-  <button mat-raised-button class="" type="submit" *ngIf="!isLoading">LOGIN</button>
-</form>
+    <div *ngIf="emailInput.invalid">please enter a valid email</div>
+    <div class="custom-input">
+      <i class="secure-icon"></i>
+      <input
+        type="password"
+        name="password"
+        ngModel
+        matInput
+        placeholder="Password"
+        #passwordInput="ngModel"
+        required
+      />
+    </div>
 
-<!-- <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
+    <div *ngIf="passwordInput.invalid">Please enter a valid password</div>
+
+    <button mat-raised-button class="" *ngIf="!isLoading" (click)="onLogin(loginForm)">LOGIN</button>
+  </form>
+
+  <!-- <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
   <h1>Login</h1>
   <mat-form-field>
     <input
@@ -42,4 +58,5 @@
   </mat-form-field>
   <button mat-raised-button type="submit" *ngIf="!isLoading">Login</button>
 </form> -->
-<!-- </mat-card> -->
+  <!-- </mat-card> -->
+</section>

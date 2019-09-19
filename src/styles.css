@@ -25,7 +25,7 @@
   --unique-id: grey;
 
   /* margins */
-  --inner-margin: 54px;
+  --inner-margin-desktop: 20px;
   --inner-margin-ipad: 20px;
   --inner-margin-phone: 10px;
 
@@ -33,7 +33,7 @@
   --extraLetterSpace: 0.5px;
 
   /* widths */
-  --desktop-width: 70%;
+  --desktop-width: 80%;
   --tablet-width: 90%;
   --device-width: 100%;
 }
@@ -133,16 +133,7 @@ h6 {
   color: var(--accent-color);
 }
 
-.lock:after {
-  position: relative;
-  top: -35px;
-  margin-bottom: -30px;
-  content: 'Click to unlock this item';
-  display: flex;
-  align-items: flex-start;
-  color: white;
-  margin-left: 60px;
-}
+
 
 .unlock:after {
   content: 'click to lock this item';

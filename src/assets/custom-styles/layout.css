@@ -36,9 +36,32 @@
   color: var(--fc-light);
 } */
 
+.view {
+  width: 100%;
+}
+
+.view .edit-tools {
+  display: flex;
+  justify-content: space-between;
+
+  color: black;
+}
+
+.lock:before {
+  position: relative;
+  top: -5px;
+  margin-bottom: -40px;
+  content: 'Click to unlock this item';
+  display: flex;
+  align-items: flex-start;
+  color: var(--fc-dark);
+  margin-left: -160px;
+}
+
 .view .filter-event-date {
   height: 150px;
 }
+
 .main__content {
   color: black !important;
 }
@@ -93,8 +116,8 @@
   display: none;
 }
 
-.flex-container-66 {
-  display: none;
+.edit-tools {
+  display: flex;
 }
 
 .flex-column-container-33,
@@ -127,9 +150,9 @@
   align-items: center;
 }
 
-.flex-row-container {
+/* .flex-row-container {
   display: none;
-}
+} */
 
 .flex-full-width-col-container {
   display: flex;
@@ -195,17 +218,17 @@
   background-color: rgba(175, 175, 175, 0.13);
 }
 
-@media (min-width: 40rem) {
-  .dish-item {
-    display: flex;
-    flex-flow: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    padding: 20px;
-    background-color: #d1e9f2;
-  }
+.dish-item {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+  background-color: #d1e9f2;
+}
 
+@media (min-width: 40rem) {
   .dish-item-description {
     width: 80%;
     color: var(--fc-mid);
@@ -275,12 +298,12 @@
   }
 
   .flex-container-66 {
-    display: flex;
-    padding-left: 45px;
   }
 
   .edit-tools {
     justify-content: flex-start;
+    display: flex;
+    /* padding-left: 45px; */
   }
 
   .compose > button {
@@ -289,6 +312,10 @@
 
   .inner-margin {
     margin: var(--inner-margin-ipad);
+  }
+
+  .view {
+    width: 100%;
   }
 }
 
@@ -325,17 +352,14 @@
 
 /* tablet landscape */
 @media (min-width: 64rem) {
-  .col-width {
-    width: var(--tablet-width);
-  }
 }
 
 /* desktop */
 @media (min-width: 66rem) {
-  .device-toolbar,
+  /* .device-toolbar,
   .device-search {
     display: none;
-  }
+  } */
 
   .sidebar {
     display: flex;
@@ -347,7 +371,7 @@
     background-color: #2b2929;
   }
 
-  .sidebar * {
+  .sidebar h2 {
     color: var(--fc-light);
   }
 
@@ -374,6 +398,11 @@
     height: 50px;
   }
 
+  .sidebar > button,
+  .sidebar > .mat-select {
+    color: var(--fc-light) !important;
+  }
+
   .sidebar .search-button i {
     margin-top: 5px;
   }
@@ -386,20 +415,9 @@
     height: 100vh;
     overflow: scroll;
   }
+
   .view-margin-top {
     margin-top: 75px;
-  }
-
-  .view .edit-tools {
-    position: absolute;
-    display: flex;
-    justify-content: flex-start;
-    top: 0px;
-    left: 400px;
-    padding-top: 20px;
-    width: 100%;
-    background-color: #2a2828;
-    z-index: 1000;
   }
 
   .view .form-element .event-date {

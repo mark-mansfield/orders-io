@@ -1,31 +1,92 @@
 <div class="inner-margin">
   <h1>Orders</h1>
-  <div class="flex-row-container row-style  valign-center">
-    <div class="flex-row-container">
-      <div class="flex-4col-left">Order number</div>
-      <div class="flex-4col-middle-left">Customer name</div>
-      <div class="flex-4col-middle-right">Event Type</div>
-      <div class="flex-4col-middle-right" *ngIf="selectedEventType === 'pick_up'">Pick Up Time</div>
-      <div class="flex-4col-middle-right">Event Date</div>
-      <div class="flex-4col-right"></div>
+
+  <ng-container *ngIf="isHandset$ | async">
+    <mat-accordion *ngIf="isHandset$ | async">
+      <mat-expansion-panel class=" mat-elevation-z0 " *ngFor="let order of data">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Order Number: {{ order.customerDetails.orderNum }} </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card>
+          <div class="mat-card-list">
+            <mat-list>
+              <!--  order customer name -->
+              <mat-list-item>
+                <div class="list-item-details">
+                  <div class="list__item-name">Customer name:</div>
+                  <div class="list__item-value">{{ order.customerDetails.contactName }}</div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <!--  order event type -->
+              <mat-list-item>
+                <div class="list-item-details">
+                  <div class="list__item-name">Event Type:</div>
+                  <div class="list__item-value">
+                    {{ order.eventDetails.eventType | RemoveUnderscorePipe }}
+                  </div>
+                </div>
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+              <!--  order pick up -->
+              <mat-list-item *ngIf="selectedEventType === 'pick_up'">
+                <div class="list-item-details">
+                  <div class="list__item-name">Pick up Time:</div>
+                  <div class="list__item-value">{{ order.eventDetails.pickUpTimeSelected }}</div>
+                </div>
+              </mat-list-item>
+
+              <mat-divider></mat-divider>
+              <!--  order wastage Column -->
+              <mat-list-item>
+                <div class="list-item-details">
+                  <div class="list__item-name">Date:</div>
+                  <div class="list__item-value">{{ order.eventDetails.eventDate | date }}</div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </mat-card>
+        <mat-action-row>
+          <button mat-button color="accent" (click)="onItemSelect(order, i)">
+            View
+          </button>
+          <button mat-button color="accent" (click)="deleteOrder(order._id)">delete</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+
+  <ng-container *ngIf="!(isHandset$ | async)">
+    <div class="flex-row-container row-style  valign-center" *ngIf="!(isHandset$ | async)">
+      <div class="col">Order number</div>
+      <div class="col">Customer name</div>
+      <div class="col">Event Type</div>
+      <div class="col" *ngIf="selectedEventType === 'pick_up'">Pick Up Time</div>
+      <div class="col">Event Date</div>
+      <div class="col"></div>
+      <div class="col"></div>
     </div>
-  </div>
-  <div *ngIf="data.length > 0">
-    <div class="flex-row-container row-style  valign-center" *ngFor="let order of data; let i = index">
-      <!-- id="{{ this.getFormattedDate(order.eventDetails.eventDate) }}" -->
-      <div class="flex-4col-left">{{ order.customerDetails.orderNum }} : {{ data.length }}</div>
-      <div class="flex-4col-middle-left">{{ order.customerDetails.contactName }}</div>
-      <div class="flex-4col-middle-right">{{ order.eventDetails.eventType }}</div>
-      <div class="flex-4col-middle-right" *ngIf="selectedEventType === 'pick_up'">
-        {{ order.eventDetails.pickUpTimeSelected }}
-      </div>
-      <div class="flex-4col-middle-right">
-        {{ date }}
-      </div>
-      <div class="flex-4col-right">
-        <button mat-button color="warn" (click)="deleteOrder(order._id)">delete</button>
-        <button mat-button color="accent" (click)="onItemSelect(order, i)">view</button>
+
+    <div *ngIf="data.length > 0">
+      <div class="flex-row-container row-style  valign-center" *ngFor="let order of data; let i = index">
+        <!-- id="{{ this.getFormattedDate(order.eventDetails.eventDate) }}" -->
+        <div class="col">{{ order.customerDetails.orderNum }}</div>
+        <div class="col">{{ order.customerDetails.contactName }}</div>
+        <div class="col">{{ order.eventDetails.eventType | RemoveUnderscorePipe }}</div>
+        <div class="col" *ngIf="selectedEventType === 'pick_up'">
+          {{ order.eventDetails.pickUpTimeSelected }}
+        </div>
+        <div class="col">
+          {{ order.eventDetails.eventDate | date }}
+        </div>
+        <div class="col">
+          <button mat-button color="warn" (click)="deleteOrder(order._id)">delete</button>
+        </div>
+        <div class="col"><button mat-button color="accent" (click)="onItemSelect(order, i)">view</button></div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>

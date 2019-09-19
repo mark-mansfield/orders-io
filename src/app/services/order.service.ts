@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SnackBarService } from "./snackbar.service";
 import { HttpClient } from '@angular/common/http';
 import { Order } from '../models/order.model';
 import { Subject } from 'rxjs';
@@ -17,7 +18,7 @@ export class OrderService {
   public errorsRecieved = new Subject<String>();
 
   orders = [];
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public snackBarService: SnackBarService) { }
 
   getOrdersFilteredListener() {
     return this.ordersFiltered.asObservable();
@@ -180,7 +181,7 @@ export class OrderService {
       return item.eventDetails.eventType === eventType;
     });
 
-    // console.log(filteredList.length);
+    // console.log(filteredList);
     if (filteredList.length > 0) {
       this.ordersFiltered.next([...filteredList]);
     } else {
@@ -203,6 +204,19 @@ export class OrderService {
   destructureEventDate(obj) {
     const str = obj.date + ' / ' + obj.month + ' / ' + obj.year;
     return str;
+  }
+
+  filterOrdersByPickUpDayAndTimev2(date) {
+    const filteredList = this.orders.filter(item => {
+      return item.eventDetails.eventDate === date;
+    });
+    console.log(filteredList);
+    if (filteredList.length > 0) {
+      this.ordersFiltered.next([...filteredList]);
+      return;
+    }
+
+
   }
 
   // @param: pickUpDate is of type object and represents a pickUpDate

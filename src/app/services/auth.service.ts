@@ -14,7 +14,7 @@ export class AuthService {
   private tokenTimer: any;
   private userId: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   // make token accessible to other parts of the app
   getToken() {
@@ -49,6 +49,7 @@ export class AuthService {
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (!authInformation) {
+      this.router.navigate(['/login']); /* navigate to login page */
       return;
     }
     const now = new Date();
@@ -98,7 +99,7 @@ export class AuthService {
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.router.navigate(['/welcome']);
+    this.router.navigate(['/login']);
   }
 
   private setAuthTimer(duration: number) {

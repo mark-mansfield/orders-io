@@ -1,7 +1,22 @@
+.search {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.mat-select {
+  border: 1px solid #ccc !important;
+}
 @media (min-width: 40rem) {
-  .sidebar h2,
   .sidebar-item {
     margin: 3rem 0;
+  }
+
+  .sidebar .mat-icon-button {
+    color: var(--fc-light) !important;
+  }
+
+  .sidebar .mat-icon-button:hover {
+    color: var(--fc-dark) !important;
   }
 
   .margin-top {
@@ -12,7 +27,6 @@
 
   #search label > h2.margin-top:first-child {
     margin: 0 !important;
-
     margin-bottom: 0.5rem !important;
   }
 }

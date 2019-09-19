@@ -76,3 +76,33 @@ button.mat-raised-button {
     width: 33.3vw;
   }
 }
+
+.main__welcome-message {
+  background: #ece9e6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ffffff, #ece9e6); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #ece9e6
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main__welcome-message > * {
+  margin: 10px;
+}
+
+@media (min-width: 51rem) {
+  .main__welcome-message {
+    background: url(/assets/images/leone-venter-VieM9BdZKFo-unsplash.jpg);
+    background-position: right;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+}

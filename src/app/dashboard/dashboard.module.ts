@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../angular-material';
 // import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter, MatNativeDateModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material';
@@ -9,7 +10,7 @@ import { SharedModule } from '../shared-module/shared-module.module';
 import { ImportOrderComponent } from './import-order/import-order.component';
 import { DashboardComponent } from './dashboard.component';
 import { OrdersListComponent } from './orders-list/orders-list.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 import { OrderCreateComponent } from './order-create/order-create.component';
 // import { MomentDateAdapter, MOMENT_DATE_FORMATS } from '../custom-date-adaptor/date-adaptor';
 @NgModule({
@@ -30,4 +31,4 @@ import { OrderCreateComponent } from './order-create/order-create.component';
     // { provide: DateAdapter, useClass: MomentDateAdapter }
   ]
 })
-export class DashboardModule {}
+export class DashboardModule { }

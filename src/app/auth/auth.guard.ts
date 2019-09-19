@@ -1,14 +1,14 @@
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '../../../node_modules/@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { Injectable } from '../../../node_modules/@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router } from '../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 @Injectable()
 
 //
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
 
     //  so a user cannot access route via the address bar if they are not logged in.
     if (!isAuth) {
-      this.router.navigate(['/welcome']);
+      this.router.navigate(['/login']);
     }
     return isAuth;
   }

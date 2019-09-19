@@ -13,16 +13,20 @@
   background-color: transparent !important;
   color: var(--fc-dark);
 }
+
 /* mat-list */
+.mat-list .mat-list-item,
+.mat-nav-list .mat-list-item,
+.mat-selection-list .mat-list-item {
+  color: var(--fc-dark) !important;
+}
 
 /* mat-tool-bar */
-
 mat-toolbar.mat-toolbar.mat-toolbar-single-row.ng-star-inserted {
   justify-content: space-between;
 }
 
 /* mat-button */
-
 .dialog-button {
   margin-right: 5px;
 }
@@ -52,6 +56,10 @@ mat-toolbar.mat-toolbar.mat-toolbar-single-row.ng-star-inserted {
 .mat-icon-button,
 .mat-input-element {
   color: black;
+}
+
+.mat-icon-button:hover {
+  color: var(--accent-color);
 }
 
 .icon-color-light {
@@ -191,6 +199,27 @@ mat-toolbar.mat-toolbar.mat-toolbar-single-row.ng-star-inserted {
   border: none !important;
 }
 
+/* expansion panel */
+
+.mat-expansion-panel {
+  background-color: azure !important;
+  border: 1px solid rgb(195, 195, 195);
+  margin: 5px !important;
+}
+
+.mat-expansion-panel-header-title {
+  color: var(--fc-dark) !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+.mat-expansion-indicator::after,
+.mat-expansion-panel-header-description {
+  color: var(--fc-dark);
+}
+
 /* snack bar */
 ::ng-deep snack-bar-container.dark-snackbar {
   background: #424242;
@@ -199,6 +228,11 @@ mat-toolbar.mat-toolbar.mat-toolbar-single-row.ng-star-inserted {
 
 .mat-snack-bar-container.mat-snack-bar-center {
   margin-bottom: 20px !important;
+}
+
+/* mat-card */
+.mat-card {
+  background-color: azure;
 }
 
 /* stepper */

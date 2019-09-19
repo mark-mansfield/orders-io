@@ -15,12 +15,16 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 
+
+
+
 import { DashboardModule } from './dashboard/dashboard.module';
 import { DishesModule } from './dishes/dishes.module';
 import { MenusModule } from './menus/menus.module';
 import { SharedModule } from './shared-module/shared-module.module';
+
 // TODO:  rename this to login-signup
-import { WelcomeComponent } from './welcome/welcome.component';
+// import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './auth/login/login.component';
 
 import { DialogsComponent } from './dialogs/dialogs.component';
@@ -35,14 +39,15 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
     AppComponent,
     HeaderComponent,
     ErrorComponent,
-    WelcomeComponent,
+    // WelcomeComponent,
     LoginComponent,
     DialogsComponent,
     OrdersFilterComponent,
     FiltersDialogComponent,
     DeleteItemComponent,
     AddItemDialogComponent,
-    ResponsiveLayoutComponent
+    ResponsiveLayoutComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,7 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
     BrowserAnimationsModule,
     FormsModule,
     AngularMaterialModule,
-    MenusModule,
+    // MenusModule,
     DashboardModule,
     DishesModule,
     ReactiveFormsModule,
@@ -65,4 +70,4 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
   bootstrap: [AppComponent],
   entryComponents: [ErrorComponent, DialogsComponent, DeleteItemComponent, AddItemDialogComponent]
 })
-export class AppModule {}
+export class AppModule { }

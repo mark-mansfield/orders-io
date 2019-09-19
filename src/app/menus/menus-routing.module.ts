@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from '../auth/auth-guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { MenusComponent } from './menus.component';
 
-const dashboardRoutes: Routes = [
+const menuRoutes: Routes = [
   { path: '', component: MenusComponent, canActivate: [AuthGuard] }
   // { path: 'import-order', component: MenusComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(dashboardRoutes)],
+  imports: [RouterModule.forChild(menuRoutes)],
   exports: [RouterModule]
 })
-export class MenusRoutingModule {}
+export class MenusRoutingModule { }

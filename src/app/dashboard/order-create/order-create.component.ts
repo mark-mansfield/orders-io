@@ -24,6 +24,7 @@ export class OrderCreateComponent implements OnInit {
   order: Order;
   notes: string;
   menuName: string;
+  formTitle: string;
   form: FormGroup;
 
   menu: any;
@@ -75,7 +76,7 @@ export class OrderCreateComponent implements OnInit {
   private _menus = '';
   private _selectedItem = null;
 
-  constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) {}
+  constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) { }
 
   // provides ref to scroll to in case of form errors
   @ViewChild('#formStart')
@@ -170,6 +171,7 @@ export class OrderCreateComponent implements OnInit {
     this.isLoading = false;
     const regexPattern = '[a-zA-Z0-9/s\t\n\r, \\.]*';
     if (this.mode === 'create') {
+      this.formTitle = 'Create new order';
       this.inputDisabled = false;
       this.form = this.formBuilder.group({
         contactName: ['', Validators.required],
@@ -189,6 +191,8 @@ export class OrderCreateComponent implements OnInit {
     }
 
     if (this.mode === 'view') {
+      console.log(this.selectedItem);
+      this.formTitle = 'Editing order';
       this.dishes = this.selectedItem.orderedItems;
       this.eventType = this.selectedItem.eventDetails.eventType;
       this.pickUpTimeSelected = this.selectedItem.eventDetails.pickUpTimeSelected + 'pm';
@@ -366,7 +370,7 @@ export class OrderCreateComponent implements OnInit {
       console.log(item);
       const orderItem = {
         name: item.name,
-        qty: ''
+        qty: item.qty
       };
       this.itemsOnMenu.push(orderItem);
     });

@@ -1,4 +1,4 @@
-<div class="flex-row-container device-toolbar" id="device-toolbar">
+<div class="flex-row-container device-toolbar" id="device-toolbar" *ngIf="deviceToolBarVisible">
   <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
     <i class="material-icons md-36 icon-color-light">
       add
@@ -21,13 +21,41 @@
       <mat-icon aria-label="hide search options">close</mat-icon>
     </button>
   </div>
-  <!-- search components  tablet -->
-  <app-search (searchTerm)="filterByName($event)"> </app-search>
+  <h1>Search</h1>
+
+
+  <!-- search components  device -->
+  <div class="search">
+    <app-search (searchTerm)="filterByName($event)"> </app-search>
+  </div>
   <br /><br />
-  <app-search-filter-events
-    [eventTypes]="EVENT_TYPES"
-    (selectItem)="onSelectEventType($event)"
-  ></app-search-filter-events>
+  <div class="search">
+    <app-search-filter-events
+      [eventTypes]="EVENT_TYPES"
+      (selectItem)="onSelectEventType($event)"
+    ></app-search-filter-events>
+  </div>
+  <!-- date filter -->
+  <br /><br />
+  <div class="search">
+    <div class="filter-event-date" id="select-pickup-day-device">
+      <div>
+        <h2>Search By Event Date</h2>
+        <small class="placeholder">past or in the future</small>
+      </div>
+      <div>
+        <mat-select
+          panelClass="accent-colors"
+          style="background-color: white; height:50px; color: black"
+          placeholder="select a date..."
+        >
+          <mat-option *ngFor="let date of orderDates" value="{{ date }}" (click)="updateFilterSelected(date)">{{
+            date | date
+          }}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="flex-row-container" id="desktop-view">
   <div class="sidebar" id="desktop-toolbar">
@@ -68,13 +96,32 @@
       </button>
     </div>
     <div *ngIf="searchVisible" class="col-width" style="height: auto!important; margin-top: 2rem">
+
       <!-- search components  desktop -->
-      <app-search (searchTerm)="filterByName($event)"> </app-search>
-      <br /><Br />
+      <div class="sidebar-item">
+        <app-search (searchTerm)="filterByName($event)"> </app-search>
+      </div>
+      <br />
       <app-search-filter-events
         [eventTypes]="EVENT_TYPES"
         (selectItem)="onSelectEventType($event)"
+        class="sidebar-item"
       ></app-search-filter-events>
+      <!-- date filter -->
+      <div class=" sidebar-item filter-event-date" id="select-pickup-day-device">
+        <h2>Search By Event Date</h2>
+        <small class="placeholder">Select a pickup date</small>
+
+        <mat-select
+          panelClass="accent-colors"
+          style="background-color: white; height:50px; color: black"
+          placeholder="event date..."
+        >
+          <mat-option *ngFor="let date of orderDates" value="{{ date }}" (click)="updateFilterSelected(date)">{{
+            date | date
+          }}</mat-option>
+        </mat-select>
+      </div>
     </div>
   </div>
 
@@ -82,33 +129,6 @@
   <div class="view ">
     <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
     <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
-
-    <!-- date filter -->
-
-    <div
-      class="filter-event-date"
-      [ngClass]="{
-        'flex-row-container
-              row-style
-              valign-center
-              align-space-between': eventTypeSelected,
-        hidden: !eventTypeSelected
-      }"
-      id="select-pickup-day"
-    >
-      <div style="width: 55%">
-        <h2>Search By Event Date</h2>
-        <small class="placeholder">results listed for pick up date selected</small>
-      </div>
-      <div>
-        <mat-label>Select a pickup date</mat-label>
-        <mat-select panelClass="accent-colors" style="background-color: white; height:50px; color: black">
-          <mat-option *ngFor="let date of filterDates" value="{{ date }}" (click)="updateFilterSelected(date)">{{
-            date
-          }}</mat-option>
-        </mat-select>
-      </div>
-    </div>
 
     <!-- list component  -->
     <app-orders-list
@@ -120,6 +140,7 @@
       }"
     ></app-orders-list>
 
+    <!-- create / edit component -->
     <div class="col-width view-margin-top" *ngIf="formVisible">
       <app-order-create
         [mode]="formMode"

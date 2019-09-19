@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   orders = [];
   menus = [];
+  orderDates = [];
   filterDates = [];
   selectedItem = null;
   filter = null;
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isSearching = false;
   searchVisible = false;
   listVisible = false;
+  deviceToolBarVisible = true;
   formVisible = false;
   importVisible = false;
   // viewOrders = true;
@@ -52,13 +54,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public orderService: OrderService,
     public menuService: DataService,
     private snackBarService: SnackBarService,
-    private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.orderService.getOrders({ mode: 'list' });
     this.menuService.getMenus();
-
+    this.toggleViews('default');
     // listen for menus data loaded from server
     this.menusLoadedSub = this.menuService.getMenuMetaDataUpdatedListener().subscribe(returnedData => {
       this.menus = returnedData;
@@ -76,8 +77,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.ordersLoadedSub = this.orderService.getOrdersLoadedListener().subscribe(returnedData => {
       this.isLoading = false;
       this.orders = returnedData;
+
+      this.orders.forEach(item => {
+        this.orderDates.push(item.eventDetails.eventDate);
+      });
+      const uniqueOrders = new Set([...this.orderDates]);
+      this.orderDates = Array.from(uniqueOrders);
+      console.log(this.orderDates);
     });
-    this.toggleViews('default');
+
 
     // listen for deleted orders
     this.ordersDeletedSub = this.orderService.getOrderDeletedListener().subscribe(returnedData => {
@@ -87,7 +95,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // listen for orders Updates
     this.ordersUpdatedSub = this.orderService.getOrdersUpdatedListener().subscribe(returnedData => {
-      console.log('loading orders after update');
+
       this.snackBarService.openSnackBar('order updated');
       this.orders = returnedData;
     });
@@ -101,18 +109,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // listen for filtered orders
     this.ordersFilteredSub = this.orderService.getOrdersFilteredListener().subscribe(filteredData => {
       this.orders = filteredData;
+      console.log(this.orders);
       this.eventTypeSelected = true; // <--set evet type for the UI  to show different elements
       console.log('************** ORDER - LIST COMPONENT *******************');
       console.log('ordersFilteredSub recieved  Data : ');
       console.log(this.orders);
       console.log('********************************************');
-      this.orders.sort(function(a, b) {
+      this.orders.sort(function (a, b) {
         var dateA = a.eventDetails.eventDate.date + a.eventDetails.eventDate.month + a.eventDetails.eventDate.year;
         var dateB = b.eventDetails.eventDate.date + b.eventDetails.eventDate.month + b.eventDetails.eventDate.year;
         return dateA - dateB;
       });
 
-      // moment returns a date object, we need toget the values out
+      // moment returns a date object, we need to get the values out
       this.orders.forEach(item => {
         let date =
           item.eventDetails.eventDate.date +
@@ -124,6 +133,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
       // return unique dates
       this.filterDates = this.filterDates.filter((v, i) => this.filterDates.indexOf(v) === i);
+      console.log(this.filterDates);
     });
 
     // listen for errors
@@ -137,10 +147,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // });
   }
 
+
+
   updateFilterSelected(filter) {
     this.filterIsSelected = true;
     this.filter = filter;
-    this.orderService.filterOrdersByPickUpDayAndTime(filter);
+    this.orderService.filterOrdersByPickUpDayAndTimev2(filter);
   }
 
   onItemSelect(item) {
@@ -173,6 +185,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.listVisible = false;
         this.importVisible = false;
         this.formVisible = true;
+        this.deviceToolBarVisible = false;
         this.formMode = 'create';
 
         break;
@@ -181,6 +194,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.searchVisible = false;
         this.listVisible = false;
         this.importVisible = false;
+        this.deviceToolBarVisible = false;
         this.formVisible = true;
         this.formMode = 'view';
 
@@ -204,6 +218,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.searchVisible = false;
         this.listVisible = true;
         this.importVisible = false;
+        this.deviceToolBarVisible = true;
         this.formVisible = false;
         break;
     }
