@@ -5,14 +5,14 @@ import { OrderService } from '../services/order.service';
 @Component({
   selector: 'app-dialogs',
   templateUrl: './dialogs.component.html',
-  styleUrls: ['../dashboard/orders-list/orders-list.component.css']
+  styleUrls: ['../orders/orders-list/orders-list.component.css']
 })
 export class DialogsComponent implements OnInit {
   constructor(
     public ordersService: OrderService,
     public dialogRef: MatDialogRef<DialogsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   customerDetailsKeyRefs = [];
   customerDetailsKeyValues = [];

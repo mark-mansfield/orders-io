@@ -6,7 +6,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { DishesComponent } from './dishes/dishes.component';
 
 const routes: Routes = [
-  { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+  { path: 'dashboard', loadChildren: './orders/dashboard.module#DashboardModule' },
   { path: 'login', component: LoginComponent },
   { path: 'menus', loadChildren: './menus/menus.module#MenusModule' },
   { path: 'list-dishes', component: DishesComponent, canActivate: [AuthGuard] }

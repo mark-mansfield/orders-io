@@ -13,7 +13,7 @@ import {
   providedIn: 'root'
 })
 export class SnackBarService {
-  constructor(public dialog: MatDialog, private snackBar: MatSnackBar, private sanitizer: DomSanitizer) {}
+  constructor(public dialog: MatDialog, private snackBar: MatSnackBar, private sanitizer: DomSanitizer) { }
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';

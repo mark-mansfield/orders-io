@@ -17,7 +17,7 @@
   </div>
   <div *ngIf="!(isHandset$ | async) && userIsAuthenticated" class="header">
     <div>
-      <a routerLink="dashboard" mat-button routerLinkActive="">
+      <a [routerLink]="['dashboard']" mat-button routerLinkActive="">
         <span>orders</span>
       </a>
     </div>
@@ -26,12 +26,12 @@
       <!-- <a routerLink="list-menus" mat-button routerLinkActive="">
         <span class="header__tool-bar-link">menus</span>
       </a> -->
-      <a routerLink="menus" mat-button routerLinkActive="">
+      <a [routerLink]="['menus']" mat-button routerLinkActive="">
         <span>menus</span>
       </a>
     </div>
     <div *ngIf="userIsAuthenticated">
-      <a routerLink="list-dishes" mat-button routerLinkActive="">
+      <a [routerLink]="['list-dishes']" mat-button routerLinkActive="">
         <span>dishes</span>
       </a>
     </div>
@@ -39,7 +39,7 @@
       <a mat-button (click)="onLogout()"> <span>logout</span></a>
     </div>
     <div *ngIf="!userIsAuthenticated">
-      <a routerLink="welcome">login</a>
+      <a routerLink]="['login']">login</a>
     </div>
   </div>
 </mat-toolbar>
@@ -54,7 +54,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'before'"
   >
     <div>
-      <a routerLink="dashboard" mat-button routerLinkActive="">
+      <a [routerLink]="['dashboard']" (click)="this.drawer.close()" mat-button routerLinkActive="">
         <span>orders</span>
       </a>
     </div>
@@ -63,12 +63,12 @@
       <!-- <a routerLink="list-menus" mat-button routerLinkActive="">
       <span class="header__tool-bar-link">menus</span>
     </a> -->
-      <a routerLink="menus" mat-button routerLinkActive="">
+      <a [routerLink]="['menus']" (click)="this.drawer.close()" mat-button routerLinkActive="">
         <span>menus</span>
       </a>
     </div>
     <div *ngIf="userIsAuthenticated">
-      <a routerLink="list-dishes" mat-button routerLinkActive="">
+      <a [routerLink]="['list-dishes']" (click)="this.drawer.close()" mat-button routerLinkActive="">
         <span>dishes</span>
       </a>
     </div>

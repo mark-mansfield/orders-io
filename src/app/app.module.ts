@@ -18,7 +18,7 @@ import { ErrorComponent } from './error/error.component';
 
 
 
-import { DashboardModule } from './dashboard/dashboard.module';
+import { DashboardModule } from './orders/dashboard.module';
 import { DishesModule } from './dishes/dishes.module';
 import { MenusModule } from './menus/menus.module';
 import { SharedModule } from './shared-module/shared-module.module';
@@ -28,7 +28,7 @@ import { SharedModule } from './shared-module/shared-module.module';
 import { LoginComponent } from './auth/login/login.component';
 
 import { DialogsComponent } from './dialogs/dialogs.component';
-import { OrdersFilterComponent } from './dashboard/orders-filter/orders-filter.component';
+import { OrdersFilterComponent } from './orders/orders-filter/orders-filter.component';
 import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.component';
 import { DeleteItemComponent } from './dialogs/delete-item/delete-item.component';
 import { AddItemDialogComponent } from './dialogs/add-item-dialog/add-item-dialog.component';
@@ -57,7 +57,7 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
     FormsModule,
     AngularMaterialModule,
     // MenusModule,
-    DashboardModule,
+    DashboardModule, /* rename this*/
     DishesModule,
     ReactiveFormsModule,
     SharedModule

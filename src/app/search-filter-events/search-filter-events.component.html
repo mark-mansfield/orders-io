@@ -1,4 +1,4 @@
-<label for="eventOptions"><h2 class="margin-top">Event Types</h2></label>
+<label for="eventOptions"><h2 class="margin-top">Seacrh by event type</h2></label>
 <small class="placeholder">all / pickup / delivery / staffed</small>
 
 <mat-select
@@ -9,6 +9,6 @@
   style="background-color: white; height:50px; color: black"
 >
   <mat-option *ngFor="let option of eventTypes" [value]="option">
-    {{ option }}
+    {{ option | RemoveUnderscorePipe }}
   </mat-option>
 </mat-select>

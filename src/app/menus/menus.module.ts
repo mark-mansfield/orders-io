@@ -7,9 +7,10 @@ import { ListMenusComponent } from './list-menus/list-menus.component';
 import { SharedModule } from '../shared-module/shared-module.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../angular-material';
+import { MenuDetailsComponent } from './menu-details/menu-details.component';
 
 @NgModule({
-  declarations: [ListMenusComponent, MenusComponent],
+  declarations: [ListMenusComponent, MenusComponent, MenuDetailsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -20,4 +21,4 @@ import { AngularMaterialModule } from '../angular-material';
     SharedModule
   ]
 })
-export class MenusModule {}
+export class MenusModule { }

@@ -23,6 +23,7 @@
   --placeholder-color: var(--fc-mid);
   --accent-color: #c2185b;
   --unique-id: grey;
+  --border-color: 1px solid #ccc;
 
   /* margins */
   --inner-margin-desktop: 20px;
@@ -33,7 +34,7 @@
   --extraLetterSpace: 0.5px;
 
   /* widths */
-  --desktop-width: 80%;
+  --desktop-width: 90%;
   --tablet-width: 90%;
   --device-width: 100%;
 }
@@ -132,8 +133,6 @@ h6 {
 .accent {
   color: var(--accent-color);
 }
-
-
 
 .unlock:after {
   content: 'click to lock this item';

@@ -386,8 +386,9 @@
     width: 70%;
   }
 
-  .sidebar .search-input input {
-    padding-left: 10px;
+  .sidebar .search-input input,
+  .mat-input {
+    padding-left: 25px;
     font-size: 1rem;
   }
 

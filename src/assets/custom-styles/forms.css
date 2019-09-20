@@ -22,7 +22,7 @@ input,
 select,
 textarea {
   height: 50px;
-  padding: 20px;
+  padding: 25px;
 }
 
 input,
@@ -33,7 +33,7 @@ select,
   width: 100% !important;
   font-size: 1rem;
   color: black !important;
-  border: 1px solid #ccc;
+  border: var(--border-color);
 }
 
 .select-qty {

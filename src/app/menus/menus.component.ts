@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+// TODO put this in menu-datails compnent
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DeleteItemComponent } from '../dialogs/delete-item/delete-item.component';
@@ -6,6 +7,7 @@ import { AddItemDialogComponent } from '../dialogs/add-item-dialog/add-item-dial
 import { DataService } from '../services/menu.service';
 import { Subscription } from 'rxjs';
 import { Menu } from '../models/menu.model';
+import { SnackBarService } from '../services/snackbar.service';
 
 @Component({
   selector: 'app-menus',
@@ -15,8 +17,10 @@ import { Menu } from '../models/menu.model';
 export class MenusComponent implements OnInit, OnDestroy {
   menusData: Menu[] = [];
   menuItems: any = [];
+  // TODO put this in menu-datails compnent
   form: FormGroup;
-  mode: string = null;
+  // TODO put this in menu-datails compnent
+  mode: string;
 
   private menusSub: Subscription;
   private menusFilteredSub: Subscription;
@@ -25,18 +29,23 @@ export class MenusComponent implements OnInit, OnDestroy {
   private dishesAddedSub: Subscription;
   private dishesDeletedSub: Subscription;
 
+  // TODO put this in menu-datails compnent
   inputDisabled = true;
-  submitted = false;
-  isLoading = false;
-  createMode = false;
-  isDuplicate = false;
   disableSubmit = true;
 
-  noSearchResults = false;
+  // TODO put this in menu-datails compnent
+  submitted = false;
+  isLoading = false;
+  // TODO put this in menu-datails compnent
+  createMode = false;
+  // TODO put this in menu-datails compnent
+  isDuplicate = false;
+  deviceToolBarVisible = true;
   hasSearchResults = false;
   isSearching = false;
   searchVisible = false;
   listVisible = false;
+  // TODO put this in menu-datails compnent
   formVisible = false;
 
   selectedItem: any;
@@ -100,7 +109,13 @@ export class MenusComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private dataService: DataService, private formBuilder: FormBuilder, public dialog: MatDialog) { }
+  constructor(
+    private snackBarService: SnackBarService,
+    private dataService: DataService,
+    // TODO put this in menu-datails compnent
+    private formBuilder: FormBuilder,
+    // TODO put this in menu-datails compnent
+    public dialog: MatDialog) { }
 
   initSelectedItem() {
     this.selectedItem = {
@@ -112,6 +127,7 @@ export class MenusComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.formVisible);
     this.submitted = false;
     this.form = this.formBuilder.group({
       title: [{ value: '', disabled: this.inputDisabled }, [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]],
@@ -142,13 +158,13 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.menusFilteredSub = this.dataService.getMenusFilteredListener().subscribe((menus: Menu[]) => {
       this.toggleViews('search');
       if (menus.length === 0) {
-        this.noSearchResults = true;
+        this.snackBarService.openSnackBar('no menus found by that name')
       } else if (menus.length > 0) {
-        this.noSearchResults = false;
         this.hasSearchResults = true;
+        this.menusData = menus;
       }
       this.isSearching = true;
-      this.menusData = menus;
+
     });
 
     this.menuDeletedSub = this.dataService.getMenuDeletedListener().subscribe(() => {
@@ -181,31 +197,37 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.toggleViews('default');
   }
 
+  // TODO put this in menu-datails compnent
   enableSubmit() {
     this.disableSubmit = false;
   }
 
+  // TODO put this in menu-datails compnent
   // convenience getter for easy access to form fields
   get f() {
     return this.form.controls;
   }
 
+  // TODO put this in menu-datails compnent
   disableForm() {
     this.form.controls.title.reset({ value: this.selectedItem.title, disabled: true });
     this.form.controls.description.reset({ value: this.selectedItem.description, disabled: true });
   }
 
+  // TODO put this in menu-datails compnent
   enableForm() {
     this.form.controls.title.reset({ value: this.selectedItem.title, disabled: false });
     this.form.controls.description.reset({ value: this.selectedItem.description, disabled: false });
   }
 
+  // TODO put this in menu-datails compnent
   // custom form reset
   resetForm() {
     this.form.controls.title.reset({ value: '', disabled: false });
     this.form.controls.description.reset({ value: '', disabled: false });
   }
 
+  // TODO put this in menu-datails compnent
   updateFormMode(mode) {
     if (mode === 'create') {
       this.createMode = true;
@@ -227,10 +249,12 @@ export class MenusComponent implements OnInit, OnDestroy {
       this.enableForm();
     }
     if (mode === 'view') {
-      this.formVisible = true;
+
       this.createMode = true;
       this.inputDisabled = true;
       this.disableForm();
+      console.log('viewing an order');
+      console.log(`formVisible : ${this.formVisible}`);
     }
     if (mode === null) {
       this.inputDisabled = true;
@@ -238,15 +262,15 @@ export class MenusComponent implements OnInit, OnDestroy {
       this.initSelectedItem();
       this.disableForm();
     }
-
     this.mode = mode;
-    console.log(this.mode);
+
   }
 
   toggleViews(view) {
-    console.log(view);
+
     switch (view) {
       case 'create':
+        this.deviceToolBarVisible = false;
         this.searchVisible = false;
         this.listVisible = false;
         this.createMode = true;
@@ -255,6 +279,7 @@ export class MenusComponent implements OnInit, OnDestroy {
         break;
 
       case 'search':
+        this.deviceToolBarVisible = false;
         this.searchVisible = true;
         this.listVisible = false;
         this.createMode = false;
@@ -265,16 +290,22 @@ export class MenusComponent implements OnInit, OnDestroy {
       case 'import':
         this.searchVisible = false;
         this.listVisible = false;
-        this.formVisible = false;
+
         break;
 
       case 'view-item':
+        this.deviceToolBarVisible = false;
+        this.isSearching = false;
+        this.hasSearchResults = false;
+        this.disableSubmit = true;
+
         this.updateFormMode('view');
 
       default:
+        this.deviceToolBarVisible = true;
         this.searchVisible = false;
         this.listVisible = true;
-        this.formVisible = false;
+
         this.updateFormMode(null);
         this.isSearching = false;
         this.hasSearchResults = false;
@@ -282,24 +313,16 @@ export class MenusComponent implements OnInit, OnDestroy {
     }
   }
 
-  onItemSelect($event) {
-    this.isSearching = false;
-    this.hasSearchResults = false;
-    this.disableSubmit = true;
+  onViewOrder($event) {
+
     this.selectedItem = {
-      _id: $event._id, // because this value comes from mongo db and  already has the _id prop
+      _id: $event._id,
       title: $event.title,
       description: $event.description,
       items: $event.items
-    };
+    }
+    this.toggleViews('view-item');
 
-    this.formVisible = true;
-    console.log($event);
-    // console.log(`item selected: `);
-    // console.log(`${this.selectedItem._id}`);
-    // console.log(`${this.selectedItem.title}`);
-    // console.log(`${this.selectedItem.description}`);
-    // console.log(`${this.selectedItem.items.length}`);
   }
 
   onFilterByName(name) {
@@ -315,6 +338,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.dataService.deleteDishFromMenu(menuIdx, dishName);
   }
 
+  // TODO put this in menu-datails compnent
   onSaveMenu() {
     this.submitted = true;
 
@@ -347,6 +371,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     }
   }
 
+  // TODO put this in menu-datails compnent
   onDeleteMenu(id: String) {
     console.log(`dish set for deletion - id: ${id}`);
     const dialogConfig = new MatDialogConfig();
@@ -363,6 +388,7 @@ export class MenusComponent implements OnInit, OnDestroy {
     // this.dataService.deleteMenu(id);
   }
 
+  // TODO put this in menu-datails compnent
   onAddItems() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;

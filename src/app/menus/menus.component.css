@@ -1,4 +1,46 @@
-.menu-details {
-  margin-top: 75px;
-  width: 70%;
+.view-margin-top {
+  margin-top: 20px;
+}
+
+.search {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.device-search {
+  background-color: white;
+  width: 100vw;
+  padding-bottom: 40px;
+  border: var(--border-color);
+}
+
+.mat-select {
+  border: 1px solid #ccc !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: flex;
+}
+
+@media (min-width: 70rem) {
+  .device-toolbar,
+  .device-search {
+    display: none;
+  }
+
+  .sidebar-item {
+    margin: 3rem 0;
+  }
+
+  .sidebar .mat-icon-button {
+    color: var(--fc-light) !important;
+  }
+
+  .sidebar .mat-icon-button:hover {
+    color: var(--accent-color) !important;
+  }
 }

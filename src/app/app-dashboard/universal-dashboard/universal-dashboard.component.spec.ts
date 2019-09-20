@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrdersFilterComponent } from './orders-filter.component';
+import { UniversalDashboardComponent } from './universal-dashboard.component';
 
-describe('OrdersFilterComponent', () => {
-  let component: OrdersFilterComponent;
-  let fixture: ComponentFixture<OrdersFilterComponent>;
+describe('UniversalDashboardComponent', () => {
+  let component: UniversalDashboardComponent;
+  let fixture: ComponentFixture<UniversalDashboardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrdersFilterComponent ]
+      declarations: [ UniversalDashboardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrdersFilterComponent);
+    fixture = TestBed.createComponent(UniversalDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

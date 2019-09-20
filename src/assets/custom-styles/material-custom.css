@@ -222,8 +222,20 @@ mat-toolbar.mat-toolbar.mat-toolbar-single-row.ng-star-inserted {
 
 /* snack bar */
 ::ng-deep snack-bar-container.dark-snackbar {
-  background: #424242;
+  background-color: #424242 !important;
   color: white;
+}
+
+.mat-snack-bar-container {
+  background-color: #424242 !important;
+  color: white;
+  width: 300px;
+}
+
+.mat-snack-bar-handset .mat-snack-bar-container {
+  margin: 0;
+  max-width: 80%;
+  padding: 20px;
 }
 
 .mat-snack-bar-container.mat-snack-bar-center {

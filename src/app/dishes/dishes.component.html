@@ -27,8 +27,6 @@
     id="filter_by_course"
   ></app-search-filter-dishes>
   <app-search (searchTerm)="onFilterByName($event)" class="col-width"></app-search>
-
-  <!-- <app-search [eventTypes]="COURSE_OPTIONS" (selectItem)="onFilterByCourse($event.value)"></app-search> -->
 </div>
 <div class="flex-row-container">
   <div class="sidebar" id="desktop-toolbar">
@@ -49,8 +47,8 @@
         </i>
       </button>
     </div>
-    <!-- search and select component -->
 
+    <!-- search and select component -->
     <div
       style="height: auto!important ; margin: 2rem 0px; text-align: end"
       class="align-items-start"
@@ -175,12 +173,13 @@
           </div>
           <br />
           <div>
-            <button class="dialog-button" mat-raised-button color="accent" type="submit">
+            <button class="dialog-button" mat-raised-button mat-button color="accent" type="submit">
               save
             </button>
             <button
               class="dialog-button"
               mat-raised-button
+              mat-button
               color="accent"
               style="margin-left: 10px"
               (click)="updateFormMode('null')"

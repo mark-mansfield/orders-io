@@ -266,6 +266,7 @@ export class DishesComponent implements OnInit, OnDestroy {
       this.resetForm();
       this.initSelectedItem();
       this.enableForm();
+      this.inputDisabled = false;
     }
     if (mode === 'edit') {
       this.createMode = true;

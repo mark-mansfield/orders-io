@@ -19,7 +19,7 @@ export class DataService {
   private dishesDeleted = new Subject();
   private menuDeleted = new Subject();
 
-  constructor(private http: HttpClient, private snackBarService: SnackBarService) {}
+  constructor(private http: HttpClient, private snackBarService: SnackBarService) { }
 
   getMenuMetaDataUpdatedListener() {
     return this.menuMetaDataUpdated.asObservable();
@@ -77,10 +77,9 @@ export class DataService {
   }
 
   filterByName(name) {
-    const filteredData = [...this.menus].filter(function(item) {
+    const filteredData = [...this.menus].filter(function (item) {
       return item.title.includes(name.toLowerCase());
     });
-
     this.menusFiltered.next([...filteredData]);
   }
 
