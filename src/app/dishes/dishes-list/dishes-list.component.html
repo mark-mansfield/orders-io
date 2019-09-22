@@ -9,13 +9,11 @@
     <div class="flex-row-container row-style valign-center align-space-between ">
       <div>Dish Name</div>
     </div>
-
     <div
       class="flex-row-container row-style  valign-center align-space-between "
       *ngFor="let item of data; let i = index"
     >
       <div>{{ item.name }} :</div>
-
       <div>
         <button mat-button color="accent" (click)="onItemSelect(item, i)">view</button>
       </div>

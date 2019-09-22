@@ -3,6 +3,12 @@
   border-bottom: 0.5px solid #ccc;
 }
 
+.mat-select {
+  height: 80px;
+  border: var(--border-color) !important;
+  background-color: white;
+}
+
 .list-item,
 .header-item {
   display: flex;
@@ -19,4 +25,16 @@ h4,
 h5,
 h6 {
   color: var(--fc-dark) !important;
+}
+
+.button {
+  width: 100%;
+  padding: 20px;
+  text-transform: capitalize;
+}
+
+@media (min-width: 40rem) {
+  .button {
+    font-size: 2rem !important;
+  }
 }

@@ -17,14 +17,13 @@ export class SnackBarService {
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  extraClasses = ['dark-snackbar'];
+
 
   openSnackBar(message) {
     const config = new MatSnackBarConfig();
     config.verticalPosition = this.verticalPosition;
     config.horizontalPosition = this.horizontalPosition;
     config.duration = 3000;
-    config.panelClass = this.extraClasses;
     this.snackBar.open(message, '', config);
   }
 }

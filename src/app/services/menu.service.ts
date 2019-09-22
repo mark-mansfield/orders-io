@@ -111,6 +111,7 @@ export class DataService {
 
   updateMenu(menu) {
     console.log(menu);
+    console.log(this.menus);
     this.http.put<{ message: string; menu: any }>(BACKEND_URL + 'update', menu).subscribe(returnedData => {
       console.log(returnedData.message);
       if (returnedData.message) {
@@ -125,14 +126,15 @@ export class DataService {
   }
 
   deleteDishFromMenu(menuIdx, dishName) {
-    this.selectedMenu = this.menus.filter(menu => menu._id === menuIdx);
-    const tmpArr = this.selectedMenu[0].items;
-    const filteredArr = tmpArr.filter(item => item.name !== dishName);
-    this.selectedMenu[0].items = filteredArr;
-    this.dishesDeleted.next([...filteredArr]); // inform UI
+    // this.selectedMenu = this.menus.filter(menu => menu._id === menuIdx);
+    // const tmpArr = this.selectedMenu[0].items;
+    // const filteredArr = tmpArr.filter(item => item.name !== dishName);
+    // this.selectedMenu[0].items = filteredArr;
+    // this.dishesDeleted.next([...filteredArr]); // inform UI
   }
 
   deleteMenu(id: String) {
+
     this.http.delete<{ message: any }>(BACKEND_URL + id).subscribe(returnedData => {
       console.log(returnedData.message === '0');
 

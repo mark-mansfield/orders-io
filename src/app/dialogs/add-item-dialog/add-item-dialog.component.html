@@ -1,3 +1,8 @@
+<div mat-dialog-actions class="animation-fade-in">
+  <button mat-raised-button (click)="onFinishClicked()" class="button">
+    DONE CHOOSING
+  </button>
+</div>
 <div class="header-item" mat-dialog-title><h2>Choose your dishes</h2></div>
 <div class="header-item">
   <div style="width: 40%; padding-right: 20px">
@@ -11,6 +16,7 @@
           type="text"
           [(ngModel)]="searchInputValue"
           #searchTerm
+          placeholder="name..."
           style="padding-left: 10px; width:100%; height: 100%; font-size: 1rem"
         />
       </div>
@@ -76,9 +82,4 @@
       <h2>Continue Adding</h2>
     </button>
   </div>
-</div>
-<div mat-dialog-actions style="position:fixed; bottom: 50px; width: 30%" class="animation-fade-in">
-  <button mat-raised-button (click)="onFinishClicked()" style=" width: 100%; padding: 20px; margin-right: 50px ">
-    <h2>DONE CHOOSING</h2>
-  </button>
 </div>

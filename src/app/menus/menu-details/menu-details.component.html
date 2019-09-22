@@ -1,0 +1,108 @@
+<div class="menu-details inner-margin" [ngClass]="{ visible: formVisible }">
+  <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
+    <button mat-mini-fab (click)="this.notifyParent()" class="action-button" style="border-radius: none">
+      <i class="material-icons icon-color-light">
+        keyboard_arrow_left
+      </i>
+    </button>
+    <button
+      mat-mini-fab
+      (click)="updateFormMode('edit')"
+      title="edit this item"
+      *ngIf="this.mode !== 'edit' && this.mode !== 'create'"
+      class="lock"
+    >
+      <i class="material-icons icon-color-light ">
+        lock
+      </i>
+    </button>
+
+    <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
+      <button mat-mini-fab title="delete this item" (click)="onDeleteMenu(this.selectedItem._id)">
+        <i class="material-icons icon-color-light">
+          delete
+        </i>
+      </button>
+
+      <button mat-mini-fab title="clone item">
+        <i class="material-icons icon-color-light">
+          file_copy
+        </i>
+      </button>
+    </div>
+  </div>
+  <div class="inner-margin">
+    <h2 *ngIf="createMode">New Menu</h2>
+    <h2 *ngIf="!createMode">{{ selectedItem.title }}</h2>
+    <!-- (ngSubmit)="onSaveDish()"  -->
+    <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveMenu()">
+      <div class="form-element">
+        <label for="name"><h2>Menu Name</h2></label>
+        <input
+          (change)="enableSubmit()"
+          type="text"
+          value="{{ selectedItem.title }}"
+          placeholder="Menu name..."
+          formControlName="title"
+          pattern="[a-zA-Z0-9 .]*"
+        />
+        <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+          <mat-error *ngIf="f.title.errors.required">A menu title is required</mat-error>
+          <mat-error *ngIf="f.title.errors.pattern">letters and numbers only</mat-error>
+          <mat-error *ngIf="f.title.errors.duplicate">Menu title already taken</mat-error>
+        </div>
+      </div>
+      <div class="form-element">
+        <label for="description"><h2>Description</h2></label>
+        <textarea
+          value="{{ selectedItem.description }}"
+          formControlName="description"
+          placeholder="Menu description..."
+        ></textarea>
+        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+          <mat-error *ngIf="f.description.errors.required">A description is required</mat-error>
+        </div>
+      </div>
+      <br />
+      <hr class="line_break" />
+      <br />
+      <div class="flex-container-66 align-space-between form-element valign-center">
+        <h2>Dishes</h2>
+        <button
+          type="button"
+          mat-mini-fab
+          color="accent"
+          (click)="onAddItems()"
+          *ngIf="this.mode === 'edit' || this.mode === 'create'"
+        >
+          <i class="material-icons icon-color-light">
+            add
+          </i>
+        </button>
+      </div>
+      <div
+        *ngFor="let item of this.selectedItem.items"
+        class="flex-container-66 align-space-between form-element valign-center menuItem"
+      >
+        <div>{{ item.name }}</div>
+        <div>
+          <button mat-icon-button *ngIf="!this.inputDisabled" (click)="onDeleteDish(this.selectedItem._id, item.name)">
+            <mat-icon aria-label="hide search options">close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <br />
+      <div name="mode-context-aware-tools" [ngClass]="{ visible: !this.inputDisabled, hidden: this.inputDisabled }">
+        <div *ngIf="this.form.valid">
+          <button mat-raised-button mat-accent type="submit">
+            save
+          </button>
+          <!-- <button mat-raised-button color="accent" style="margin-left: 10px" (click)="updateFormMode(null)">
+                    cancel
+                  </button> -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

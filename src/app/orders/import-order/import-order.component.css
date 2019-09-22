@@ -1,0 +1,22 @@
+.form-container {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  margin-bottom: 2rem;
+}
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+.mat-spinner,
+.import-spinner {
+  margin: 0 auto;
+  text-align: center;
+}

@@ -1,0 +1,414 @@
+
+
+<div *ngIf="this._menus.length === 0" class="no-menus-message">
+    <div class="no-menus-message__details">
+      <h1>Oops</h1>
+      You need to have at least 1 menu in the system
+    </div>
+    <br /><br />
+    <div class="no-menus-message__button">
+      <button
+        mat-raised-button
+
+        [routerLink]="['../menus']"
+        class="action-button"
+        style="border-radius: 0px"
+      >
+        add a menu
+      </button>
+    </div>
+  </div>
+<div *ngIf="this._menus.length > 0" class="flex-column-container main__content">
+  <div class="inner-margin">
+    <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
+      <button mat-mini-fab (click)="this.notifyParent()" class="action-button" style="border-radius: none">
+        <i class="material-icons icon-color-light">
+          keyboard_arrow_left
+        </i>
+      </button>
+      <button
+        mat-mini-fab
+        (click)="updateFormMode('edit')"
+        title="edit this item"
+        *ngIf="this.mode !== 'edit' && this.mode !== 'create'"
+        class="lock"
+      >
+        <i class="material-icons icon-color-light ">
+          lock
+        </i>
+      </button>
+      <!-- if mode = edit -->
+      <div
+        id="edit-tools"
+        class="mode-context-aware-tools"
+        style="flex:2"
+        name="mode-context-aware-tools"
+        *ngIf="this.mode === 'edit'"
+      >
+        <div style="flex:2">
+          <button mat-mini-fab title="delete this item" (click)="onDeleteOrder(this.selectedItem._id)">
+            <i class="material-icons icon-color-light">
+              delete
+            </i>
+          </button>
+
+          <button mat-mini-fab title="clone item">
+            <i class="material-icons icon-color-light">
+              file_copy
+            </i>
+          </button>
+        </div>
+        <div style="flex:1">
+          <button
+            class="dialog-button"
+            mat-raised-button
+            color="accent"
+            style="width:100px"
+            (click)="this.notifyParent()"
+          >
+            cancel
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-title">
+      <h1>{{ formTitle }}</h1>
+    </div>
+    <p class="edit-mode-note" *ngIf="this.mode === 'view'">
+      This Item is locked for security. Please click the padlock icon to begin editing
+    </p>
+
+    <p>Fill data in all fields . We will show you if and where there are any errors.</p>
+    <br /><br />
+    <div id="order-form" class="view-margin-top" style="justify-content: flex-start ">
+      <h2>Order Number</h2>
+      <ng-container *ngIf="uniqueId"
+        ><span style="color: var(--unique-id)">{{ this.uniqueId }}</span></ng-container
+      >
+      <a id="formStart"></a>
+      <form [formGroup]="form" (ngSubmit)="onSaveOrder()" class="inner-margin">
+        <!-- <div> -->
+        <!-- <div class="flex-2Col-left"> -->
+        <div class="form-element">
+          <label for="eventOptions"><h2>Event Type</h2></label>
+          <small class="instructions">client pickup / delivery service / staffed event</small>
+          <div
+            [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+            style="height: 50px;    display: grid;
+          place-items: center;"
+          >
+            <mat-select
+              placeholder="event type..."
+              formControlName="eventType"
+              (selectionChange)="onSelectEventType($event.value)"
+            >
+              <mat-option *ngFor="let type of EVENT_TYPES" [value]="type">
+                {{ type | RemoveUnderscorePipe }}
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div *ngIf="submitted && f.eventType.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.eventType.errors.required">An Event type is required</mat-error>
+          </div>
+        </div>
+
+        <div class="form-element">
+          <label for="contactName"><h2>Name</h2></label>
+          <input
+            type="text"
+            formControlName="contactName"
+            value="{{ selectedItem.customerDetails.contactName }}"
+            required
+            [ngClass]="{ 'is-invalid': submitted && f.contactName.errors }"
+          />
+          <div *ngIf="submitted && f.contactName.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.contactName.errors.required">Contact Name is required</mat-error>
+          </div>
+        </div>
+        <div class="form-element">
+          <label for="email"><h2>Email</h2></label>
+          <input formControlName="email" email required [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.email.errors.required">Email is required</mat-error>
+            <mat-error *ngIf="f.email.errors.email">Email must be a valid email address</mat-error>
+          </div>
+        </div>
+        <div class="form-element" style="width: 100%">
+          <label for="notes"><h2>Phone</h2></label>
+          <small class="instructions">please double check your number</small>
+          <div class="" style="width: 100%">
+            <input type="text" formControlName="phone" />
+          </div>
+          <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.phone.errors.required">A contact number is required</mat-error>
+          </div>
+        </div>
+
+        <!-- number of guests -->
+
+        <div class="form-element">
+          <label for="number Of Guests"><h2>Number of Guests</h2></label>
+
+          <input formControlName="numberOfGuests" type="text" placeholder="how many guests?" />
+
+          <div *ngIf="submitted && f.numberOfGuests.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.numberOfGuests.errors.required">Please add the number of guests</mat-error>
+          </div>
+        </div>
+
+        <!-- date picker -->
+        <div class="form-element">
+          <div>
+            <label for="pickup_date"><h2>Event Date</h2></label>
+            <div class="event-date">
+              <div class="date-field">
+                <span>{{ this.serverDateFormatted }}</span>
+              </div>
+            </div>
+            <div *ngIf="this.mode === 'edit' || this.mode === 'create'" style="text-align:right">
+              <button mat-fab type="button" class="mat-accent" (click)="eventDatePicker.open()">
+                <i class="material-icons icon-color-light">
+                  date_range
+                </i>
+              </button>
+            </div>
+            <div style="position:fixed; bottom: 0px; opacity: 0; z-index: -1">
+              <!-- <label for="pickup_date"
+                ><h2>{{ this.dateOfEvent }}</h2></label
+              > -->
+              <!-- (dateChange)="setEventDate($event.value)" -->
+              <input
+                formControlName="eventDate"
+                (dateChange)="onDateChange($event.value)"
+                matInput
+                [min]="minDate"
+                [matDatepicker]="eventDatePicker"
+                placeholder="Choose a date"
+              />
+              <mat-datepicker-toggle matSuffix [for]="eventDatePicker" style="opacity: 0;"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #eventDatePicker></mat-datepicker>
+            </div>
+          </div>
+          <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback" style="position:relative; top: -60px">
+            <mat-error *ngIf="f.eventDate.errors.required">Date required</mat-error>
+          </div>
+        </div>
+
+        <!-- start conditional displays -->
+
+        <!-- Delivery address -->
+        <div *ngIf="eventType === 'delivery_service' || eventType === 'staffed_event'" style="width: 100%">
+          <div class="form-element">
+            <label for="address"><h2>Event Address</h2></label>
+
+            <textarea
+              formControlName="address"
+              style="width: 100%; height: 200px ; padding: 10px"
+              placeholder="deliver to..."
+              (ngModelChange)="onUpdateDeliveryAddress($event)"
+              value="this.deliveryAddress"
+            ></textarea>
+            <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.address.errors.required">Address required</mat-error>
+              <mat-error *ngIf="f.address.errors.pattern" class="invalid-feedback"
+                >only numbers and letters are allowed
+              </mat-error>
+            </div>
+          </div>
+
+          <!-- delivery times select -->
+          <div class="form-element">
+            <label for="delivery time"><h2>Delivery Time</h2></label>
+            <small class="instructions">To arrive at address</small>
+            <div
+              [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+              style="height: 50px;    display: grid;
+            place-items: center;"
+            >
+              <mat-select
+                placeholder="delivery time..."
+                formControlName="deliveryTime"
+                (selectionChange)="onSelectDeliveryTime($event.value)"
+              >
+                <mat-option *ngFor="let time of delivery_time_options" [value]="time">
+                  {{ time }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="submitted && f.deliveryTime.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.deliveryTime.errors.required">Delivery time required</mat-error>
+            </div>
+          </div>
+        </div>
+
+        <!-- pickup Event option -->
+
+        <div *ngIf="eventType === 'pick_up'" class="form-element">
+          <!-- pick up times select -->
+          <div class="form-element" style="height: 76px; margin: 10px 0 ">
+            <label for="pickUpTime"><h2>Pick Up Time</h2></label>
+            <small class="instructions">client to pick up from H.Q.</small>
+            <div
+              [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+              style="height: 50px;    display: grid;
+              place-items: center;"
+            >
+              <mat-select
+                placeholder="time"
+                formControlName="pickUpTime"
+                (selectionChange)="onSelectPickUpTime($event.value)"
+              >
+                <mat-option *ngFor="let time of pickup_time_options" [value]="time">
+                  {{ time }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="submitted && f.pickUpTime.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.pickUpTime.errors.required">Please select a pick up time</mat-error>
+            </div>
+          </div>
+        </div>
+
+        <!-- staffed event option -->
+        <div *ngIf="eventType === 'staffed_event'">
+          <!-- styling packages select -->
+          <div class="form-element">
+            <label for="address"><h2>Event Styling</h2></label>
+            <mat-select
+              placeholder="styling options..."
+              formControlName="stylingOptions"
+              (selectionChange)="onSelectStylingOption($event.value)"
+              style="background-color: white; height:50px; "
+            >
+              <mat-option *ngFor="let option of styling_options" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.stylingOptions.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.stylingOptions.errors.required">Please select a styling package</mat-error>
+            </div>
+          </div>
+
+          <!-- event start time -->
+          <div class="form-element">
+            <label for="eventStartTime"><h2>Event Start Time</h2></label>
+            <small class="instructions">time the event starts - not the time the production starts</small>
+            <mat-select
+              [value]="eventStartTime"
+              placeholder="Event start time..."
+              formControlName="eventStartTime"
+              (selectionChange)="onSelectEventStartTime($event.value)"
+              style="background-color: white; height:50px; "
+            >
+              <mat-option *ngFor="let time of EVENT_START_TIME_OPTIONS" [value]="time">
+                {{ time }}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.eventStartTime.errors" class="invalid-feedback">
+              <mat-error *ngIf="f.eventStartTime.errors.required">Please select an event start time</mat-error>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+        <br />
+
+        <div class="form-element" style="height: 76px; margin: 10px 0 ">
+          <label for="menu"><h2>Menu</h2></label>
+          <div
+            [ngClass]="{ disabled: 'inputDisabled', enabled: !inputDisabled }"
+            style="height: 50px;    display: grid;
+          place-items: center;"
+          >
+            <mat-select placeholder="menu" formControlName="menu" (selectionChange)="onSelectMenu($event.value)">
+              <mat-option *ngFor="let menu of menus" [value]="menu">
+                {{ menu.title }}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div *ngIf="submitted && f.menu.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.menu.errors.required">Please select from a menu</mat-error>
+          </div>
+        </div>
+        <br />
+        <!-- </div> -->
+        <!-- dishes on menu -->
+        <div class="form-element"><h2>Dishes</h2></div>
+
+        <div *ngIf="itemsOnMenu.length === 0" class="form-element">There are no dishes on this menu <a style="color: dodgerBlue" [routerLink]="['/menus']">fix this</a></div>
+<ng-container *ngIf="!this.inputDisabled">
+        <div *ngFor="let dish of itemsOnMenu; let i = index" class="form-element flex-row align-space-between ">
+          <div class="dish-item align-space-between">
+            <div class="dish-item-description">
+              <label for="{{ dish.name }}"
+                ><h4>{{ dish.name }}</h4></label
+              >
+              <br />
+              <p>{{ dish.description }} {{ dish.qty }}</p>
+            </div>
+            <div class="dish-item-qty">
+              <br />
+              <mat-select
+                class="select-qty"
+                placeholder="qty"
+                name="qty"
+                (selectionChange)="updateItemQty(i, $event.value)"
+                style="background-color: white; height:50px;"
+                selectedIndex = "2"
+               >
+                <mat-option *ngFor="let qty of quantities" [value]="dish.qty">
+                  {{ qty }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+        <div class="form-element" style="width: 100%">
+          <label for="notes"><h2>Notes</h2></label>
+          <small class="instructions">type all in one line. numbers letters . and spaces allowed</small>
+          <textarea
+            formControlName="notes"
+            name="notes"
+            value=""
+            style="width: 100%; height: 200px ; padding: 10px"
+            placeholder="add any notes here..."
+          ></textarea>
+          <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+            <mat-error *ngIf="f.notes.errors.pattern" class="invalid-feedback"
+              >only numbers and letters<br />these characters '/' '.' ',' and spaces ar allowed.
+            </mat-error>
+          </div>
+        </div>
+        <br />
+        <hr class="line_break" />
+        <br />
+        <div
+          *ngIf="this.mode === 'edit' || this.mode === 'create'"
+          style="width: 100%; margin-bottom: 50px; display:flex; justify-content: space-between"
+        >
+          <!-- <button
+        class="action-button"
+        mat-fab
+        color="accent"
+        mat-raised-button
+        style="margin-left: 10px"
+        (click)="this.notifyParent()"
+      >
+        <mat-icon
+          aria-label="quit and go back to orders list"
+          class="mat-icon material-icons"
+          role="img"
+          aria-hidden="true"
+          >close</mat-icon
+        >
+      </button> -->
+
+          <button class="action-button" mat-button color="accent" type="submit">
+            save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

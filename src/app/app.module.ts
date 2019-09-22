@@ -57,7 +57,7 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
     FormsModule,
     AngularMaterialModule,
     // MenusModule,
-    DashboardModule, /* rename this*/
+    DashboardModule,
     DishesModule,
     ReactiveFormsModule,
     SharedModule

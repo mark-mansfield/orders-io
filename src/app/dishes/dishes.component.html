@@ -37,6 +37,7 @@
         </i>
       </button>
       <button
+        *ngIf="this.dishes.length > 0"
         mat-button
         (click)="toggleViews('search')"
         class="action-button"
@@ -74,6 +75,7 @@
     <button mat-button class="action-button" (click)="onClearSearchResults()" *ngIf="hasSearchResults">
       Clear Search
     </button>
+
     <app-dishes-list
       [data]="this.dishes"
       [ngClass]="{
@@ -84,8 +86,10 @@
     ></app-dishes-list>
 
     <!-- form -->
+
+    <br />
     <div *ngIf="formVisible" class="col-width">
-      <div class="flex-container-66 edit-tools" id="rightCol" style="height: 80px">
+      <div class="edit-tools" id="rightCol" style="height: 80px">
         <button mat-mini-fab (click)="toggleViews('default')" class="action-button" style="border-radius: none">
           <i class="material-icons icon-color-light">
             keyboard_arrow_left
@@ -117,7 +121,7 @@
           </button>
         </div>
       </div>
-      <div class="inner-margin" style="width: 100%">
+      <div class="inner-margin">
         <h2>{{ this.mode }}</h2>
         <!-- (ngSubmit)="onSaveDish()"  -->
         <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveDish()">

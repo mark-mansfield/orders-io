@@ -1,115 +1,83 @@
-<div class="view inner-margin">
-  <div id="view" class="inner-margin" *ngIf="this.mode !== null">
-    <div class="flex-container-66 edit-tools" id="rightCol">
-      <button
-        mat-mini-fab
-        (click)="updateFormMode('edit')"
-        title="edit this item"
-        *ngIf="this.mode !== 'edit' && this.mode !== 'create'"
-        class="lock"
-      >
-        <i class="material-icons icon-color-light ">
-          lock
-        </i>
-      </button>
-
-      <div name="mode-context-aware-tools" *ngIf="this.mode === 'edit'">
-        <button mat-mini-fab title="delete this item" (click)="onDeleteMenu(this.selectedItem._id)">
-          <i class="material-icons icon-color-light">
-            delete
-          </i>
-        </button>
-
-        <button mat-mini-fab title="clone item">
-          <i class="material-icons icon-color-light">
-            file_copy
-          </i>
+<div *ngIf="this.deviceToolBarVisible" class="flex-row-container device-toolbar" id="device-toolbar">
+    <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+      <i class="material-icons md-36 icon-color-light">
+        add
+      </i>
+    </button>
+    <button
+      mat-button
+      (click)="toggleViews('search')"
+      class="action-button"
+      style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+    >
+      <i class="material-icons md-36 icon-color-light">
+        search
+      </i>
+    </button>
+  </div>
+  <div class="device-search animation-fade-in" *ngIf="searchVisible">
+    <div class="search sidebar-item">
+      <div style="text-align: end; margin-top:20px">
+        <button mat-icon-button (click)="toggleViews('default')">
+          <mat-icon aria-label="hide search options">close</mat-icon>
         </button>
       </div>
     </div>
 
-    <!-- generic form -->
-    <div class="inner-margin" style="width: 100%">
-      <h2>Menu - {{ this.mode }}</h2>
-      <!-- (ngSubmit)="onSaveDish()"  -->
-      <form [formGroup]="form" class="inner-margin" (ngSubmit)="onSaveMenu()">
-        <div class="form-element">
-          <label for="name"><h2>Menu Name</h2></label>
-          <input
-            (change)="enableSubmit()"
-            type="text"
-            value="{{ selectedItem.title }}"
-            placeholder="Menu name..."
-            formControlName="title"
-            pattern="[a-zA-Z0-9 .]*"
-          />
-          <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
-            <mat-error *ngIf="f.title.errors.required">A menu title is required</mat-error>
-            <mat-error *ngIf="f.title.errors.pattern">letters and numbers only</mat-error>
-            <mat-error *ngIf="f.title.errors.duplicate">Menu title already taken</mat-error>
-          </div>
-        </div>
-        <div class="form-element">
-          <label for="description"><h2>Description</h2></label>
-          <textarea
-            value="{{ selectedItem.description }}"
-            formControlName="description"
-            placeholder="Menu description..."
-          ></textarea>
-          <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-            <mat-error *ngIf="f.description.errors.required">A description is required</mat-error>
-          </div>
-        </div>
-        <br />
-        <hr class="line_break" />
-        <br />
-        <div class="flex-container-66 align-space-between form-element valign-center">
-          <h2>Dishes</h2>
-          <button
-            type="button"
-            mat-mini-fab
-            color="accent"
-            (click)="onAddItems()"
-            *ngIf="this.mode === 'edit' || this.mode === 'create'"
-          >
-            <i class="material-icons icon-color-light">
-              add
-            </i>
-          </button>
-        </div>
-        <div
-          *ngFor="let item of this.selectedItem.items"
-          class="flex-container-66 align-space-between form-element valign-center menuItem"
-        >
-          <div>{{ item.name }}</div>
-          <div>
-            <button
-              type="button"
-              mat-button
-              color="accent"
-              (click)="onDeleteDish(this.selectedItem._id, item.name)"
-              *ngIf="this.mode === 'edit' || this.mode === 'create'"
-            >
-              delete
-              <!-- <i class="material-icons icon-color-light md-small">
-                    delete
-                  </i> -->
-            </button>
-          </div>
-        </div>
-
-        <br />
-        <div name="mode-context-aware-tools" [ngClass]="{ visible: !this.inputDisabled, hidden: this.inputDisabled }">
-          <div>
-            <button mat-raised-button color="accent" [disabled]="this.disableSubmit" type="submit">
-              save
-            </button>
-            <!-- <button mat-raised-button color="accent" style="margin-left: 10px" (click)="updateFormMode(null)">
-                  cancel
-                </button> -->
-          </div>
-        </div>
-      </form>
+    <div class="search sidebar-item">
+      <app-search (searchTerm)="onFilterByName($event)" class="col-width sidebar-item"></app-search>
     </div>
   </div>
-</div>
+  <div class="flex-row-container">
+    <div class="sidebar" id="desktop-toolbar">
+      <div class="flex-row">
+        <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+          <i class="material-icons md-36 icon-color-light">
+            add
+          </i>
+        </button>
+        <button
+          mat-button
+          (click)="toggleViews('search')"
+          class="action-button"
+          style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+        >
+          <i class="material-icons md-36 icon-color-light">
+            search
+          </i>
+        </button>
+      </div>
+      <!-- search and select component -->
+
+      <div
+        style="height: auto!important ; margin: 2rem 0px; text-align: end"
+        class="align-items-start"
+        *ngIf="searchVisible"
+        id="search-container"
+      >
+        <button mat-icon-button (click)="toggleViews('default')">
+          <mat-icon aria-label="hide search options">close</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="searchVisible" style="height: auto!important; margin-top: 2rem">
+        <app-search (searchTerm)="onFilterByName($event)" class="col-width"> </app-search>
+      </div>
+    </div>
+
+    <!-- use ngClass here to avoid redraw  -->
+    <div class="view view-margin-top">
+      <app-list-menus
+        [data]="this.menusData"
+        [ngClass]="{ hidden: formVisible }"
+        (selectItem)="onViewOrder($event)"
+      ></app-list-menus>
+
+      <!-- menu edit / create form -->
+      <app-menu-details
+        [mode]="formMode"
+        *ngIf="formVisible"
+        [selectedItem]="selectedItem"
+        (notify)="onNotifyClicked($event)"
+      ></app-menu-details>
+    </div>
+  </div>

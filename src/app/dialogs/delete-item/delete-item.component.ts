@@ -15,7 +15,7 @@ export class DeleteItemComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<DeleteItemComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({

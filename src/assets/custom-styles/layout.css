@@ -213,7 +213,6 @@
 }
 
 .menuItem {
-  height: 50px;
   padding: 20px;
   background-color: rgba(175, 175, 175, 0.13);
 }
@@ -226,6 +225,10 @@
   width: 100%;
   padding: 20px;
   background-color: #d1e9f2;
+}
+
+.col-width {
+  width: var(--device-width);
 }
 
 @media (min-width: 40rem) {
@@ -269,14 +272,6 @@
     display: none;
   }
 
-  /* .flex-container {
-    width: 100vw;
-    background-color: #e8f6f9;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-start;
-  } */
-
   .flex-container-33 {
     display: flex;
     justify-content: center;
@@ -295,9 +290,6 @@
     display: flex;
     flex-flow: column;
     width: 50%;
-  }
-
-  .flex-container-66 {
   }
 
   .edit-tools {
@@ -319,48 +311,8 @@
   }
 }
 
-/* tablet portrait */
-/* @media (min-width: 48rem) {
-  .device-toolbar {
-    height: 80px;
-    width: 100%;
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .device-search {
-    margin: 0 auto;
-  }
-
-  .device-search .mat-icon {
-    color: var(--fc-light) !important;
-  }
-
-  .device-search button {
-    height: 50px !important;
-  }
-
-  .view {
-    width: 100%;
-  }
-  .col-width {
-    width: var(--tablet-width);
-  }
-} */
-
-/* tablet landscape */
-@media (min-width: 64rem) {
-}
-
-/* desktop */
-@media (min-width: 66rem) {
-  /* .device-toolbar,
-  .device-search {
-    display: none;
-  } */
-
+/* desktop / laptop */
+@media (min-width: 70rem) {
   .sidebar {
     display: flex;
     flex-flow: column;

@@ -4,14 +4,7 @@
 
 <form [formGroup]="form" (ngSubmit)="deleteClicked()" class="inner-margin">
   <input type="text" formControlName="inputText" (ngModelChange)="onUpdateInput($event)" />
-  <button
-    class="dialog-button"
-    mat-raised-button
-    color="accent"
-    type="submit"
-    [disabled]="sumbitDisabled"
-    style="margin: 20px 0;"
-  >
+  <button class="dialog-button" mat-raised-button type="submit" [disabled]="sumbitDisabled" style="margin: 20px 0;">
     DELETE PERMANENTLY
   </button>
 </form>

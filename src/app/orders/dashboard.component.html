@@ -1,3 +1,5 @@
+<!-- no menus / at least one menu in the system is required -->
+
 <div class="flex-row-container device-toolbar" id="device-toolbar" *ngIf="deviceToolBarVisible">
   <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: 0px">
     <i class="material-icons md-36 icon-color-light">
@@ -6,7 +8,7 @@
   </button>
   <button
     mat-button
-    *ngIf="menusData.length > 0"
+    *ngIf="this.orders.length > 0"
     (click)="toggleViews('search')"
     class="action-button"
     style="background-color: #aa1550!important; border-left: #666; border-radius: 0px"
@@ -17,6 +19,7 @@
   </button>
 </div>
 
+<!-- device search -->
 <div class="device-search animation-fade-in" *ngIf="searchVisible" id="device-search">
   <div style="text-align: end;">
     <button mat-icon-button (click)="toggleViews('default')">
@@ -27,13 +30,41 @@
   <!-- search components  device -->
   <div class="search">
     <h1>Search</h1>
-    <app-search (searchTerm)="onFilterByName($event)"> </app-search>
+    <app-search (searchTerm)="filterByName($event)"> </app-search>
+  </div>
+  <br /><br />
+  <div class="search">
+    <app-search-filter-events
+      [eventTypes]="EVENT_TYPES"
+      (selectItem)="onSelectEventType($event)"
+    ></app-search-filter-events>
+  </div>
+  <!-- date filter -->
+  <br /><br />
+  <div class="search">
+    <div class="filter-event-date" id="select-pickup-day-device">
+      <div>
+        <h2>Search by event date</h2>
+        <small class="placeholder">past or in the future</small>
+      </div>
+      <div>
+        <mat-select
+          panelClass="accent-colors"
+          style="background-color: white; height:50px; color: black"
+          placeholder="select a date..."
+        >
+          <mat-option *ngFor="let date of orderDates" value="{{ date }}" (click)="updateFilterSelected(date)">{{
+            date | date
+          }}</mat-option>
+        </mat-select>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- sidebar / view  -->
 <div class="flex-row-container">
-  <div class="sidebar" id="desktop-toolbar">
+  <!-- sidebar -->
+  <div class="sidebar" id="desktop-sidebar">
     <div class="flex-row">
       <button
         mat-button
@@ -48,7 +79,7 @@
         </i>
       </button>
       <button
-        *ngIf="menusData.length > 0"
+        *ngIf="this.orders.length > 0"
         [disabled]="formVisible"
         [ngClass]="{ opacity1: formVisible, opacity10: !formVisible }"
         mat-button
@@ -78,35 +109,61 @@
       <div class="sidebar-item">
         <app-search (searchTerm)="filterByName($event)"> </app-search>
       </div>
+      <br />
+      <!-- event type filter -->
+      <app-search-filter-events
+        [eventTypes]="EVENT_TYPES"
+        (selectItem)="onSelectEventType($event)"
+        class="sidebar-item"
+      ></app-search-filter-events>
+      <!-- date filter -->
+      <div class=" sidebar-item filter-event-date" id="select-pickup-day-device">
+        <h2>Search by event date</h2>
+        <small class="placeholder">Select a pickup date</small>
+
+        <mat-select
+          panelClass="accent-colors"
+          style="background-color: white; height:50px; color: black"
+          placeholder="event date..."
+        >
+          <mat-option *ngFor="let date of orderDates" value="{{ date }}" (click)="updateFilterSelected(date)">{{
+            date | date
+          }}</mat-option>
+        </mat-select>
+      </div>
     </div>
   </div>
 
-  <!-- view  for desktop and devices  -->
+  <!-- device / desktop view   -->
   <div class="view">
     <div class="col-width">
       <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
       <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
-
+      <h1>Orders</h1>
       <br />
-      <div *ngIf="!this.isLoading && this.menusData.length === 0">You have no menus in the system</div>
-      <!-- menus list  -->
-
-      <app-list-menus
+      <div *ngIf="!this.isLoading && this.orders.length === 0">You have no orders in the system</div>
+      <!-- orders list  -->
+      <app-orders-list
         class="col-width"
-        [data]="this.menusData"
-        [ngClass]="{ hidden: formVisible }"
+        [data]="this.orders"
         (selectItem)="onItemSelect($event)"
-      ></app-list-menus>
-
+        [ngClass]="{
+          hidden: formVisible
+        }"
+      >
+      </app-orders-list>
+      <br />
       <!-- order create / edit component -->
-      <ng-container *ngIf="formVisible">
-        <app-menu-details
+      <div *ngIf="formVisible">
+        <app-order-create
           class="col-width"
           [mode]="formMode"
+          [uniqueId]="uniqueId"
           [selectedItem]="selectedItem"
+          [menus]="this.menus"
           (notify)="onNotifyClicked($event)"
-        ></app-menu-details>
-      </ng-container>
+        ></app-order-create>
+      </div>
     </div>
   </div>
 </div>

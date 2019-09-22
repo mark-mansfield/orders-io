@@ -1,0 +1,26 @@
+.list-item-details {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row-style {
+  padding: 10px;
+  border-bottom: 1px solid rgba(130, 130, 130, 0.276);
+}
+
+.vspacer {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.col {
+  flex: 1;
+  text-align: center;
+}
+
+@media (min-width: 40rem) {
+  .inner-margin {
+    margin: none;
+  }
+}

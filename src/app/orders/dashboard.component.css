@@ -1,7 +1,3 @@
-.view-margin-top {
-  margin-top: 20px;
-}
-
 .search {
   width: 90%;
   margin: 0 auto;
@@ -14,20 +10,22 @@
   border: var(--border-color);
 }
 
-/* .flex-container-66 {
-  display: flex;
-} */
-
 .mat-select {
   border: 1px solid #ccc !important;
 }
 
-.hidden {
-  display: none;
+.no-menus-message {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
 }
 
-.visible {
-  display: flex;
+.no-menus-message__button,
+.no-menus-message__details {
+  width: 80%;
+  margin: 0 auto;
 }
 
 @media (min-width: 70rem) {
@@ -46,5 +44,16 @@
 
   .sidebar .mat-icon-button:hover {
     color: var(--accent-color) !important;
+  }
+
+  .margin-top {
+    margin: 0 !important;
+    margin-top: 3rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  #search label > h2.margin-top:first-child {
+    margin: 0 !important;
+    margin-bottom: 0.5rem !important;
   }
 }

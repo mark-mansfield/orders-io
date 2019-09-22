@@ -1,5 +1,3 @@
-
-
 mat-select {
   margin: 20px auto;
   text-align: center;
@@ -24,10 +22,35 @@ button {
   font-size: 1rem;
 }
 
+.lock:before {
+  position: relative;
+  top: -5px;
+  margin-bottom: -40px;
+  content: 'Click to unlock this item';
+  display: flex;
+  align-items: flex-start;
+  color: var(--fc-dark);
+  margin-left: -190px;
+}
+
+.col-width {
+  width: var(--device-width);
+}
+
 @media (min-width: 70rem) {
+  .col-width {
+    width: var(--desktop-width);
+  }
+
   .device-toolbar,
   .device-search {
     display: none;
+  }
+
+  .view .edit-tools {
+    display: flex;
+    justify-content: space-between;
+    color: black;
   }
 
   .sidebar-item {

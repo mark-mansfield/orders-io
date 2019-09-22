@@ -28,12 +28,7 @@ exports.createMenu = (req, res, next) => {
 exports.updateMenu = (req, res, next) => {
   const newMenu = new Menu(req.body);
   console.log('updating menu: ', newMenu);
-  Menu.updateOne(
-    {
-      _id: newMenu.id
-    },
-    newMenu
-  )
+  Menu.updateOne({ _id: req.body._id }, newMenu)
     .then(result => {
       if (result.n > 0) {
         res.status(200).json({ message: true });

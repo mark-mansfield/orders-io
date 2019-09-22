@@ -99,6 +99,7 @@ export class OrderService {
     this.http.post<{ message: string; order: any }>(BACKEND_URL + 'create', order).subscribe(returnedData => {
       console.log(returnedData.order);
       this.orderCreated.next({ ...returnedData.order });
+
     });
   }
 

@@ -1,0 +1,98 @@
+<div class="flex-row-container device-toolbar" id="device-toolbar">
+  <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+    <i class="material-icons md-36 icon-color-light">
+      add
+    </i>
+  </button>
+  <button
+    mat-button
+    (click)="toggleViews('search')"
+    class="action-button"
+    style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+  >
+    <i class="material-icons md-36 icon-color-light">
+      search
+    </i>
+  </button>
+  <button mat-button type="button" class="action-button" color="accent" (click)="toggleViews('import')">
+    <span class="material-icons md-36 icon-color-light">computer</span>
+  </button>
+</div>
+<div class="inner-margin device-search" *ngIf="searchVisible">
+  <div style="text-align: end; margin-top:20px">
+    <button mat-icon-button (click)="_navgationBackDetected($event)">
+      <mat-icon aria-label="hide search options">close</mat-icon>
+    </button>
+  </div>
+  <app-search (searchTerm)="filterByName($event)"> </app-search>
+  <app-search-filter-events
+    [eventTypes]="EVENT_TYPES"
+    (selectItem)="onSelectEventType($event)"
+  ></app-search-filter-events>
+</div>
+<div class="inner-margin device-import" *ngIf="importVisible">
+  <div style="text-align: end; margin-top:20px">
+    <button mat-icon-button (click)="_navgationBackDetected($event)">
+      <mat-icon aria-label="hide search options">close</mat-icon>
+    </button>
+  </div>
+  <app-import-order></app-import-order>
+</div>
+<div class="flex-row-container">
+  <div class="sidebar" id="desktop-toolbar">
+    <div class="flex-row">
+      <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
+        <i class="material-icons md-36 icon-color-light">
+          add
+        </i>
+      </button>
+      <button
+        mat-button
+        (click)="toggleViews('search')"
+        class="action-button"
+        style="background-color: #aa1550!important; border-left: #666; border-radius: none"
+      >
+        <i class="material-icons md-36 icon-color-light">
+          search
+        </i>
+      </button>
+    </div>
+    <!-- search and select component -->
+
+    <div
+      style="height: auto!important ; margin: 2rem 0px; text-align: end"
+      class="align-items-start"
+      *ngIf="searchVisible"
+    >
+      <button mat-icon-button (click)="_navgationBackDetected($event)">
+        <mat-icon aria-label="hide search options">close</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="searchVisible" style="height: auto!important; margin-top: 2rem">
+      <app-search (searchTerm)="filterByName($event)"> </app-search>
+      <app-search-filter-events
+        [eventTypes]="EVENT_TYPES"
+        (selectItem)="onSelectEventType($event)"
+      ></app-search-filter-events>
+    </div>
+    <div style="height: 300px!important; margin-top: 2rem"><app-import-order></app-import-order></div>
+  </div>
+
+  <!-- use ngClass here to avoid redraw and the network call that goes with it -->
+  <div
+    class="view"
+    [ngClass]="{ visible: this.listVisible || searchVisible || importVisible, hidden: !this.listVisible }"
+  >
+    <app-orders-list style="width: 100%;"></app-orders-list>
+  </div>
+
+  <div class="view" *ngIf="createVisible">
+    <app-order-create
+      [uniqueId]="uniqueId"
+      (navigationBack)="_navgationBackDetected($event)"
+      style="width: 100%;"
+    ></app-order-create>
+  </div>
+</div>
+
+
