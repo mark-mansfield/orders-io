@@ -150,10 +150,11 @@ export class DishesComponent implements OnInit, OnDestroy {
   }
 
   initFormSelectsWithSelectedValues() {
-    console.log(`course for this dish: ${this.selectedItem.course}`);
+
     const selectedCourseIndex = this.COURSE_OPTIONS.findIndex(item => item === this.selectedItem.course);
-    console.log(`index of selected course for this dish: ${selectedCourseIndex}`);
     this.form.get('course').setValue(this.COURSE_OPTIONS[selectedCourseIndex]);
+    console.log(`course for this dish: ${this.selectedItem.course}`);
+    console.log(`index of selected course for this dish: ${selectedCourseIndex}`);
 
   }
 

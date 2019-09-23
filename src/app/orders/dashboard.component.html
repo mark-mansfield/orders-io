@@ -139,7 +139,7 @@
     <div class="col-width">
       <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
       <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
-      <h1>Orders</h1>
+      <h1 class="inner-margin">Orders</h1>
       <br />
       <div *ngIf="!this.isLoading && this.orders.length === 0">You have no orders in the system</div>
       <!-- orders list  -->

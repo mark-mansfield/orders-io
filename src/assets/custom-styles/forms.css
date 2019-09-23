@@ -58,3 +58,11 @@ textarea:disabled,
 .enabled {
   background-color: white;
 }
+
+@media (min-width: 70rem) {
+  .form-element {
+    margin: 20px 0;
+    min-width: 50%;
+    max-width: 50%;
+  }
+}

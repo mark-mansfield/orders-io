@@ -5,80 +5,13 @@ import { environment } from '../../../environments/environment';
 import { OrderService } from '../../services/order.service';
 import { DishService } from '../../services/dish.service';
 
+
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
   styleUrls: ['./order-create.component.css']
 })
 export class OrderCreateComponent implements OnInit {
-  // prevent any date in the past
-  today = new Date();
-  year = this.today.getFullYear();
-  day = this.today.getDate();
-  month = this.today.getMonth();
-  minDate = new Date(this.year, this.month, this.day);
-
-  // set event date like this
-  // eventDateTmp = new Date(this.year, this.month, this.day + 2); [value]="eventDateTmp"
-
-  order: Order;
-  notes: string;
-  menuName: string;
-  formTitle: string;
-  form: FormGroup;
-
-  menu: any;
-  dishes: any = [];
-  itemsOnMenu: any = [];
-
-  // object properties all could be enhanced to come from api
-  // menus = ['rosh hashanah', 'menu 2', 'menu 3'];
-  delivery_time_options = ['10.30am', '11.00am', '11.30am', '4.30pm', '5.00pm', '5.30pm'];
-  pickup_time_options = ['3.30pm', '4.00pm', '4.30pm', '5.00pm'];
-  styling_options = ['none', '$', '$$$', '$$$$$'];
-  portion_sizes = [];
-
-
-  // object constants
-  EVENT_TYPES = environment.eventOptions; // <-- should remain constant
-  EVENT_START_TIME_OPTIONS = environment.eventStartTimeOptions; // <-- should remain constant
-
-  eventType = null;
-  deliveryTimeSelected = null;
-  pickUpTimeSelected = null;
-  deliveryAddress = null;
-  pickUpDateSelected = null;
-  stylingOptionSelected = null;
-  menuSelected = null;
-  eventStartTimeSelected = null;
-  menuNameSelected = null;
-  eventDate = null;
-  eventStartTime = null;
-  formattedDate = null;
-  pickUp = false;
-  delivery = false;
-  staffed = false;
-  limitedPickUpDates = true;
-  styling = false;
-
-  serverDate = null;
-  serverDateFormatted = null;
-
-  // UI state
-  formMode = null;
-  inputDisabled = true;
-  submitted = false;
-  isDuplicate = false;
-  disableSubmit = true;
-  isLoading = true;
-
-  // input data
-  private _uniqueId = '';
-  private _formMode = '';
-  private _menus = '';
-  private _selectedItem = null;
-
-  constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) { }
 
   // provides ref to scroll to in case of form errors
   @ViewChild('#formStart')
@@ -116,6 +49,80 @@ export class OrderCreateComponent implements OnInit {
     return this._selectedItem;
   }
 
+
+  // input data
+  private _uniqueId = '';
+  private _formMode = '';
+  private _menus = null;
+  private _selectedItem = null;
+
+  // prevent any date in the past
+  today = new Date();
+  year = this.today.getFullYear();
+  day = this.today.getDate();
+  month = this.today.getMonth();
+  minDate = new Date(this.year, this.month, this.day);
+
+  // set event date like this
+  // eventDateTmp = new Date(this.year, this.month, this.day + 2); [value]="eventDateTmp"
+
+  order: Order;
+  notes: string;
+  // menuName: string;
+  formTitle: string;
+  form: FormGroup;
+
+
+  dishes: any = [];
+  itemsOnMenu: any = [];
+
+  // object properties all could be enhanced to come from api
+  // menus = ['rosh hashanah', 'menu 2', 'menu 3'];
+  delivery_time_options = ['10.30am', '11.00am', '11.30am', '4.30pm', '5.00pm', '5.30pm'];
+  pickup_time_options = ['3.30pm', '4.00pm', '4.30pm', '5.00pm'];
+  styling_options = ['none', '$', '$$$', '$$$$$'];
+  portion_sizes = [];
+
+
+
+  // object constants
+  EVENT_TYPES = environment.eventOptions; // <-- should remain constant
+  EVENT_START_TIME_OPTIONS = environment.eventStartTimeOptions; // <-- should remain constant
+
+  eventType = null;
+  deliveryTimeSelected = null;
+  pickUpTimeSelected = null;
+  deliveryAddress = null;
+  pickUpDateSelected = null;
+  stylingOptionSelected = null;
+  menuSelected = null;
+  eventStartTimeSelected = null;
+
+  menuNames = [];
+  eventDate = null;
+  eventStartTime = null;
+  formattedDate = null;
+  pickUp = false;
+  delivery = false;
+  staffed = false;
+  limitedPickUpDates = true;
+  styling = false;
+
+  serverDate = null;
+  serverDateFormatted = null;
+
+  // UI state
+  formMode = null;
+  inputDisabled = true;
+  submitted = false;
+  isDuplicate = false;
+  disableSubmit = true;
+  isLoading = true;
+
+
+
+  constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) { }
+
   @Output()
   notify = new EventEmitter<boolean>();
 
@@ -132,18 +139,18 @@ export class OrderCreateComponent implements OnInit {
     const deliveryTimeSelector = this.form.get('deliveryTime');
     const stylingOptionsSelector = this.form.get('stylingOptions');
     const eventStartTimeSelector = this.form.get('eventStartTime');
-    const eventTypeSelector = this.form.get('eventType').valueChanges.subscribe(eventTypeSelector => {
-      if (eventTypeSelector === 'pick_up') {
+    const eventTypeSelector = this.form.get('eventType').valueChanges.subscribe(selected => {
+      console.log(selected);
+      if (selected === 'pick_up') {
         pickUpTimeSelector.setValidators([Validators.required]);
         pickUpTimeSelector.updateValueAndValidity();
-
         addressSelector.setValidators(null);
         deliveryTimeSelector.setValidators(null);
         stylingOptionsSelector.setValidators(null);
         eventStartTimeSelector.setValidators(null);
       }
 
-      if (eventTypeSelector === 'delivery_service') {
+      if (selected === 'delivery_service') {
         pickUpTimeSelector.setValidators(null);
         stylingOptionsSelector.setValidators(null);
         eventStartTimeSelector.setValidators(null);
@@ -154,7 +161,7 @@ export class OrderCreateComponent implements OnInit {
         addressSelector.updateValueAndValidity();
         deliveryTimeSelector.updateValueAndValidity();
       }
-      if (eventTypeSelector === 'staffed_event') {
+      if (selected === 'staffed_event') {
         pickUpTimeSelector.setValidators(null);
         addressSelector.setValidators(null);
 
@@ -170,6 +177,10 @@ export class OrderCreateComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this._menus.forEach(item => {
+      this.menuNames.push(item.title);
+    });
     this.isLoading = false;
     const regexPattern = '[a-zA-Z0-9/s\t\n\r, \\.]*';
     if (this.mode === 'create') {
@@ -193,10 +204,7 @@ export class OrderCreateComponent implements OnInit {
     }
 
     if (this.mode === 'view') {
-      console.log(this.selectedItem);
-
-
-      this.formTitle = 'Editing order';
+      this.formTitle = 'Editing this order';
       this.dishes = this.selectedItem.orderedItems;
       this.eventType = this.selectedItem.eventDetails.eventType;
       this.pickUpTimeSelected = this.selectedItem.eventDetails.pickUpTimeSelected + 'pm';
@@ -204,8 +212,6 @@ export class OrderCreateComponent implements OnInit {
       this.stylingOptionSelected = this.selectedItem.eventDetails.stylingOptionSelected;
       this.eventStartTimeSelected = this.selectedItem.eventDetails.eventStartTime;
       this.deliveryAddress = this.selectedItem.eventDetails.deliveryAddress;
-
-      this.menuNameSelected = this.selectedItem.menuName;
       this.initItemsOnMenu(this.selectedItem.orderedItems);
 
       this.form = this.formBuilder.group({
@@ -230,6 +236,7 @@ export class OrderCreateComponent implements OnInit {
           { value: this.selectedItem.eventDetails.eventType, disabled: this.inputDisabled },
           Validators.required
         ],
+
         menu: [{ value: this.selectedItem.menuName, disabled: this.inputDisabled }, Validators.required],
         numberOfGuests: [
           { value: this.selectedItem.eventDetails.numberOfGuests, disabled: this.inputDisabled },
@@ -239,7 +246,7 @@ export class OrderCreateComponent implements OnInit {
           { value: this.selectedItem.eventDetails.eventDate, disabled: this.inputDisabled },
           Validators.required
         ],
-        pickUpTime: [{ value: this.pickUpTimeSelected, disabled: this.inputDisabled }],
+        pickUpTime: [{ value: this.pickUpTimeSelected, disabled: this.inputDisabled }, this.getValidators(this.eventType)],
         deliveryTime: [{ value: this.deliveryTimeSelected, disabled: this.inputDisabled }],
         stylingOptions: [{ value: this.stylingOptionSelected, disabled: this.inputDisabled }],
         eventStartTime: [{ value: this.eventStartTimeSelected, disabled: this.inputDisabled }]
@@ -250,6 +257,10 @@ export class OrderCreateComponent implements OnInit {
     }
 
     this.setConditionalFormFieldValidators();
+  }
+
+  getValidators(object) {
+    return Validators.required;
   }
 
   // convenience getter for easy access to form fields
@@ -300,6 +311,8 @@ export class OrderCreateComponent implements OnInit {
     this.form.controls.eventStartTime.reset({ value: this.eventStartTime, disabled: true });
   }
 
+  //
+
   updateFormMode(mode) {
     if (mode === 'create') {
       this.form.reset();
@@ -307,7 +320,6 @@ export class OrderCreateComponent implements OnInit {
     }
     if (mode === 'edit') {
       this.inputDisabled = false;
-      console.log(this.selectedItem);
       this.enableForm();
     }
     if (mode === 'view') {
@@ -341,9 +353,7 @@ export class OrderCreateComponent implements OnInit {
 
   onSelectEventType(item) {
     this.setEventType(item);
-
     this.eventType = item;
-
     if (item === 'pick_up') {
       this.pickUp = true;
       this.delivery = false;
@@ -357,8 +367,6 @@ export class OrderCreateComponent implements OnInit {
       this.delivery = false;
       this.pickUp = false;
     }
-
-    // console.log(`Event type is a ${item} event`);
   }
 
   onUpdateDeliveryAddress(item) {
@@ -385,10 +393,11 @@ export class OrderCreateComponent implements OnInit {
   }
 
   onSelectMenu(value) {
-    if (value.title === 'none') {
+    console.log(value)
+    if (value === 'none') {
       this.form.controls.menu.reset({ value: '', disabled: false });
     }
-    const idx = this.menus.findIndex(p => p.title === value.title);
+    const idx = this.menus.findIndex(p => p.title === value);
     this.menuSelected = this.menus[idx];
     this.initItemsOnMenu(this.menuSelected.items);
   }
@@ -422,6 +431,7 @@ export class OrderCreateComponent implements OnInit {
 
   onSaveOrder() {
     this.submitted = true;
+    console.log(this.form);
     if (this.form.invalid) {
       document.querySelector('#formStart').scrollIntoView({ behavior: 'smooth' });
       console.log(this.form);
