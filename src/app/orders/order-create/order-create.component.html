@@ -356,7 +356,7 @@
                 style="background-color: white; height:50px;"
                 selectedIndex = "2"
                >
-                <mat-option *ngFor="let qty of quantities" [value]="dish.qty">
+                <mat-option *ngFor="let qty of dish.portion_sizes" [value]="dish.qty">
                   {{ qty }}
                 </mat-option>
               </mat-select>

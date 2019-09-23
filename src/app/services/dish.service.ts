@@ -20,7 +20,7 @@ export class DishService {
     private http: HttpClient,
 
     private snackBarService: SnackBarService
-  ) {}
+  ) { }
 
   getDishesUpdateListener() {
     return this.dishesUpdated.asObservable();
@@ -54,7 +54,8 @@ export class DishService {
               name: dish.name,
               description: dish.description,
               portion_sizes: dish.portion_sizes,
-              _id: dish._id
+              _id: dish._id,
+              course: dish.course
             };
           });
         })
@@ -118,7 +119,7 @@ export class DishService {
 
   filterByName(name) {
     console.log(this.dishes);
-    const filteredData = [...this.dishes].filter(function(item) {
+    const filteredData = [...this.dishes].filter(function (item) {
       return item.name.toLowerCase().includes(name.toLowerCase());
     });
 

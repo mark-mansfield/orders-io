@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class DishesListComponent implements OnInit {
   @Input() data: any;
   @Output() selectItem = new EventEmitter<object>();
-  constructor() {}
+  constructor() { }
   selectedIdx = null;
   onItemSelect(item, idx) {
     this.selectedIdx = idx;

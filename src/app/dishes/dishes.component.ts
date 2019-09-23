@@ -14,6 +14,7 @@ import { Dish } from '../models/dish.model';
 export class DishesComponent implements OnInit, OnDestroy {
   form: FormGroup;
   dishes = [];
+  data = [];
   COURSE_OPTIONS = environment.courseOptions;
   selectedItem = null;
 
@@ -39,127 +40,21 @@ export class DishesComponent implements OnInit, OnDestroy {
   private dishesDeleted: Subscription;
   private searchResultsCleared: Subscription;
 
-  data = [
-    {
-      name: 'Slow Cooked Lamb Shoulder',
-      description: 'Hawaiij spices, pomegranate molasses, honey and lemon w coriander and almonds',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Grilled Ora king salmon',
-      description: 'chermoula marinade, cherry tomato and green bean salsa',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Ocean trout tarator',
-      description: 'w tahini yoghurt, coriander, sumac and chilli',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Slow Braised Free Range Chicken',
-      description: 'Jerusalem artichokes, bay, lemon, olives, eschallots , dates (Legs and thighs- 18 pieces)',
-      portion_sizes: [1, 2],
-      course: 'main'
-    },
-    {
-      name: 'chopped liver',
-      description: 'w caramelised onions egg &amp; herb mayo',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'hommus',
-      description: "Lox's famous chick pea hummus used at the restaurant",
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'confit tuna',
-      description: 'Olive oil, caper and parsley dip',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'Romanian eggplant',
-      description: 'roasted eggplant, capsicum, pomegranate, dill, lemon, shallot)',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'holmbrae chicken and vegetable ',
-      description: 'DF',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'soup'
-    },
-    {
-      name: 'Slow Cooked Lamb Shoulder',
-      description: 'Hawaiij spices, pomegranate molasses, honey and lemon w coriander and almonds',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Grilled Ora king salmon',
-      description: 'chermoula marinade, cherry tomato and green bean salsa',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Ocean trout tarator',
-      description: 'w tahini yoghurt, coriander, sumac and chilli',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Slow Braised Free Range Chicken',
-      description: 'Jerusalem artichokes, bay, lemon, olives, eschallots , dates (Legs and thighs- 18 pieces)',
-      portion_sizes: [1, 2],
-      course: 'main'
-    },
-    {
-      name: 'chopped liver',
-      description: 'w caramelised onions egg &amp; herb mayo',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'hommus',
-      description: "Lox's famous chick pea hummus used at the restaurant",
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'confit tuna',
-      description: 'Olive oil, caper and parsley dip',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'Romanian eggplant',
-      description: 'roasted eggplant, capsicum, pomegranate, dill, lemon, shallot)',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'holmbrae chicken and vegetable ',
-      description: 'DF',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'soup'
-    }
-  ];
-  constructor(private formBuilder: FormBuilder, private dataService: DishService, public dialog: MatDialog) {}
+
+  constructor(private formBuilder: FormBuilder, private dataService: DishService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.dataService.getDishes();
 
     this.dishesLoaded = this.dataService.getDishesUpdateListener().subscribe((data: Dish[]) => {
       this.dishes = data;
+      this.data = data;
+      console.log(this.dishes);
     });
 
     this.dishesDeleted = this.dataService.getDishesUpdateListener().subscribe((data: Dish[]) => {
       this.dishes = data;
+      this.data = data;
     });
 
     this.dishMetaDataUpdated = this.dataService.getDishMetaDataUpdated().subscribe((data: Dish[]) => {
@@ -174,6 +69,7 @@ export class DishesComponent implements OnInit, OnDestroy {
 
     this.dishesAdded = this.dataService.getDishAddedListener().subscribe((data: Dish[]) => {
       this.dishes = data;
+      this.data = data;
       console.log(data);
       const lastItem = this.dishes.slice(-1);
       this.selectedItem = lastItem[0];
@@ -206,12 +102,13 @@ export class DishesComponent implements OnInit, OnDestroy {
       ],
       portion_sizes: [
         { value: '', disabled: this.inputDisabled },
-        [Validators.required, Validators.pattern('[a-zA-Z0-9 .]*')]
+        [Validators.required]
       ],
       course: [{ value: '', disabled: this.inputDisabled }, [Validators.required]]
     });
 
     this.toggleViews('default');
+
     // console.log(this.COURSE_OPTIONS);
   }
 
@@ -252,12 +149,21 @@ export class DishesComponent implements OnInit, OnDestroy {
     this.form.controls.course.reset({ value: '', disabled: false });
   }
 
+  initFormSelectsWithSelectedValues() {
+    console.log(`course for this dish: ${this.selectedItem.course}`);
+    const selectedCourseIndex = this.COURSE_OPTIONS.findIndex(item => item === this.selectedItem.course);
+    console.log(`index of selected course for this dish: ${selectedCourseIndex}`);
+    this.form.get('course').setValue(this.COURSE_OPTIONS[selectedCourseIndex]);
+
+  }
+
   initSelectedItem() {
     this.selectedItem = {
       _id: '',
       name: '',
       description: '',
-      portion_sizes: ''
+      portion_sizes: '',
+      course: ''
     };
   }
 
@@ -324,7 +230,8 @@ export class DishesComponent implements OnInit, OnDestroy {
       this.dishes = this.data;
       return;
     }
-    this.dishes = [...this.data].filter(function(item) {
+    console.log(this.data);
+    this.dishes = [...this.data].filter(function (item) {
       return item.course === course;
     });
     console.log(course);
@@ -340,10 +247,12 @@ export class DishesComponent implements OnInit, OnDestroy {
   }
 
   onSelectCourse(course) {
+    console.log(course);
     this.form.controls.course.reset({ value: course, disabled: false });
   }
 
   onItemSelect($event) {
+
     this.isSearching = false;
     this.hasSearchResults = false;
     this.disableSubmit = true;
@@ -351,10 +260,12 @@ export class DishesComponent implements OnInit, OnDestroy {
       _id: $event._id, // because this value comes from mongo db and  already has the _id prop
       name: $event.name,
       description: $event.description,
-      portion_sizes: $event.portion_sizes
+      portion_sizes: $event.portion_sizes,
+      course: $event.course
     };
 
     this.formVisible = true;
+    this.initFormSelectsWithSelectedValues();
     console.log($event);
   }
 
@@ -366,15 +277,18 @@ export class DishesComponent implements OnInit, OnDestroy {
       console.log(this.form);
       return;
     }
-    console.log(this.form.value);
+    console.log(`form mode is set to: ${this.mode}`);
 
     if (this.mode === 'create') {
       const newDish = {
         _id: undefined,
         name: this.form.value.dishName,
         description: this.form.value.description,
-        portion_sizes: this.form.value.portion_sizes
+        portion_sizes: this.form.value.portion_sizes,
+        course: this.form.value.course
       };
+
+
       // duplicate titles are not allowed.
       const duplicate = this.dishes.filter(dish => dish.name === this.form.value.name);
       if (duplicate.length > 0) {
@@ -392,8 +306,11 @@ export class DishesComponent implements OnInit, OnDestroy {
         _id: this.selectedItem._id,
         name: this.form.value.dishName,
         description: this.form.value.description,
-        portion_sizes: this.form.value.portion_sizes
+        portion_sizes: this.form.value.portion_sizes,
+        course: this.form.value.course
       };
+
+      console.log(newDish);
       this.dataService.updateDish(newDish);
     }
   }
