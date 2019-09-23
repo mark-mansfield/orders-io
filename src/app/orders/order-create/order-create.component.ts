@@ -51,10 +51,10 @@ export class OrderCreateComponent implements OnInit {
 
 
   // input data
-  private _uniqueId = '';
-  private _formMode = '';
-  private _menus = null;
-  private _selectedItem = null;
+  _uniqueId = '';
+  _formMode = '';
+  _menus = null;
+  _selectedItem = null;
 
   // prevent any date in the past
   today = new Date();
