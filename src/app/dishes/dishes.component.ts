@@ -79,6 +79,7 @@ export class DishesComponent implements OnInit, OnDestroy {
     });
 
     this.dishesFiltered = this.dataService.getDishesFilteredListener().subscribe((data: Dish[]) => {
+      console.log(data);
       if (data.length === 0) {
         this.noSearchResults = true;
       } else if (data.length > 0) {
@@ -86,7 +87,6 @@ export class DishesComponent implements OnInit, OnDestroy {
         this.hasSearchResults = true;
       }
       this.isSearching = true;
-
       this.dishes = data;
     });
 
@@ -192,7 +192,6 @@ export class DishesComponent implements OnInit, OnDestroy {
       this.initSelectedItem();
       this.disableForm();
     }
-
     this.mode = mode;
     console.log(this.mode);
   }
@@ -227,15 +226,9 @@ export class DishesComponent implements OnInit, OnDestroy {
   }
 
   onFilterByCourse(course) {
-    if (course === 'all') {
-      this.dishes = this.data;
-      return;
-    }
-    console.log(this.data);
-    this.dishes = [...this.data].filter(function (item) {
-      return item.course === course;
-    });
-    console.log(course);
+
+    this.dataService.filterByCourse(course);
+
   }
 
   onFilterByName(name) {

@@ -15,18 +15,22 @@
     </i>
   </button>
 </div>
-<div class="inner-margin device-search" *ngIf="searchVisible">
+<div class=" animation-fade-in  device-search" *ngIf="searchVisible">
   <div style="text-align: end; margin-top:20px">
     <button mat-icon-button (click)="toggleViews('default')">
       <mat-icon aria-label="hide search options">close</mat-icon>
     </button>
   </div>
-  <app-search-filter-dishes
-    [courses]="COURSE_OPTIONS"
-    (selectItem)="onFilterByCourse($event.value)"
-    id="filter_by_course"
-  ></app-search-filter-dishes>
-  <app-search (searchTerm)="onFilterByName($event)" class="col-width"></app-search>
+  <div class="search">
+    <h1>Search</h1>
+    <app-search-filter-dishes
+      [courses]="COURSE_OPTIONS"
+      (selectItem)="onFilterByCourse($event)"
+      id="filter_by_course"
+    ></app-search-filter-dishes>
+<br><br>
+    <app-search (searchTerm)="onFilterByName($event)" class="col-width"></app-search>
+  </div>
 </div>
 <div class="flex-row-container">
   <div class="sidebar" id="desktop-toolbar">

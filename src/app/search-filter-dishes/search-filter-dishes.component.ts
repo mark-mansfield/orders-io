@@ -18,12 +18,11 @@ export class SearchFilterDishesComponent implements OnInit {
   }
 
   onCourseSelected(item) {
-    console.log(item);
     this.selectItem.emit(item);
   }
   constructor() {}
 
   ngOnInit() {
-    console.log(this.courses);
+
   }
 }

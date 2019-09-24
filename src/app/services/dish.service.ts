@@ -118,11 +118,20 @@ export class DishService {
   }
 
   filterByName(name) {
-    console.log(this.dishes);
     const filteredData = [...this.dishes].filter(function (item) {
       return item.name.toLowerCase().includes(name.toLowerCase());
     });
+    this.dishesFiltered.next([...filteredData]);
+  }
 
+  filterByCourse(course) {
+    if (course === 'all') {
+      this.dishesFiltered.next([...this.dishes]);
+      return;
+    }
+    const filteredData = [...this.dishes].filter(function (item) {
+      return item.course.toLowerCase().includes(course.toLowerCase());
+    });
     this.dishesFiltered.next([...filteredData]);
   }
 
