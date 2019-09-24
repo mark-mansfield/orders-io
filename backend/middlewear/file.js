@@ -2,9 +2,9 @@
 //  https://github.com/expressjs/multer
 const multer = require('multer');
 const MIME_TYPE_MAP = {
-  'image/png'   :   'png',
-  'image/jpeg'  :   'jpg',
-  'image/jpg'   :   'jpg'
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg'
 };
 
 // multer needs a little config
@@ -12,19 +12,22 @@ const MIME_TYPE_MAP = {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const isValid = MIME_TYPE_MAP[file.mimetype];
-    let error = new Error("Invalid mime type");
-    if(isValid) {
-        error = null;
+    let error = new Error('Invalid mime type');
+    if (isValid) {
+      error = null;
     }
     console.log(error);
-    cb(error,"backend/images");
+    cb(error, 'images');
   },
-  filename: (req,file,cb) => {
-    const name = file.originalname.toLowerCase().split(' ').join('-');
+  filename: (req, file, cb) => {
+    const name = file.originalname
+      .toLowerCase()
+      .split(' ')
+      .join('-');
     const ext = MIME_TYPE_MAP[file.mimetype];
     console.log(name + '-' + Date.now() + '.' + ext);
-    cb(null,name + '-' + Date.now() + '.' + ext);
-  },
+    cb(null, name + '-' + Date.now() + '.' + ext);
+  }
 });
 
-module.exports = multer({storage: storage}).single('image');
+module.exports = multer({ storage: storage }).single('image');

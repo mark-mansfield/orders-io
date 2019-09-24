@@ -76,7 +76,7 @@
     <div *ngIf="searchVisible" class="col-width desktop-search">
       <!-- name filter -->
       <div class="sidebar-item">
-        <app-search (searchTerm)="filterByName($event)"> </app-search>
+        <app-search (searchTerm)="onFilterByName($event)"> </app-search>
       </div>
     </div>
   </div>
@@ -84,9 +84,6 @@
   <!-- view  for desktop and devices  -->
   <div class="view">
     <div class="col-width">
-      <div *ngIf="noSearchResults"><h4>no matches found try again</h4></div>
-      <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
-
       <br />
       <div *ngIf="!this.isLoading && this.menusData.length === 0">You have no menus in the system</div>
       <!-- menus list  -->

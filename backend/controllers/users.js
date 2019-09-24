@@ -53,8 +53,6 @@ exports.loginUser = (req, res, next) => {
       process.env.JWT_KEY,
       { expiresIn: '1h' }
     );
-    console.log(token);
-    //. send token to front end
     res.status(200).json(
     {
       expiresIn: 3600,

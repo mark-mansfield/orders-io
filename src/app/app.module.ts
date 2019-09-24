@@ -27,7 +27,7 @@ import { SharedModule } from './shared-module/shared-module.module';
 // import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './auth/login/login.component';
 
-import { DialogsComponent } from './dialogs/dialogs.component';
+// import { DialogsComponent } from './dialogs/dialogs.component';
 import { OrdersFilterComponent } from './orders/orders-filter/orders-filter.component';
 import { FiltersDialogComponent } from './dialogs/filters-dialog/filters-dialog.component';
 import { DeleteItemComponent } from './dialogs/delete-item/delete-item.component';
@@ -41,7 +41,7 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
     ErrorComponent,
     // WelcomeComponent,
     LoginComponent,
-    DialogsComponent,
+    // DialogsComponent,
     OrdersFilterComponent,
     FiltersDialogComponent,
     DeleteItemComponent,
@@ -68,6 +68,6 @@ import { ResponsiveLayoutComponent } from './responsive-layout/responsive-layout
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent, DialogsComponent, DeleteItemComponent, AddItemDialogComponent]
+  entryComponents: [ErrorComponent, DeleteItemComponent, AddItemDialogComponent]
 })
 export class AppModule { }

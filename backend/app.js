@@ -18,7 +18,11 @@ const dishRoutes = require('./routes/dishes');
 
 // P5h03V1bG86sbJwb
 mongoose
-  .connect('mongodb+srv://cateringManagerAdmin:P5h03V1bG86sbJwb@cluster0-dnzru.mongodb.net/catering-manager-angular')
+  .connect(
+    'mongodb+srv://cateringManagerAdmin:' +
+      process.env.MONGO_ATLAS_PASSWORD +
+      '@cluster0-dnzru.mongodb.net/catering-manager-angular'
+  )
   .then(() => {
     console.log('connected to database');
   })
@@ -34,14 +38,14 @@ app.use(bodyParser.json());
 
 // use path middle wear from express
 // forwards all requests sent to '/images' to be forwarded to 'backend/images'
-app.use('/images', express.static(path.join('backend/images')));
+app.use('/images', express.static(path.join('images')));
 
 // create a middlewear to allow CORS
 // add next to prevent a timeout or endless loop
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
 
   next();
 });

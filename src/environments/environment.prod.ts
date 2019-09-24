@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://http://ordersio-env.2myp2rpppm.us-east-2.elasticbeanstalk.com/  api/',
+  apiUrl: 'http://ordersproject-env.i2jxbxgpkm.us-east-2.elasticbeanstalk.com/api/',
   eventOptions: ['pick_up', 'delivery_service', 'staffed_event', 'all'],
   courseOptions: ['all', 'entree', 'main', 'desert', 'soup'],
   eventStartTimeOptions: [
