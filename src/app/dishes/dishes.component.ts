@@ -27,7 +27,6 @@ export class DishesComponent implements OnInit, OnDestroy {
   disableSubmit = true;
 
   noSearchResults = false;
-  hasSearchResults = false;
   isSearching = false;
   searchVisible = false;
   listVisible = false;
@@ -58,12 +57,10 @@ export class DishesComponent implements OnInit, OnDestroy {
     });
 
     this.dishMetaDataUpdated = this.dataService.getDishMetaDataUpdated().subscribe((data: Dish[]) => {
-      this.hasSearchResults = false;
       this.dishes = data;
     });
 
     this.searchResultsCleared = this.dataService.getSearchResultsClearedListener().subscribe((data: Dish[]) => {
-      this.hasSearchResults = false;
       this.dishes = data;
     });
 
@@ -84,7 +81,6 @@ export class DishesComponent implements OnInit, OnDestroy {
         this.noSearchResults = true;
       } else if (data.length > 0) {
         this.noSearchResults = false;
-        this.hasSearchResults = true;
       }
       this.isSearching = true;
       this.dishes = data;
@@ -220,7 +216,6 @@ export class DishesComponent implements OnInit, OnDestroy {
         this.formVisible = false;
         this.updateFormMode(null);
         this.isSearching = false;
-        this.hasSearchResults = false;
         break;
     }
   }
@@ -248,7 +243,6 @@ export class DishesComponent implements OnInit, OnDestroy {
   onItemSelect($event) {
 
     this.isSearching = false;
-    this.hasSearchResults = false;
     this.disableSubmit = true;
     this.selectedItem = {
       _id: $event._id, // because this value comes from mongo db and  already has the _id prop
@@ -313,15 +307,15 @@ export class DishesComponent implements OnInit, OnDestroy {
     console.log(`dish set for deletion - id: ${id}`);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
-    dialogConfig.height = '20%';
-    dialogConfig.width = '20%';
+    dialogConfig.height = '200px';
+    dialogConfig.maxWidth = '100%';
     dialogConfig.data = 'Type the word DELETE to delete this item';
     const dialogRef = this.dialog.open(DeleteItemComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(dialogReturnData => {
       if (dialogReturnData === 'DELETE') {
         this.dataService.deleteDish(id);
+        this.toggleViews('default');
       }
     });
-    // this.dataService.deleteMenu(id);
   }
 }

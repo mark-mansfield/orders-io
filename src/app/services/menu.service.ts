@@ -126,11 +126,11 @@ export class DataService {
   }
 
   deleteDishFromMenu(menuIdx, dishName) {
-    // this.selectedMenu = this.menus.filter(menu => menu._id === menuIdx);
-    // const tmpArr = this.selectedMenu[0].items;
-    // const filteredArr = tmpArr.filter(item => item.name !== dishName);
-    // this.selectedMenu[0].items = filteredArr;
-    // this.dishesDeleted.next([...filteredArr]); // inform UI
+    this.selectedMenu = this.menus.filter(menu => menu._id === menuIdx);
+    const tmpArr = this.selectedMenu[0].items;
+    const filteredArr = tmpArr.filter(item => item.name !== dishName);
+    this.selectedMenu[0].items = filteredArr;
+    this.dishesDeleted.next([...filteredArr]); // inform UI
   }
 
   deleteMenu(id: String) {

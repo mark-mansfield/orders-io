@@ -1,6 +1,12 @@
 mat-list-item {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+mat-select {
+  height: 50px;
+}
+
+
 .filter-select {
   width: 100vw;
   display: flex;
