@@ -44,11 +44,11 @@
             </i>
           </button>
 
-          <button mat-mini-fab title="clone item">
+          <!-- <button mat-mini-fab title="clone item">
             <i class="material-icons icon-color-light">
               file_copy
             </i>
-          </button>
+          </button> -->
         </div>
         <div style="flex:1">
           <button
@@ -394,7 +394,7 @@
                   style="background-color: white; height:50px;"
                   selectedIndex="2"
                 >
-                  <mat-option *ngFor="let qty of dish.portion_sizes" [value]="dish.qty">
+                  <mat-option *ngFor="let qty of quantities" [value]="qty">
                     {{ qty }}
                   </mat-option>
                 </mat-select>
@@ -427,23 +427,6 @@
           *ngIf="this.mode === 'edit' || this.mode === 'create'"
           style="width: 100%; margin-bottom: 50px; display:flex; justify-content: space-between"
         >
-          <!-- <button
-        class="action-button"
-        mat-fab
-        color="accent"
-        mat-raised-button
-        style="margin-left: 10px"
-        (click)="this.notifyParent()"
-      >
-        <mat-icon
-          aria-label="quit and go back to orders list"
-          class="mat-icon material-icons"
-          role="img"
-          aria-hidden="true"
-          >close</mat-icon
-        >
-      </button> -->
-
           <button class="action-button" mat-button color="accent" type="submit">
             save
           </button>

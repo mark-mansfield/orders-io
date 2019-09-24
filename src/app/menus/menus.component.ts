@@ -1,8 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { DeleteItemComponent } from '../dialogs/delete-item/delete-item.component';
-import { AddItemDialogComponent } from '../dialogs/add-item-dialog/add-item-dialog.component';
 import { DataService } from '../services/menu.service';
 import { Subscription } from 'rxjs';
 import { Menu } from '../models/menu.model';
@@ -15,7 +11,7 @@ import { SnackBarService } from '../services/snackbar.service';
 })
 export class MenusComponent implements OnInit, OnDestroy {
   menusData: Menu[] = [];
-  menuItems: any = [];
+
   selectedItem: any;
   items: any = [];
 
@@ -23,6 +19,7 @@ export class MenusComponent implements OnInit, OnDestroy {
   private menusFilteredSub: Subscription;
   private searchResultsCleared: Subscription;
   private menuDeletedSub: Subscription;
+
 
   formMode = null;
   isLoading = false;
@@ -35,64 +32,10 @@ export class MenusComponent implements OnInit, OnDestroy {
 
 
 
-  data = [
-    {
-      name: 'Slow Cooked Lamb Shoulder',
-      description: 'Hawaiij spices, pomegranate molasses, honey and lemon w coriander and almonds',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Grilled Ora king salmon',
-      description: 'chermoula marinade, cherry tomato and green bean salsa',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Ocean trout tarator',
-      description: 'w tahini yoghurt, coriander, sumac and chilli',
-      portion_sizes: [1, 2, 3],
-      course: 'main'
-    },
-    {
-      name: 'Slow Braised Free Range Chicken',
-      description: 'Jerusalem artichokes, bay, lemon, olives, eschallots , dates (Legs and thighs - 18 pieces)',
-      portion_sizes: [1, 2],
-      course: 'main'
-    },
-    {
-      name: 'chopped liver',
-      description: 'w caramelised onions egg &amp; herb mayo',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'hommus',
-      description: 'Lox\'s famous chick pea hummus used at the restaurant',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'confit tuna',
-      description: 'Olive oil, caper and parsley dip',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'Romanian eggplant',
-      description: 'roasted eggplant, capsicum, pomegranate, dill, lemon, shallot)',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'entree'
-    },
-    {
-      name: 'holmbrae chicken and vegetable ',
-      description: 'DF',
-      portion_sizes: ['250', '500', '1kg'],
-      course: 'soup'
-    }
-  ];
+
 
   constructor(
+
     private snackBarService: SnackBarService,
     private dataService: DataService,
 
@@ -103,7 +46,9 @@ export class MenusComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.dataService.getMenus();
+
     this.isLoading = true;
+
 
 
     this.menusSub = this.dataService.getMenuMetaDataUpdatedListener().subscribe((menus: Menu[]) => {
@@ -123,7 +68,6 @@ export class MenusComponent implements OnInit, OnDestroy {
       }
     });
 
-
     this.menuDeletedSub = this.dataService.getMenuDeletedListener().subscribe(() => {
       this.toggleViews('default');
     });
@@ -141,7 +85,6 @@ export class MenusComponent implements OnInit, OnDestroy {
       items: []
     };
   }
-
 
   toggleViews(view) {
 
@@ -218,7 +161,6 @@ export class MenusComponent implements OnInit, OnDestroy {
     this.menusSub.unsubscribe();
     this.menuDeletedSub.unsubscribe();
     this.menusFilteredSub.unsubscribe();
-
     this.searchResultsCleared.unsubscribe();
   }
 }

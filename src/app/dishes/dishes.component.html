@@ -1,4 +1,4 @@
-<div class="flex-row-container device-toolbar" id="device-toolbar">
+<div class="flex-row-container device-toolbar" id="device-toolbar" *ngIf="!formVisible">
   <button mat-button (click)="toggleViews('create')" class="action-button" style="border-radius: none">
     <i class="material-icons md-36 icon-color-light">
       add
@@ -28,7 +28,7 @@
       (selectItem)="onFilterByCourse($event)"
       id="filter_by_course"
     ></app-search-filter-dishes>
-<br><br>
+    <br /><br />
     <app-search (searchTerm)="onFilterByName($event)" class="col-width"></app-search>
   </div>
 </div>
@@ -86,7 +86,10 @@
   <div class="view view-margin-top">
     <div *ngIf="noSearchResults" class="action-button inner-margin"><h4>no matches found try again</h4></div>
 
-
+    <h1 class="inner-margin">Dishes</h1>
+    <div class="inner-margin" *ngIf="!this.isLoading && this.dishes.length === 0 && !isSearching">
+      You have no dishes in the system
+    </div>
     <app-dishes-list
       [data]="this.dishes"
       [ngClass]="{
@@ -125,11 +128,11 @@
             </i>
           </button>
 
-          <button mat-mini-fab title="clone item">
+          <!-- <button mat-mini-fab title="clone item">
             <i class="material-icons icon-color-light">
               file_copy
             </i>
-          </button>
+          </button> -->
         </div>
       </div>
       <div class="inner-margin">
@@ -157,8 +160,8 @@
             </div>
           </div>
           <div class="form-element">
-            <label for="portion_sizes"><h2>Portion Sizes</h2> </label>
-            <span>use comma to separate options</span><br />
+            <label for="portion_sizes"><h2>Serving Size</h2> </label>
+            <small>Describes how the big the product is or how many people it will feed</small><br />
             <input
               type="text"
               formControlName="portion_sizes"

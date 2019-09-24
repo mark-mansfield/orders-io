@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { OrderService } from '../../services/order.service';
 import { DishService } from '../../services/dish.service';
 
-
 @Component({
   selector: 'app-order-create',
   templateUrl: './order-create.component.html',
@@ -81,6 +80,7 @@ export class OrderCreateComponent implements OnInit {
   delivery_time_options = ['10.30am', '11.00am', '11.30am', '4.30pm', '5.00pm', '5.30pm'];
   pickup_time_options = ['3.30pm', '4.00pm', '4.30pm', '5.00pm'];
   styling_options = ['none', '$', '$$$', '$$$$$'];
+  quantities = ['1', '2', '3', '4'];
   portion_sizes = [];
 
 
@@ -121,7 +121,11 @@ export class OrderCreateComponent implements OnInit {
 
 
 
-  constructor(public orderService: OrderService, public dishService: DishService, private formBuilder: FormBuilder) { }
+  constructor(
+
+    public orderService: OrderService,
+    public dishService: DishService,
+    private formBuilder: FormBuilder) { }
 
   @Output()
   notify = new EventEmitter<boolean>();
@@ -181,6 +185,7 @@ export class OrderCreateComponent implements OnInit {
     this._menus.forEach(item => {
       this.menuNames.push(item.title);
     });
+
     this.isLoading = false;
     const regexPattern = '[a-zA-Z0-9/s\t\n\r, \\.]*';
     if (this.mode === 'create') {
@@ -212,7 +217,10 @@ export class OrderCreateComponent implements OnInit {
       this.stylingOptionSelected = this.selectedItem.eventDetails.stylingOptionSelected;
       this.eventStartTimeSelected = this.selectedItem.eventDetails.eventStartTime;
       this.deliveryAddress = this.selectedItem.eventDetails.deliveryAddress;
-      this.initItemsOnMenu(this.selectedItem.orderedItems);
+      // this.initItemsOnMenu(this.selectedItem.orderedItems);
+      const idx = this.menus.findIndex(p => p.title === this.selectedItem.menuName);
+      this.menuSelected = this.menus[idx];
+      this.initItemsOnMenu(this.menuSelected.items);
 
       this.form = this.formBuilder.group({
         contactName: [
@@ -338,6 +346,7 @@ export class OrderCreateComponent implements OnInit {
 
   updateItemQty(index, item) {
     this.itemsOnMenu[index].qty = item;
+    console.log(item);
   }
 
   setEventType(type) {
@@ -377,20 +386,21 @@ export class OrderCreateComponent implements OnInit {
 
   // make  each dish into order item object  { name: string,  quantity: string }
   initItemsOnMenu(arr) {
-    console.log(arr);
+
     this.itemsOnMenu = [];
     arr.forEach(item => {
-
+      console.log(item);
       const orderItem = {
         name: item.name,
-        qty: item.portion_sizes,
+        qty: item.qty,
         portion_sizes: item.portion_sizes
       };
       this.itemsOnMenu.push(orderItem);
     });
-    console.log('items on menu');
-    console.log(this.itemsOnMenu);
+
   }
+
+
 
   onSelectMenu(value) {
     console.log(value)

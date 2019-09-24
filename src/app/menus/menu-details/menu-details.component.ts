@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DataService } from '../../services/menu.service';
-
+import { DishService } from '../../services/dish.service';
 import { Menu } from '../../models/menu.model';
 
 import { AddItemDialogComponent } from '../../dialogs/add-item-dialog/add-item-dialog.component';
@@ -25,6 +25,7 @@ export class MenuDetailsComponent implements OnInit, OnDestroy {
 
   private dishesAddedSub: Subscription;
   private dishesDeletedSub: Subscription;
+  private dishesSub: Subscription;
 
   inputDisabled = true;
   disableSubmit = true;
@@ -91,6 +92,7 @@ export class MenuDetailsComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
+    private dishService: DishService,
     private dataService: DataService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog
@@ -138,6 +140,11 @@ export class MenuDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
+    this.dishService.getDishes();
+    this.dishesSub = this.dishService.getDishesUpdateListener().subscribe((data) => {
+      this.menuItems = data;
+    })
+
     this.dishesDeletedSub = this.dataService.getDishesDeletedListener().subscribe((items: any) => {
       this.selectedItem.items = items;
       this.disableSubmit = false;
@@ -237,7 +244,7 @@ export class MenuDetailsComponent implements OnInit, OnDestroy {
     }
 
     const newMenu = {
-_id: this._selectedItem._id,
+      _id: this._selectedItem._id,
       title: this.form.value.title,
       description: this.form.value.description,
       items: this.selectedItem.items
@@ -283,7 +290,7 @@ _id: this._selectedItem._id,
     dialogConfig.disableClose = true;
     dialogConfig.height = '85%';
     dialogConfig.maxWidth = '100%';
-    dialogConfig.data = [this.data, this.selectedItem.items];
+    dialogConfig.data = [this.menuItems, this.selectedItem.items];
     const dialogRef = this.dialog.open(AddItemDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(dialogReturnData => {
       // this.menuItems = dialogReturnData;
@@ -301,5 +308,6 @@ _id: this._selectedItem._id,
   ngOnDestroy() {
     this.dishesAddedSub.unsubscribe();
     this.dishesDeletedSub.unsubscribe();
+    this.dishesSub.unsubscribe();
   }
 }

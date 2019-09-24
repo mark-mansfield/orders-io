@@ -43,11 +43,13 @@ export class DishesComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder, private dataService: DishService, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.dataService.getDishes();
 
     this.dishesLoaded = this.dataService.getDishesUpdateListener().subscribe((data: Dish[]) => {
       this.dishes = data;
       this.data = data;
+      this.isLoading = false;
       console.log(this.dishes);
     });
 
@@ -82,7 +84,8 @@ export class DishesComponent implements OnInit, OnDestroy {
       } else if (data.length > 0) {
         this.noSearchResults = false;
       }
-      this.isSearching = true;
+      this.isLoading = false;
+
       this.dishes = data;
     });
 
@@ -221,12 +224,15 @@ export class DishesComponent implements OnInit, OnDestroy {
   }
 
   onFilterByCourse(course) {
-
+    this.isSearching = true;
+    this.isLoading = true;
     this.dataService.filterByCourse(course);
 
   }
 
   onFilterByName(name) {
+    this.isSearching = true;
+    this.isLoading = true;
     this.dataService.filterByName(name);
   }
 
