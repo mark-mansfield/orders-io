@@ -141,7 +141,9 @@
       <button (click)="onClearSearchResults()" *ngIf="hasSearchResults">Clear Search</button>
       <h1 class="inner-margin">Orders</h1>
       <br />
-      <div *ngIf="!this.isLoading && this.orders.length === 0">You have no orders in the system</div>
+      <div class="inner-margin" *ngIf="!this.isLoading && this.orders.length === 0 && !formVisible">
+        You have no orders in the system
+      </div>
       <!-- orders list  -->
       <app-orders-list
         class="col-width"

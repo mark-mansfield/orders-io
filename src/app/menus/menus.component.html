@@ -84,8 +84,12 @@
   <!-- view  for desktop and devices  -->
   <div class="view">
     <div class="col-width">
-      <br />
-      <div *ngIf="!this.isLoading && this.menusData.length === 0">You have no menus in the system</div>
+      <div class="inner-margin">
+        <h1>Menus</h1>
+      </div>
+      <div class="inner-margin" *ngIf="!this.isLoading && this.menusData.length === 0 && !formVisible">
+        You have no menus in the system
+      </div>
       <!-- menus list  -->
 
       <app-list-menus
