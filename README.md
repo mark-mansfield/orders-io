@@ -7,4 +7,3 @@ node.js /
 express.js /
 mongodb / 
 
-[check it out here](http://orders-project.s3-website-ap-southeast-2.amazonaws.com/login)
